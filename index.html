@@ -1115,5 +1115,66 @@
             container.scrollTop = container.scrollHeight;
         }
     </script>
+    <script type="module">
+
+    // ── Import only what we need from the Firebase CDN ────────────
+    //    firebase-app   → creates the Firebase connection
+    //    firebase-firestore → gives us the Firestore database handle
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import { getFirestore }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    // ── Your Firebase project credentials ────────────────────────
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
+      authDomain:        "krishisarthi-341d1.firebaseapp.com",
+      projectId:         "krishisarthi-341d1",
+      storageBucket:     "krishisarthi-341d1.firebasestorage.app",
+      messagingSenderId: "513338973625",
+      appId:             "1:513338973625:web:f35e1db41645a37bf72a68"
+    };
+
+
+    // ── Initialize Firebase App ───────────────────────────────────
+    //    This is your live connection to the Firebase project.
+    const app = initializeApp(firebaseConfig);
+
+
+    // ── Initialize Firestore Database ─────────────────────────────
+    //    `db` is the object you'll use in future steps to
+    //    read and write data. Think of it as your database door handle.
+    const db = getFirestore(app);
+
+
+    // ── Expose db globally ────────────────────────────────────────
+    //    <script type="module"> is sandboxed — variables inside it
+    //    are invisible to your other <script> tags by default.
+    //    Attaching to `window` makes `db` available everywhere on
+    //    the page so your existing code and future scripts can use it.
+    window.db  = db;
+    window.app = app;
+
+
+    // ── Sanity check — open your browser DevTools (F12) ──────────
+    //    Console tab → you should see both green checkmarks.
+    //    If you see an error instead, check that your Firebase
+    //    project has Firestore enabled in the Firebase Console.
+    console.log("✅ Firebase App initialised:", app.name);
+    console.log("✅ Firestore db handle ready:", db);
+
+  </script>
+
+  <!-- ============================================================
+    THAT'S IT FOR THIS STEP.
+    Your mock data, UI, and hardcoded logic are completely untouched.
+    In the next step we'll start replacing mock data with real
+    Firestore reads/writes — using the `db` handle we just created.
+    ============================================================ -->
+
+</body>
+</html>
 </body>
 </html>
