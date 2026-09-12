@@ -14,7 +14,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -51,9 +51,8 @@
 
             <!-- Brand Logo Header -->
             <div class="flex flex-col items-center justify-center mb-4">
-               <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
-
-                <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1">
+                <img src="logo.jpg" alt="KrishiSarthi Logo" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592417817098-8f3d6ef23a28?w=150&auto=format&fit=crop&q=80';" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
+                <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1 mt-2">
                     KrishiSarthi <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">🌱</span>
                 </h1>
                 <p class="text-xs font-semibold text-slate-500 mt-0.5">Voice-First Agro-Marketplace & Freight Pooling</p>
@@ -89,11 +88,11 @@
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 text-sm mt-4">
                     <span>Send Verification Code</span>
-                    <i class="fa-solid font-bold text-slate-600"></i>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
             </form>
 
-            <!-- STEP 2: OTP VERIFICATION FORM (HIDDEN INITIALLY) -->
+            <!-- STEP 2: OTP VERIFICATION FORM -->
             <form id="form-login-step2" onsubmit="handleVerifyOTP(event)" class="space-y-4 text-left hidden">
                 <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
                     <p class="text-xs text-emerald-800 font-semibold">Verification code sent to <span id="display-phone" class="font-bold text-emerald-950">+91 9876543210</span></p>
@@ -129,7 +128,7 @@
         <header class="glass-header text-white sticky top-0 z-40 shadow-lg border-b border-emerald-700/50">
             <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-300 shadow">
+                    <img src="logo.jpg" alt="Logo" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592417817098-8f3d6ef23a28?w=150&auto=format&fit=crop&q=80';" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-300 shadow">
                     <div>
                         <h1 class="font-extrabold text-lg leading-none tracking-tight flex items-center gap-1.5">
                             KrishiSarthi <span class="text-[10px] bg-emerald-800/80 px-2 py-0.5 rounded-full font-bold border border-emerald-600/50">LIVE</span>
@@ -140,7 +139,7 @@
 
                 <!-- USER CONTROL BADGE & LANGUAGE SELECTOR -->
                 <div class="flex items-center gap-2">
-                    <button onclick="openLanguageModal()" class="bg-emerald-800/80 hover:bg-emerald-700/80 text-emerald-100 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 border border-emerald-600/50 transition">
+                    <button onclick="toggleLanguageModal()" class="bg-emerald-800/80 hover:bg-emerald-700/80 text-emerald-100 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 border border-emerald-600/50 transition">
                         <i class="fa-solid fa-language text-sm"></i>
                         <span id="current-lang-code" class="uppercase">EN</span>
                     </button>
@@ -193,14 +192,17 @@
 
             <!-- ================= TAB 1: LOCAL MARKETPLACE ================= -->
             <div id="view-local" class="space-y-4">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
                         <h2 class="font-black text-slate-800 text-lg">Direct Produce Offers</h2>
                         <p class="text-xs text-slate-500">Buy directly from neighbor farmers near you</p>
                     </div>
-                    <button onclick="toggleForm('local-form-container')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-plus"></i> Post Produce
-                    </button>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <input type="text" id="local-search" onkeyup="filterLocalItems()" placeholder="Search crop or location..." class="p-2.5 bg-white border border-slate-200 rounded-xl text-xs flex-1 sm:w-48 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm">
+                        <button onclick="toggleForm('local-form-container')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5 whitespace-nowrap">
+                            <i class="fa-solid fa-plus"></i> Post Produce
+                        </button>
+                    </div>
                 </div>
 
                 <!-- ADD LOCAL PRODUCE FORM CONTAINER -->
@@ -221,7 +223,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Expected Price (₹)</label>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Expected Price (₹/Quintal)</label>
                                 <input type="number" id="l-price" required placeholder="e.g. 1800" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                             </div>
                             <div>
@@ -272,11 +274,11 @@
                         </div>
                         <div class="grid grid-cols-3 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Date</label>
-                                <input type="text" id="t-date" required placeholder="Tomorrow Morning" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Date & Time</label>
+                                <input type="text" id="t-date" required placeholder="Tomorrow 5 AM" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Space Left</label>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Space Available</label>
                                 <input type="text" id="t-space" required placeholder="e.g. 2 Tons" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                             </div>
                             <div>
@@ -305,7 +307,7 @@
                         <p class="text-xs text-slate-500">Live price trends across major agricultural markets</p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <div class="relative w-full sm:w-48">
+                        <div class="relative w-full sm:w-56">
                             <input type="text" id="mandi-search" onkeyup="filterMandiRates()" placeholder="Search crop or mandi..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                         </div>
@@ -347,6 +349,19 @@
                         </div>
                     </div>
 
+                    <!-- QUICK ADVISORY SUGGESTION CHIPS -->
+                    <div class="flex gap-2 my-3 overflow-x-auto scrollbar-hide text-[11px] font-semibold text-slate-600">
+                        <button onclick="sendQuickPrompt('What is the current wheat price trend in Haryana?')" class="bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-slate-200 transition">
+                            🌾 Wheat price trends
+                        </button>
+                        <button onclick="sendQuickPrompt('How to treat yellow rust in wheat crops?')" class="bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-slate-200 transition">
+                            🛡️ Treatment for Yellow Rust
+                        </button>
+                        <button onclick="sendQuickPrompt('Best organic fertilizer for tomato farming')" class="bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-slate-200 transition">
+                            🍅 Tomato Organic Fertilizer
+                        </button>
+                    </div>
+
                     <!-- CHAT MESSAGES BOX -->
                     <div id="chat-messages" class="h-80 overflow-y-auto chat-scroll p-3 space-y-3 bg-slate-50/50 rounded-xl my-3 border border-slate-100">
                         <div class="flex gap-2.5 items-start">
@@ -371,6 +386,27 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- ================= MODAL: LANGUAGE SELECTOR ================= -->
+    <div id="language-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-pop relative border border-slate-100">
+            <button onclick="toggleLanguageModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-bold text-slate-800 text-base mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-language text-emerald-600"></i> Select Language / भाषा
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">Choose your preferred local Indian language</p>
+            <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+                <button onclick="selectAppLang('en', 'English')" class="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border rounded-xl text-left transition">English</button>
+                <button onclick="selectAppLang('hi', 'हिन्दी')" class="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border rounded-xl text-left transition">हिन्दी (Hindi)</button>
+                <button onclick="selectAppLang('pb', 'ਪੰਜਾਬੀ')" class="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border rounded-xl text-left transition">ਪੰਜਾਬੀ (Punjabi)</button>
+                <button onclick="selectAppLang('mr', 'मराठी')" class="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border rounded-xl text-left transition">मराठी (Marathi)</button>
+                <button onclick="selectAppLang('gu', 'ગુજરાતી')" class="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border rounded-xl text-left transition">ગુજરાતી (Gujarati)</button>
+                <button onclick="selectAppLang('bn', 'বাংলা')" class="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-700 border rounded-xl text-left transition">বাংলা (Bengali)</button>
+            </div>
+        </div>
     </div>
 
     <!-- ================= MODAL: VOICE SIMULATOR ================= -->
@@ -432,7 +468,7 @@
             { crop: "Rice / Paddy (धान)", mandi: "Amritsar Mandi, PB", min: 3800, max: 4250, modal: 4100, trend: "up" }
         ];
 
-        // --- AUTH LOGIC ---
+        // --- AUTH & USER LOGIC ---
         function handleSendOTP(e) {
             e.preventDefault();
             const name = document.getElementById('auth-name').value;
@@ -482,16 +518,21 @@
             renderAll();
         }
 
-        // --- RENDERERS ---
+        // --- RENDER FUNCTIONS ---
         function renderAll() {
-            renderLocalItems();
-            renderTruckItems();
+            renderLocalItems(localItems);
+            renderTruckItems(truckItems);
             renderMandiRates(mandiData);
         }
 
-        function renderLocalItems() {
+        function renderLocalItems(itemsToRender) {
             const container = document.getElementById('local-items-list');
-            container.innerHTML = localItems.map(item => `
+            if (itemsToRender.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center py-8 text-slate-400 text-xs">No produce listings found.</div>`;
+                return;
+            }
+
+            container.innerHTML = itemsToRender.map(item => `
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition">
                     <div class="flex justify-between items-start mb-2">
                         <div>
@@ -504,20 +545,20 @@
                         </div>
                     </div>
                     <div class="space-y-1 mb-3 text-xs text-slate-500">
-                        <p><i class="fa-solid fa-weight-hanging text-slate-400 w-4"></i> Available: <span class="font-semibold text-slate-700">${item.qty}</span></p>
+                        <p><i class="fa-solid fa-weight-hanging text-slate-400 w-4"></i> Quantity: <span class="font-semibold text-slate-700">${item.qty}</span></p>
                         <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> Location: <span class="font-semibold text-slate-700">${item.location}</span></p>
                         <p><i class="fa-solid fa-user text-slate-400 w-4"></i> Farmer: <span class="font-semibold text-slate-700">${item.seller}</span></p>
                     </div>
-                    <a href="tel:${item.phone}" class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                    <a href="tel:${item.phone}" class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-sm">
                         <i class="fa-solid fa-phone text-xs"></i> Call Farmer (${item.phone})
                     </a>
                 </div>
             `).join('');
         }
 
-        function renderTruckItems() {
+        function renderTruckItems(itemsToRender) {
             const container = document.getElementById('truck-items-list');
-            container.innerHTML = truckItems.map(t => `
+            container.innerHTML = itemsToRender.map(t => `
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition">
                     <div class="flex justify-between items-start mb-2">
                         <div>
@@ -568,11 +609,11 @@
                 qty: document.getElementById('l-qty').value,
                 price: Number(document.getElementById('l-price').value), 
                 location: document.getElementById('l-location').value,
-                seller: currentUser ? currentUser.name : "Anonymous", 
+                seller: currentUser ? currentUser.name : "Anonymous Farmer", 
                 phone: currentUser ? currentUser.phone : "9999999999"
             };
 
-            // Push to Firestore Cloud Database if available
+            // Push to Firestore Cloud Database if initialized
             if (window.saveLocalProduceToFirestore) {
                 await window.saveLocalProduceToFirestore(newItem);
             } else {
@@ -583,15 +624,20 @@
 
             document.getElementById('local-form').reset();
             toggleForm('local-form-container');
-            showToast("Daily produce published to Firestore!");
+            showToast("Daily produce published!");
         }
 
         function handleTruckSubmit(e) {
             e.preventDefault();
             truckItems.unshift({
-                id: Date.now(), from: document.getElementById('t-from').value, to: document.getElementById('t-to').value,
-                date: document.getElementById('t-date').value, space: document.getElementById('t-space').value,
-                price: Number(document.getElementById('t-price').value), seller: currentUser.name, phone: currentUser.phone
+                id: Date.now(), 
+                from: document.getElementById('t-from').value, 
+                to: document.getElementById('t-to').value,
+                date: document.getElementById('t-date').value, 
+                space: document.getElementById('t-space').value,
+                price: Number(document.getElementById('t-price').value), 
+                seller: currentUser ? currentUser.name : "Transporter", 
+                phone: currentUser ? currentUser.phone : "9999999999"
             });
             localStorage.setItem('ks_truck_items', JSON.stringify(truckItems));
             renderAll();
@@ -615,11 +661,19 @@
             }, 800);
         }
 
+        function sendQuickPrompt(promptText) {
+            switchTab('advisor');
+            addChatMessage('user', promptText);
+            setTimeout(() => {
+                addChatMessage('ai', `Based on regional agricultural data for "${promptText}": Recommended action is to ensure proper soil drainage and apply balanced NPK fertilizers.`);
+            }, 700);
+        }
+
         function addChatMessage(role, text) {
             const container = document.getElementById('chat-messages');
             const isAI = role === 'ai';
             const html = `
-                <div class="flex gap-2.5 items-start ${isAI ? '' : 'flex-row-reverse'}">
+                <div class="flex gap-2.5 items-start ${isAI ? '' : 'flex-row-reverse'} animate-fade-in">
                     <div class="w-7 h-7 rounded-full ${isAI ? 'bg-emerald-600' : 'bg-slate-800'} text-white flex items-center justify-center text-xs shrink-0 font-bold">
                         ${isAI ? 'AI' : 'You'}
                     </div>
@@ -632,7 +686,20 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        // --- NAVIGATION TABS ---
+        // --- SEARCH & FILTER FUNCTIONS ---
+        function filterLocalItems() {
+            const q = document.getElementById('local-search').value.toLowerCase();
+            const filtered = localItems.filter(i => i.item.toLowerCase().includes(q) || i.location.toLowerCase().includes(q));
+            renderLocalItems(filtered);
+        }
+
+        function filterMandiRates() {
+            const q = document.getElementById('mandi-search').value.toLowerCase();
+            const filtered = mandiData.filter(m => m.crop.toLowerCase().includes(q) || m.mandi.toLowerCase().includes(q));
+            renderMandiRates(filtered);
+        }
+
+        // --- UI TOGGLES ---
         function switchTab(tabKey) {
             ['local', 'truck', 'mandi', 'advisor'].forEach(k => {
                 document.getElementById(`view-${k}`).classList.add('hidden');
@@ -650,14 +717,22 @@
             el.classList.toggle('hidden');
         }
 
-        function filterMandiRates() {
-            const q = document.getElementById('mandi-search').value.toLowerCase();
-            const filtered = mandiData.filter(m => m.crop.toLowerCase().includes(q) || m.mandi.toLowerCase().includes(q));
-            renderMandiRates(filtered);
-        }
-
         function toggleVoiceModal() {
             document.getElementById('voice-modal').classList.toggle('hidden');
+        }
+
+        function toggleLanguageModal() {
+            document.getElementById('language-modal').classList.toggle('hidden');
+        }
+
+        function selectAppLang(code, name) {
+            if (currentUser) {
+                currentUser.lang = code;
+                localStorage.setItem('ks_user', JSON.stringify(currentUser));
+            }
+            document.getElementById('current-lang-code').innerText = code;
+            toggleLanguageModal();
+            showToast(`Language changed to ${name}`);
         }
 
         function simulateVoiceInput(text) {
@@ -666,7 +741,7 @@
             switchTab('advisor');
             addChatMessage('user', text);
             setTimeout(() => {
-                addChatMessage('ai', `I heard: "${text}". Your listing/request is processing!`);
+                addChatMessage('ai', `I heard: "${text}". Processing request for your local area!`);
             }, 600);
         }
 
@@ -679,7 +754,6 @@
             }, 3000);
         }
 
-        // Initial launch setup
         window.addEventListener('DOMContentLoaded', () => {
             initAppUI();
         });
@@ -705,10 +779,9 @@
         window.db = db;
         window.app = app;
 
-        // Firestore reference for local produce
         const localCollection = collection(db, "local_produce");
 
-        // Listen for live updates from database
+        // Real-time listener from Firestore database
         onSnapshot(localCollection, (snapshot) => {
             const liveItems = [];
             snapshot.forEach((doc) => {
@@ -720,21 +793,18 @@
             }
         });
 
-        // Global function to push produce items straight to Firestore Cloud
+        // Global function to push produce items to Firestore
         window.saveLocalProduceToFirestore = async function(itemData) {
             try {
                 await addDoc(localCollection, {
                     ...itemData,
                     createdAt: serverTimestamp()
                 });
-                console.log("✅ Successfully written to Firestore cloud database!");
+                console.log("✅ Successfully saved produce item to Firestore!");
             } catch (error) {
                 console.error("❌ Error writing document to Firestore:", error);
             }
         };
-
-        console.log("✅ Firebase App initialised:", app.name);
-        console.log("✅ Firestore db handle ready:", db);
     </script>
 </body>
 </html>
