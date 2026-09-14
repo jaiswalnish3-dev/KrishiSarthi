@@ -807,19 +807,7 @@
             `).join('');
         }
 
-        function handleLocalSubmit(e) {
-            e.preventDefault();
-            localItems.unshift({
-                id: Date.now(), item: document.getElementById('l-item').value, qty: document.getElementById('l-qty').value,
-                price: Number(document.getElementById('l-price').value), location: document.getElementById('l-location').value,
-                seller: currentUser.name, phone: currentUser.phone
-            });
-            localStorage.setItem('ks_local_items_v2', JSON.stringify(localItems));
-            renderAll();
-            document.getElementById('local-form').reset();
-            toggleForm('local-form-container');
-            showToast("Daily produce item listed!");
-        }
+
 
         function renderMarketplace() {
             document.getElementById('marketplace-grid').innerHTML = marketplaceListings.map(item => `
@@ -842,19 +830,6 @@
             `).join('');
         }
 
-        function handleMarketplaceSubmit(e) {
-            e.preventDefault();
-            marketplaceListings.unshift({
-                id: Date.now(), crop: document.getElementById('m-crop').value, qty: document.getElementById('m-qty').value,
-                price: Number(document.getElementById('m-price').value), location: document.getElementById('m-location').value,
-                farmer: currentUser.name, phone: currentUser.phone
-            });
-            localStorage.setItem('ks_bulk_items_v2', JSON.stringify(marketplaceListings));
-            renderAll();
-            document.getElementById('marketplace-form').reset();
-            toggleForm('marketplace-form-container');
-            showToast("Wholesale Crop Lot published!");
-        }
 
         function renderBuyerDemands() {
             document.getElementById('demands-grid').innerHTML = buyerDemands.map(item => `
@@ -877,19 +852,6 @@
             `).join('');
         }
 
-        function handleDemandSubmit(e) {
-            e.preventDefault();
-            buyerDemands.unshift({
-                id: Date.now(), crop: document.getElementById('d-crop').value, qty: document.getElementById('d-qty').value,
-                budget: Number(document.getElementById('d-budget').value), location: document.getElementById('d-location').value,
-                buyer: currentUser.name, phone: currentUser.phone
-            });
-            localStorage.setItem('ks_buyer_demands_v2', JSON.stringify(buyerDemands));
-            renderBuyerDemands();
-            document.getElementById('demand-form').reset();
-            toggleForm('demand-form-container');
-            showToast("Buying requirement broadcasted!");
-        }
 
         function renderLogisticsList() {
             const container = document.getElementById('logistics-list-container');
@@ -933,29 +895,7 @@
             `}).join('');
         }
 
-        function createNewLogisticsBatch() {
-            const title = document.getElementById('log-route-title').value;
-            const carrier = document.getElementById('log-carrier').value;
-            const capacity = Number(document.getElementById('log-capacity').value);
 
-            if(!title || !capacity) {
-                showToast("Please enter route title and capacity", "error");
-                return;
-            }
-
-            logisticsBatches.unshift({
-                id: `LOG-${Math.floor(100 + Math.random() * 900)}`,
-                route: title, carrier: carrier || "Eicher Truck UP-32",
-                driver: `${currentUser.name} (${currentUser.phone})`,
-                filled: 0, capacity: capacity, farmers: [],
-                savings: "₹120/Qtl", status: "Scheduled", eta: "Departs Tomorrow", stops: [title]
-            });
-
-            localStorage.setItem('ks_logistics_batches_v2', JSON.stringify(logisticsBatches));
-            renderLogisticsList();
-            toggleForm('logistics-create-modal');
-            showToast("New shared freight batch created!", "success");
-        }
 
         function poolHarvestIntoBatch(batchId) {
             const batch = logisticsBatches.find(b => b.id === batchId);
@@ -1088,7 +1028,7 @@
             document.getElementById('chat-window').classList.toggle('hidden');
         }
 
-        function handleChat(e) {
+       async function handleChat(e) {
             e.preventDefault();
             const input = document.getElementById('chat-input');
             const q = input.value.trim().toLowerCase();
@@ -1097,11 +1037,29 @@
             addChatMessage(input.value, 'user');
             input.value = '';
 
-            let response = "KrishiSarthi Voice AI: Check Mandi rates or join active truck freight routes to optimize profits!";
-            if (q.includes('rate') || q.includes('price') || q.includes('भाव')) response = `Wheat is trading around ₹2,320/Qtl and Mustard at ₹5,450/Qtl today in Lucknow Mandi.`;
-            if (q.includes('truck') || q.includes('transport') || q.includes('भाड़ा')) response = `You can join Freight Route LOG-902 (Sitapur to Kanpur) to save up to ₹110 per Quintal on freight.`;
 
-            setTimeout(() => addChatMessage(response, 'bot'), 400);
+try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: "You are KrishiSarthi Voice AI, a helpful agricultural assistant for Indian farmers. Answer concisely: " + q }]
+            }]
+        })
+    });
+
+    const data = await res.json();
+    const aiResponse = data.candidates[0].content.parts[0].text;
+
+    // Displays the live AI response using your existing UI function on line 1106
+    addChatMessage(aiResponse, 'bot');
+
+} catch (err) {
+    console.error("Gemini API Error:", err);
+    addChatMessage("Sorry, I'm having trouble connecting right now.", 'bot');
+}
+
         }
 
         function addChatMessage(text, sender) {
@@ -1123,10 +1081,11 @@
     import { initializeApp }
       from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-    import { getFirestore }
-      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     // ── Your Firebase project credentials ────────────────────────
     const firebaseConfig = {
       apiKey:            "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
@@ -1147,6 +1106,9 @@
     //    `db` is the object you'll use in future steps to
     //    read and write data. Think of it as your database door handle.
     const db = getFirestore(app);
+    const auth = getAuth(app);
+window.auth = auth;
+window.confirmationResult =null;
 
 
     // ── Expose db globally ────────────────────────────────────────
@@ -1164,7 +1126,87 @@
     //    project has Firestore enabled in the Firebase Console.
     console.log("✅ Firebase App initialised:", app.name);
     console.log("✅ Firestore db handle ready:", db);
+// Expose methods globally
+window.dbMethods = { collection, addDoc, onSnapshot, query, orderBy };
 
+// Real-time listener
+function initRealtimeListeners() {
+    window.dbMethods.onSnapshot(window.dbMethods.collection(window.db, "local_produce"), (snapshot) => {
+        localItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (typeof renderLocalMarket === 'function') renderLocalMarket();
+    });
+}
+initRealtimeListeners();
+// Connect Local Produce form to Firestore
+window.handleLocalSubmit = async function(e) {
+    e.preventDefault();
+    const newItem = {
+        item: document.getElementById('l-item').value,
+        qty: document.getElementById('l-qty').value,
+        price: Number(document.getElementById('l-price').value),
+        location: document.getElementById('l-location').value,
+        createdAt: new Date()
+    };
+
+    await window.dbMethods.addDoc(window.dbMethods.collection(window.db, "local_produce"), newItem);
+    document.getElementById('local-form').reset();
+    if (typeof toggleForm === 'function') toggleForm('local-form-container');
+    console.log("Produce saved to database!");
+};
+// Send SMS OTP via Firebase Auth
+window.handleSendOTP = async function(e) {
+    e.preventDefault();
+    const phoneInput = document.getElementById('login-phone').value;
+    const fullPhoneNumber = "+91" + phoneInput; // Append Indian country code
+
+    try {
+        if (!window.recaptchaVerifier) {
+            // Attach invisible reCAPTCHA to the form submit button
+            window.recaptchaVerifier = new RecaptchaVerifier(window.auth, 'form-login-step1', {
+                'size': 'invisible'
+            });
+        }
+        window.confirmationResult = await signInWithPhoneNumber(window.auth, fullPhoneNumber, window.recaptchaVerifier);
+
+        // Transition UI to Step 2
+        document.getElementById('otp-phone-display').innerText = fullPhoneNumber;
+        document.getElementById('form-login-step1').classList.add('hidden');
+        document.getElementById('form-login-step2').classList.remove('hidden');
+        showToast("Live OTP sent to your phone!", "info");
+    } catch (error) {
+        console.error("SMS Error:", error.message);
+        showToast("Failed to send SMS. Ensure domain is whitelisted.", "error");
+    }
+};
+
+// Verify SMS OTP
+window.handleVerifyOTP = async function(e) {
+    e.preventDefault();
+
+    // Combine the 4 input boxes into a single string
+    const boxes = document.querySelectorAll('.otp-box');
+    let codeEntered = "";
+    boxes.forEach(b => codeEntered += b.value);
+
+    try {
+        const result = await window.confirmationResult.confirm(codeEntered);
+        console.log("Verified User UID:", result.user.uid);
+
+        // Set user session and load app
+        currentUser = {
+            name: document.getElementById('login-name').value,
+            phone: document.getElementById('login-phone').value,
+            role: document.getElementById('login-role').value,
+            lang: document.getElementById('lang-select').value
+        };
+        sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
+        showApp();
+        showToast("Phone verified successfully!", "success");
+    } catch (error) {
+        console.error("Invalid OTP:", error.message);
+        showToast("Incorrect OTP code. Try again.", "error");
+    }
+};
   </script>
 
   <!-- ============================================================
@@ -1174,7 +1216,5 @@
     Firestore reads/writes — using the `db` handle we just created.
     ============================================================ -->
 
-</body>
-</html>
 </body>
 </html>
