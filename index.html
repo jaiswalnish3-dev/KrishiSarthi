@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KrishiSarthi🌱 - Direct Voice-First Agri Ecosystem</title>
+    <title>KrishiSarthi - Direct Voice-First Agri Ecosystem</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
+        
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
+        
         @keyframes pop {
             0% { transform: scale(0.95); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
@@ -34,7 +34,7 @@
 
         .chat-scroll::-webkit-scrollbar, .scrollbar-hide::-webkit-scrollbar { display: none; }
         .chat-scroll, .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
+        
         .glass-header {
             background: rgba(4, 120, 87, 0.96);
             backdrop-filter: blur(12px);
@@ -43,16 +43,43 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen relative selection:bg-emerald-200">
 
+    <!-- ================= BRAND LOGO SVG DEFINITION ================= -->
+    <svg style="display: none;">
+        <defs>
+            <g id="krishisarthi-logo-symbol">
+                <!-- Circular Border Frame -->
+                <circle cx="100" cy="100" r="92" fill="#FAF9F5" stroke="#0f5132" stroke-width="6"/>
+                <circle cx="100" cy="100" r="86" fill="none" stroke="#198754" stroke-width="2"/>
+                
+                <!-- Dynamic Dynamic Swirl Leaves (Replicating Image Logo) -->
+                <path d="M 100,28 C 130,28 158,52 155,85 C 152,115 125,138 98,142 C 72,145 48,128 42,102 C 38,82 50,60 68,50 C 85,40 108,46 118,62 C 126,75 121,92 108,98 C 96,104 82,97 80,84 C 78,72 88,62 100,64" 
+                      fill="none" stroke="#15803d" stroke-width="14" stroke-linecap="round"/>
+                
+                <path d="M 92,38 C 118,38 142,58 140,88 C 138,112 115,132 90,135 C 68,138 48,122 44,100 C 40,82 52,64 68,56 C 82,48 102,54 110,68 C 116,78 112,90 102,95" 
+                      fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round"/>
+
+                <!-- Sprouted Leaves Accents -->
+                <path d="M 98,24 C 95,12 105,5 115,10 C 118,20 108,26 98,24 Z" fill="#166534"/>
+                <path d="M 105,24 C 115,18 125,22 122,32 C 112,34 105,28 105,24 Z" fill="#22c55e"/>
+                <path d="M 45,70 C 35,62 38,50 48,52 C 54,60 50,68 45,70 Z" fill="#15803d"/>
+                <path d="M 40,82 C 28,80 26,68 36,66 C 44,72 42,80 40,82 Z" fill="#4ade80"/>
+            </g>
+        </defs>
+    </svg>
+
     <!-- ================= AUTH & OTP SCREEN ================= -->
     <div id="auth-screen" class="fixed inset-0 bg-[url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center z-50 flex items-center justify-center transition-all duration-500">
         <div class="absolute inset-0 bg-emerald-950/80 backdrop-blur-md"></div>
-
+        
         <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl text-center transform transition-all animate-pop relative z-10 mx-4 border border-emerald-100">
-
+            
             <!-- Brand Logo Header -->
             <div class="flex flex-col items-center justify-center mb-4">
-               <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
-
+                <div class="w-24 h-24 mb-2 drop-shadow-md">
+                    <svg viewBox="0 0 200 200" class="w-full h-full">
+                        <use href="#krishisarthi-logo-symbol"/>
+                    </svg>
+                </div>
                 <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1">
                     KrishiSarthi <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">🌱</span>
                 </h1>
@@ -63,7 +90,7 @@
             <form id="form-login-step1" onsubmit="handleSendOTP(event)" class="space-y-3.5 text-left">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">Select Language / भाषा चुनें</label>
-                    <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
+                    <select id="lang-select" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
                         <option value="en">English</option>
                         <option value="hi">हिन्दी (Hindi)</option>
                         <option value="pb">ਪੰਜਾਬੀ (Punjabi)</option>
@@ -146,33 +173,23 @@
         <!-- Header -->
         <header class="glass-header text-white shadow-lg sticky top-0 z-40 border-b border-emerald-600">
             <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
-
+                
                 <div class="flex items-center gap-3">
                     <!-- Brand Logo Image Emblem -->
-                    <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
-
+                    <div class="w-11 h-11 bg-white rounded-full p-0.5 shadow-md flex items-center justify-center border border-emerald-300">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <use href="#krishisarthi-logo-symbol"/>
+                        </svg>
+                    </div>
                     <div>
                         <h1 class="text-xl font-black tracking-tight leading-none flex items-center gap-1">
                             KrishiSarthi <span class="text-[10px] bg-emerald-400 text-emerald-950 font-extrabold px-1.5 py-0.5 rounded">v2.4</span>
                         </h1>
-                        <p id="welcome-user" class="text-xs text-emerald-200 font-medium mt-0.5" data-i18n="welcome_text">Welcome</p>
+                        <p id="welcome-user" class="text-xs text-emerald-200 font-medium mt-0.5">Welcome</p>
                     </div>
                 </div>
-
+                
                 <div class="flex items-center gap-2">
-                    <!-- Global Header Language Switcher -->
-                    <select id="header-lang-select" onchange="changeLanguage(this.value)" class="bg-emerald-900 text-emerald-200 border border-emerald-700 px-2.5 py-1.5 rounded-xl text-xs font-semibold outline-none cursor-pointer">
-                        <option value="en">English</option>
-                        <option value="hi">हिन्दी</option>
-                        <option value="pb">ਪੰਜਾਬੀ</option>
-                        <option value="mr">मराठी</option>
-                        <option value="gu">ગુજરાતી</option>
-                        <option value="bn">বাংলা</option>
-                        <option value="te">తెలుగు</option>
-                        <option value="ta">தமிழ்</option>
-                        <option value="kn">ಕನ್ನಡ</option>
-                    </select>
-
                     <!-- GPS Badge -->
                     <div id="header-gps-badge" onclick="detectGPSLocation()" class="hidden md:flex items-center gap-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border border-emerald-700 px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer" title="Refresh GPS Location">
                         <i class="fa-solid fa-location-dot text-emerald-400"></i>
@@ -195,25 +212,25 @@
             <nav class="bg-white shadow-sm overflow-x-auto scrollbar-hide border-t border-slate-100">
                 <div class="max-w-6xl mx-auto flex min-w-[750px]">
                     <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn tab-active flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-chart-pie text-base"></i> <span data-i18n="nav_dashboard">Dashboard</span>
+                        <i class="fa-solid fa-chart-pie text-base"></i> <span>Dashboard</span>
                     </button>
                     <button onclick="switchTab('localmarket')" id="tab-localmarket" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-basket-shopping text-base"></i> <span data-i18n="nav_localmarket">Local Market</span>
+                        <i class="fa-solid fa-basket-shopping text-base"></i> <span>Local Market</span>
                     </button>
                     <button onclick="switchTab('marketplace')" id="tab-marketplace" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-store text-base"></i> <span data-i18n="nav_marketplace">Wholesale Hub</span>
+                        <i class="fa-solid fa-store text-base"></i> <span>Wholesale Hub</span>
                     </button>
                     <button onclick="switchTab('demands')" id="tab-demands" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-bullhorn text-base"></i> <span data-i18n="nav_demands">Buyer Demands</span>
+                        <i class="fa-solid fa-bullhorn text-base"></i> <span>Buyer Demands</span>
                     </button>
                     <button onclick="switchTab('grouping')" id="tab-grouping" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-truck-fast text-base text-amber-600"></i> <span class="text-amber-800" data-i18n="nav_grouping">Logistics & Freight</span>
+                        <i class="fa-solid fa-truck-fast text-base text-amber-600"></i> <span class="text-amber-800">Logistics & Freight</span>
                     </button>
                     <button onclick="switchTab('mandi')" id="tab-mandi" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-chart-line text-base"></i> <span data-i18n="nav_mandi">Mandi Rates</span>
+                        <i class="fa-solid fa-chart-line text-base"></i> <span>Mandi Rates</span>
                     </button>
                     <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
-                        <i class="fa-solid fa-user-circle text-base"></i> <span data-i18n="nav_profile">My Profile</span>
+                        <i class="fa-solid fa-user-circle text-base"></i> <span>My Profile</span>
                     </button>
                 </div>
             </nav>
@@ -224,16 +241,16 @@
             <!-- ================= DASHBOARD ================= -->
             <section id="sec-dashboard" class="space-y-6 animate-fade-in">
                 <div class="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
-
-                    <div class="absolute right-4 bottom-0 opacity-20 transform translate-x-4 translate-y-4">
-                        <img src="WhatsApp%20Image%202026-09-10%20at%202.36.32%20PM.jpeg" alt="Background Watermark" class="w-80 h-80 rounded-full object-cover mix-blend-overlay filter blur-sm">
+                    <div class="absolute right-4 bottom-0 opacity-15 transform translate-x-4 translate-y-4">
+                        <svg viewBox="0 0 200 200" class="w-80 h-80">
+                            <use href="#krishisarthi-logo-symbol"/>
+                        </svg>
                     </div>
-
                     <div class="relative z-10 max-w-2xl">
                         <span class="bg-emerald-500/30 backdrop-blur text-emerald-200 text-xs font-bold px-3 py-1 rounded-full border border-emerald-400/30 uppercase tracking-wider mb-3 inline-block">Verified Agri-Trading Engine</span>
-                        <h2 class="text-3xl sm:text-4xl font-black mb-2 leading-tight" data-i18n="dash_title">Direct Farm Trade & Pooled Freight</h2>
-                        <p class="text-emerald-100 text-sm sm:text-base mb-6" data-i18n="dash_subtitle">Connect directly with buyers, save 25% on combined truck rentals, and verify transactions via secure escrow.</p>
-
+                        <h2 class="text-3xl sm:text-4xl font-black mb-2 leading-tight">Direct Farm Trade & Pooled Freight</h2>
+                        <p class="text-emerald-100 text-sm sm:text-base mb-6">Connect directly with buyers, save 25% on combined truck rentals, and verify transactions via secure escrow.</p>
+                        
                         <div class="flex flex-wrap gap-3">
                             <button onclick="switchTab('localmarket')" class="bg-white text-emerald-950 hover:bg-emerald-50 font-extrabold px-5 py-2.5 rounded-xl shadow-md text-sm transition-all active:scale-95 flex items-center gap-2">
                                 <i class="fa-solid fa-basket-shopping text-emerald-600"></i> Explore Local Produce
@@ -273,12 +290,13 @@
             <section id="sec-localmarket" class="hidden space-y-6 animate-fade-in">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-emerald-100">
                     <div>
-                        <h2 class="text-2xl font-black text-emerald-900" data-i18n="local_market_title">Local Daily Market</h2>
+                        <h2 class="text-2xl font-black text-emerald-900">Local Daily Market</h2>
                         <p class="text-sm text-slate-500 mt-0.5">Fresh daily farm produce directly from local growers.</p>
                     </div>
                     <div id="local-action-area"></div>
                 </div>
 
+                <!-- Local Form -->
                 <div id="local-form-container" class="hidden bg-emerald-50 p-6 rounded-3xl border border-emerald-200 animate-pop">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-emerald-900 text-base flex items-center gap-2">
@@ -310,12 +328,13 @@
             <section id="sec-marketplace" class="hidden space-y-6 animate-fade-in">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-blue-100">
                     <div>
-                        <h2 class="text-2xl font-black text-blue-900" data-i18n="wholesale_title">Wholesale Crop Lots</h2>
+                        <h2 class="text-2xl font-black text-blue-900">Wholesale Crop Lots</h2>
                         <p class="text-sm text-slate-500 mt-0.5">Bulk harvest loads traded directly with commercial buyers & mills.</p>
                     </div>
                     <div id="wholesale-action-area"></div>
                 </div>
 
+                <!-- Wholesale Form -->
                 <div id="marketplace-form-container" class="hidden bg-blue-50 p-6 rounded-3xl border border-blue-200 animate-pop">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-blue-900 text-base"><i class="fa-solid fa-boxes-packing text-blue-600"></i> Post Wholesale Crop Batch</h3>
@@ -339,7 +358,7 @@
             <section id="sec-demands" class="hidden space-y-6 animate-fade-in">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-purple-100">
                     <div>
-                        <h2 class="text-2xl font-black text-purple-900" data-i18n="buyer_demands_title">Buyer Demand Hub 📢</h2>
+                        <h2 class="text-2xl font-black text-purple-900">Buyer Demand Hub 📢</h2>
                         <p class="text-sm text-slate-500 mt-0.5">Post requirements or fulfill active buying requests from retailers.</p>
                     </div>
                     <button onclick="toggleForm('demand-form-container')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-5 rounded-xl shadow flex items-center gap-2 text-sm">
@@ -360,16 +379,19 @@
                 <div id="demands-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </section>
 
-            <!-- ================= LOGISTICS & FREIGHT POOLING ================= -->
+            <!-- ================= LOGISTICS & FREIGHT POOLING (REDESIGNED INTERFACE) ================= -->
             <section id="sec-grouping" class="hidden space-y-6 animate-fade-in">
+                
+                <!-- Hero Header Banner -->
                 <div class="bg-gradient-to-r from-amber-700 via-orange-600 to-amber-800 text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden">
                     <div class="max-w-2xl relative z-10">
                         <span class="bg-black/25 text-amber-100 text-xs font-extrabold px-3 py-1 rounded-full uppercase border border-white/20 mb-3 inline-block">Smart Logistics Engine</span>
-                        <h2 class="text-3xl font-black mb-2" data-i18n="logistics_title">Pooled Rural Freight & Fleet Dispatch</h2>
+                        <h2 class="text-3xl font-black mb-2">Pooled Rural Freight & Fleet Dispatch</h2>
                         <p class="text-amber-100 text-sm">Share vehicle space with nearby farmers on identical market routes to save up to ₹120/Quintal in transport costs.</p>
                     </div>
                 </div>
 
+                <!-- Logistics Action Bar -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center font-bold">
@@ -385,6 +407,7 @@
                     </button>
                 </div>
 
+                <!-- Dispatch Batch Creation Form Modal -->
                 <div id="logistics-create-modal" class="hidden bg-amber-50 p-6 rounded-3xl border border-amber-200 animate-pop space-y-4">
                     <h3 class="text-lg font-bold text-amber-900 flex items-center gap-2">
                         <i class="fa-solid fa-truck-ramp-box text-amber-600"></i> Setup New Vehicle Dispatch
@@ -397,6 +420,7 @@
                     <button onclick="createNewLogisticsBatch()" class="bg-amber-700 text-white font-bold px-6 py-3 rounded-xl text-sm shadow">Deploy Freight Batch</button>
                 </div>
 
+                <!-- Enhanced Vehicle Dispatch Cards -->
                 <div id="logistics-list-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
             </section>
 
@@ -404,7 +428,7 @@
             <section id="sec-mandi" class="hidden space-y-6 animate-fade-in">
                 <div class="bg-emerald-900 text-white rounded-3xl p-6 shadow-md flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>
-                        <h2 class="text-2xl font-black flex items-center gap-2" data-i18n="mandi_title"><i class="fa-solid fa-chart-line text-emerald-400"></i> Live Mandi Prices</h2>
+                        <h2 class="text-2xl font-black flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-400"></i> Live Mandi Prices</h2>
                         <p class="text-xs text-emerald-200 mt-1">Real-time daily mandi benchmark rates across Uttar Pradesh</p>
                     </div>
                     <div class="w-full md:w-72 relative">
@@ -418,8 +442,12 @@
             <!-- ================= MY PROFILE ================= -->
             <section id="sec-profile" class="hidden space-y-6 animate-fade-in">
                 <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center gap-6">
-                    <img src="WhatsApp%20Image%202026-09-10%20at%202.36.32%20PM.jpeg" alt="Profile Avatar" class="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-emerald-500">
-
+                    <!-- Custom SVG Profile Avatar -->
+                    <div class="w-24 h-24 bg-emerald-50 rounded-full p-1 border-4 border-emerald-500 shadow-lg">
+                        <svg viewBox="0 0 200 200" class="w-full h-full">
+                            <use href="#krishisarthi-logo-symbol"/>
+                        </svg>
+                    </div>
                     <div class="text-center sm:text-left">
                         <h2 id="prof-name" class="text-2xl font-black text-slate-800">User Name</h2>
                         <p class="text-slate-500 font-semibold text-sm mt-1 flex items-center justify-center sm:justify-start gap-2">
@@ -433,7 +461,7 @@
                 </div>
 
                 <div>
-                    <h3 class="text-xl font-black text-slate-800 mb-4" data-i18n="profile_title">My Active Listings & Orders</h3>
+                    <h3 class="text-xl font-black text-slate-800 mb-4">My Active Listings & Orders</h3>
                     <div id="profile-deals-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </section>
@@ -473,13 +501,13 @@
                 </div>
                 <button onclick="toggleChat()" class="text-emerald-100 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
+            
             <div id="chat-messages" class="h-80 p-4 overflow-y-auto chat-scroll bg-slate-50 text-sm flex flex-col gap-3">
                 <div class="bg-white border border-slate-200 text-slate-700 p-3.5 rounded-2xl rounded-tl-none self-start max-w-[85%] shadow-sm text-xs leading-relaxed">
                     Namaste! Ask me anything regarding mandi rates, truck freight pooling, or posting your daily produce.
                 </div>
             </div>
-
+            
             <form onsubmit="handleChat(event)" class="p-3 border-t border-slate-100 bg-white flex gap-2 items-center">
                 <input id="chat-input" type="text" autocomplete="off" class="flex-1 p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 text-xs" placeholder="Ask or speak something...">
                 <button type="button" onclick="startVoiceInput('chat-input')" class="bg-slate-100 text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 w-10 h-10 rounded-xl flex items-center justify-center transition">
@@ -497,65 +525,12 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // --- MULTILINGUAL TRANSLATION DICTIONARY ---
-        const translations = {
-            en: {
-                nav_dashboard: "Dashboard",
-                nav_localmarket: "Local Market",
-                nav_marketplace: "Wholesale Hub",
-                nav_demands: "Buyer Demands",
-                nav_grouping: "Logistics & Freight",
-                nav_mandi: "Mandi Rates",
-                nav_profile: "My Profile",
-                welcome_text: "Welcome",
-                dash_title: "Direct Farm Trade & Pooled Freight",
-                dash_subtitle: "Connect directly with buyers, save 25% on combined truck rentals, and verify transactions via secure escrow.",
-                local_market_title: "Local Daily Market",
-                wholesale_title: "Wholesale Crop Lots",
-                buyer_demands_title: "Buyer Demand Hub 📢",
-                logistics_title: "Pooled Rural Freight & Fleet Dispatch",
-                mandi_title: "Live Mandi Prices",
-                profile_title: "My Active Listings & Orders"
-            },
-            hi: {
-                nav_dashboard: "डैशबोर्ड",
-                nav_localmarket: "स्थानीय बाज़ार",
-                nav_marketplace: "थोक केंद्र",
-                nav_demands: "खरीदार की मांग",
-                nav_grouping: "लॉजिस्टिक्स और माल ढुलाई",
-                nav_mandi: "मंडी भाव",
-                nav_profile: "मेरी प्रोफ़ाइल",
-                welcome_text: "स्वागत है",
-                dash_title: "प्रत्यक्ष कृषि व्यापार और सामूहिक माल ढुलाई",
-                dash_subtitle: "खरीदारों से सीधे जुड़ें, संयुक्त ट्रक किराए पर 25% बचाएं, और सुरक्षित एस्क्रो के माध्यम से लेनदेन सत्यापित करें।",
-                local_market_title: "स्थानीय दैनिक बाज़ार",
-                wholesale_title: "थोक फसल लॉट",
-                buyer_demands_title: "खरीदार मांग केंद्र 📢",
-                logistics_title: "सामूहिक ग्रामीण माल ढुलाई और बेड़े का प्रेषण",
-                mandi_title: "लाइव मंडी भाव",
-                profile_title: "मेरी सक्रिय लिस्टिंग और ऑर्डर"
-            }
-        };
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const selectedDict = translations[lang] || translations['en'];
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (selectedDict[key]) {
-                    element.innerText = selectedDict[key];
-                }
-            });
-            // Keep dropdowns in sync
-            if(document.getElementById('lang-select')) document.getElementById('lang-select').value = lang;
-            if(document.getElementById('header-lang-select')) document.getElementById('header-lang-select').value = lang;
-        }
-
         // --- APP STATE & EXPANDED DATA ---
         let currentUser = null;
         let currentLang = 'en';
         let currentCoords = { lat: 26.8467, lng: 80.9462, name: "Lucknow, UP" };
 
+        // 1. Local Market Items (Expanded)
         let localItems = JSON.parse(localStorage.getItem('ks_local_items_v2')) || [
             { id: 101, item: "Fresh Farm Tomatoes", qty: "20 Kg", price: 340, location: "Sitapur Farm Hub", seller: "Ramesh Singh", phone: "9876543210" },
             { id: 102, item: "Desi New Potatoes", qty: "50 Kg", price: 750, location: "Lucknow Rural", seller: "Suresh Patel", phone: "9123456789" },
@@ -565,6 +540,7 @@
             { id: 106, item: "Desi Cucumbers", qty: "25 Kg", price: 500, location: "Kanpur Outskirts", seller: "Rajesh Sharma", phone: "9321098765" }
         ];
 
+        // 2. Wholesale Crop Lots (Expanded)
         let marketplaceListings = JSON.parse(localStorage.getItem('ks_bulk_items_v2')) || [
             { id: 201, crop: "Sharbati Wheat Grade-A", qty: "100 Quintal", price: 2420, location: "Kanpur Central Mandi", farmer: "Ramesh Singh", phone: "9876543210" },
             { id: 202, crop: "Basmati Paddy (Pusa 1121)", qty: "80 Quintal", price: 3650, location: "Bareilly Grain Hub", farmer: "Harpreet Singh", phone: "9888776655" },
@@ -574,6 +550,7 @@
             { id: 206, crop: "Sugarcane Raw Batch", qty: "200 Quintal", price: 380, location: "Lakhimpur Kheri", farmer: "Gurmeet Khan", phone: "9443322110" }
         ];
 
+        // 3. Buyer Demands (Expanded)
         let buyerDemands = JSON.parse(localStorage.getItem('ks_buyer_demands_v2')) || [
             { id: 301, crop: "Red Onions", qty: "200 Quintal", budget: 240000, location: "Lucknow Hotel Assoc.", buyer: "Verma Traders", phone: "9988776655" },
             { id: 302, crop: "Bulk Garlic Batch", qty: "50 Quintal", budget: 350000, location: "Delhi Export Hub", buyer: "Global Spices Ltd", phone: "9877665544" },
@@ -582,6 +559,7 @@
             { id: 305, crop: "Soybean Beans", qty: "300 Quintal", budget: 1350000, location: "Indore Oil Mill", buyer: "National Agro Oil", phone: "9544332211" }
         ];
 
+        // 4. Logistics Batches (Redesigned & Expanded)
         let logisticsBatches = JSON.parse(localStorage.getItem('ks_logistics_batches_v2')) || [
             {
                 id: "LOG-902", route: "Sitapur → Kanpur Grain Mandi", carrier: "Eicher 14ft Truck (UP-32-T-8890)", driver: "Vikram Sharma (9871122334)",
@@ -605,6 +583,7 @@
             }
         ];
 
+        // 5. Mandi Rates (Expanded)
         let mandiPrices = [
             { id: 1, crop: "Wheat (गेहूं)", mandi: "Lucknow APMC", price: 2320, unit: "Qtl", trend: "up", change: 40 },
             { id: 2, crop: "Potato (आलू)", mandi: "Agra Wholesale", price: 1480, unit: "Qtl", trend: "up", change: 60 },
@@ -616,6 +595,7 @@
             { id: 8, crop: "Garlic (लहसुन)", mandi: "Mandsaur Mandi", price: 8200, unit: "Qtl", trend: "up", change: 250 }
         ];
 
+        // --- AUTH & OTP FLOW LOGIC ---
         let generatedDemoOTP = "4321";
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -623,7 +603,6 @@
             if(savedUser) {
                 currentUser = JSON.parse(savedUser);
                 currentLang = currentUser.lang || 'en';
-                changeLanguage(currentLang);
                 showApp();
             }
 
@@ -650,6 +629,8 @@
         function handleSendOTP(e) {
             e.preventDefault();
             const phone = document.getElementById('login-phone').value;
+            const name = document.getElementById('login-name').value;
+            
             if(!phone || phone.length !== 10) {
                 showToast("Please enter a valid 10-digit mobile number", "error");
                 return;
@@ -674,8 +655,6 @@
                     role: document.getElementById('login-role').value,
                     lang: document.getElementById('lang-select').value
                 };
-                currentLang = currentUser.lang;
-                changeLanguage(currentLang);
                 sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
                 showApp();
                 showToast(`OTP Verified! Welcome ${currentUser.name}`, "success");
@@ -702,7 +681,7 @@
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('app-content').classList.remove('hidden');
             document.getElementById('chatbot-wrapper').classList.remove('hidden');
-
+            
             document.getElementById('welcome-user').innerText = `${currentUser.role} • ${currentUser.name}`;
             setupRoleBasedViews();
             renderAll();
@@ -727,6 +706,7 @@
             }
         }
 
+        // --- GEOLOCATION & VOICE ---
         function detectGPSLocation(targetElementId = null) {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
@@ -773,6 +753,7 @@
             startVoiceInput('chat-input');
         }
 
+        // --- RENDERING FUNCTIONS ---
         function renderAll() {
             document.getElementById('dash-local-count').innerText = localItems.length;
             document.getElementById('dash-bulk-count').innerText = marketplaceListings.length;
@@ -807,7 +788,19 @@
             `).join('');
         }
 
-
+        function handleLocalSubmit(e) {
+            e.preventDefault();
+            localItems.unshift({
+                id: Date.now(), item: document.getElementById('l-item').value, qty: document.getElementById('l-qty').value,
+                price: Number(document.getElementById('l-price').value), location: document.getElementById('l-location').value,
+                seller: currentUser.name, phone: currentUser.phone
+            });
+            localStorage.setItem('ks_local_items_v2', JSON.stringify(localItems));
+            renderAll();
+            document.getElementById('local-form').reset(); 
+            toggleForm('local-form-container');
+            showToast("Daily produce item listed!");
+        }
 
         function renderMarketplace() {
             document.getElementById('marketplace-grid').innerHTML = marketplaceListings.map(item => `
@@ -830,6 +823,19 @@
             `).join('');
         }
 
+        function handleMarketplaceSubmit(e) {
+            e.preventDefault();
+            marketplaceListings.unshift({
+                id: Date.now(), crop: document.getElementById('m-crop').value, qty: document.getElementById('m-qty').value,
+                price: Number(document.getElementById('m-price').value), location: document.getElementById('m-location').value,
+                farmer: currentUser.name, phone: currentUser.phone
+            });
+            localStorage.setItem('ks_bulk_items_v2', JSON.stringify(marketplaceListings));
+            renderAll();
+            document.getElementById('marketplace-form').reset(); 
+            toggleForm('marketplace-form-container');
+            showToast("Wholesale Crop Lot published!");
+        }
 
         function renderBuyerDemands() {
             document.getElementById('demands-grid').innerHTML = buyerDemands.map(item => `
@@ -852,23 +858,42 @@
             `).join('');
         }
 
+        function handleDemandSubmit(e) {
+            e.preventDefault();
+            buyerDemands.unshift({
+                id: Date.now(), crop: document.getElementById('d-crop').value, qty: document.getElementById('d-qty').value,
+                budget: Number(document.getElementById('d-budget').value), location: document.getElementById('d-location').value,
+                buyer: currentUser.name, phone: currentUser.phone
+            });
+            localStorage.setItem('ks_buyer_demands_v2', JSON.stringify(buyerDemands));
+            renderBuyerDemands();
+            document.getElementById('demand-form').reset();
+            toggleForm('demand-form-container');
+            showToast("Buying requirement broadcasted!");
+        }
 
+        // --- LOGISTICS INTERFACE RENDERING ---
         function renderLogisticsList() {
             const container = document.getElementById('logistics-list-container');
             container.innerHTML = logisticsBatches.map(batch => {
                 const percent = Math.min(100, Math.round((batch.filled / batch.capacity) * 100));
                 return `
                 <div class="border border-amber-200 bg-white rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all space-y-4">
+                    
+                    <!-- Header -->
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="text-[11px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md border border-amber-200">${batch.id}</span>
-                            <h4 class="text-lg font-black text-slate-800 mt-1.5 flex items-center gap-2">${batch.route}</h4>
+                            <h4 class="text-lg font-black text-slate-800 mt-1.5 flex items-center gap-2">
+                                ${batch.route}
+                            </h4>
                         </div>
                         <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full flex items-center gap-1.5">
                             <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> ${batch.status}
                         </span>
                     </div>
 
+                    <!-- Progress Bar -->
                     <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-100">
                         <div class="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
                             <span>Payload: <strong>${batch.filled} / ${batch.capacity} Quintals</strong></span>
@@ -879,6 +904,7 @@
                         </div>
                     </div>
 
+                    <!-- Timeline Stops -->
                     <div class="text-xs space-y-2 border-t border-b border-slate-100 py-3">
                         <p class="text-slate-500 font-medium"><i class="fa-solid fa-truck text-amber-600 w-4"></i> Vehicle: <strong class="text-slate-800">${batch.carrier}</strong></p>
                         <p class="text-slate-500 font-medium"><i class="fa-solid fa-user-shield text-slate-400 w-4"></i> Driver: <strong class="text-slate-800">${batch.driver}</strong></p>
@@ -888,6 +914,7 @@
                         </div>
                     </div>
 
+                    <!-- Actions -->
                     <button onclick="poolHarvestIntoBatch('${batch.id}')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-extrabold py-3 rounded-xl shadow text-sm transition flex items-center justify-center gap-2">
                         <i class="fa-solid fa-plus-circle"></i> Pool Produce Into Route (+10 Qtl)
                     </button>
@@ -895,7 +922,29 @@
             `}).join('');
         }
 
+        function createNewLogisticsBatch() {
+            const title = document.getElementById('log-route-title').value;
+            const carrier = document.getElementById('log-carrier').value;
+            const capacity = Number(document.getElementById('log-capacity').value);
 
+            if(!title || !capacity) {
+                showToast("Please enter route title and capacity", "error");
+                return;
+            }
+
+            logisticsBatches.unshift({
+                id: `LOG-${Math.floor(100 + Math.random() * 900)}`,
+                route: title, carrier: carrier || "Eicher Truck UP-32",
+                driver: `${currentUser.name} (${currentUser.phone})`,
+                filled: 0, capacity: capacity, farmers: [],
+                savings: "₹120/Qtl", status: "Scheduled", eta: "Departs Tomorrow", stops: [title]
+            });
+
+            localStorage.setItem('ks_logistics_batches_v2', JSON.stringify(logisticsBatches));
+            renderLogisticsList();
+            toggleForm('logistics-create-modal');
+            showToast("New shared freight batch created!", "success");
+        }
 
         function poolHarvestIntoBatch(batchId) {
             const batch = logisticsBatches.find(b => b.id === batchId);
@@ -913,6 +962,7 @@
             }
         }
 
+        // --- MANDI & ESCROW MODAL ---
         function renderMandiPrices() {
             document.getElementById('mandi-grid').innerHTML = mandiPrices.map(item => `
                 <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
@@ -978,7 +1028,7 @@
 
             const myDeals = localItems.filter(i => i.phone === currentUser.phone)
                             .concat(marketplaceListings.filter(i => i.phone === currentUser.phone));
-
+            
             const container = document.getElementById('profile-deals-grid');
             if(myDeals.length === 0) {
                 container.innerHTML = `<p class="text-slate-500 italic text-sm">No active listings created under this account.</p>`;
@@ -996,6 +1046,7 @@
             `).join('');
         }
 
+        // --- UTILS & CHATBOT ---
         function toggleForm(id) {
             document.getElementById(id).classList.toggle('hidden');
         }
@@ -1028,7 +1079,7 @@
             document.getElementById('chat-window').classList.toggle('hidden');
         }
 
-       async function handleChat(e) {
+        function handleChat(e) {
             e.preventDefault();
             const input = document.getElementById('chat-input');
             const q = input.value.trim().toLowerCase();
@@ -1036,36 +1087,18 @@
 
             addChatMessage(input.value, 'user');
             input.value = '';
-const GEMINI_API_KEY = "AQ.Ab8RN6LbVd_85Tp6cPlW0K6iEBoT1yl63spwsSO8t6OZfA_PQw";
 
-try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            contents: [{
-                parts: [{ text: "You are KrishiSarthi Voice AI, a helpful agricultural assistant for Indian farmers. Answer concisely: " + q }]
-            }]
-        })
-    });
+            let response = "KrishiSarthi Voice AI: Check Mandi rates or join active truck freight routes to optimize profits!";
+            if (q.includes('rate') || q.includes('price') || q.includes('भाव')) response = `Wheat is trading around ₹2,320/Qtl and Mustard at ₹5,450/Qtl today in Lucknow Mandi.`;
+            if (q.includes('truck') || q.includes('transport') || q.includes('भाड़ा')) response = `You can join Freight Route LOG-902 (Sitapur to Kanpur) to save up to ₹110 per Quintal on freight.`;
 
-    const data = await res.json();
-    const aiResponse = data.candidates[0].content.parts[0].text;
-
-    // Displays the live AI response using your existing UI function on line 1106
-    addChatMessage(aiResponse, 'bot');
-
-} catch (err) {
-    console.error("Gemini API Error:", err);
-    addChatMessage("Sorry, I'm having trouble connecting right now.", 'bot');
-}
-
+            setTimeout(() => addChatMessage(response, 'bot'), 400);
         }
 
         function addChatMessage(text, sender) {
             const container = document.getElementById('chat-messages');
             const msg = document.createElement('div');
-            msg.className = sender === 'user'
+            msg.className = sender === 'user' 
                 ? 'bg-emerald-600 text-white p-3 rounded-2xl rounded-tr-none self-end max-w-[85%] text-xs shadow-sm'
                 : 'bg-white border border-slate-200 text-slate-700 p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] text-xs shadow-sm leading-relaxed';
             msg.innerText = text;
@@ -1073,150 +1106,5 @@ try {
             container.scrollTop = container.scrollHeight;
         }
     </script>
-    <script type="module">
-
-    // ── Import only what we need from the Firebase CDN ────────────
-    //    firebase-app   → creates the Firebase connection
-    //    firebase-firestore → gives us the Firestore database handle
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    // ── Your Firebase project credentials ────────────────────────
-    const firebaseConfig = {
-      apiKey:            "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
-      authDomain:        "krishisarthi-341d1.firebaseapp.com",
-      projectId:         "krishisarthi-341d1",
-      storageBucket:     "krishisarthi-341d1.firebasestorage.app",
-      messagingSenderId: "513338973625",
-      appId:             "1:513338973625:web:f35e1db41645a37bf72a68"
-    };
-
-
-    // ── Initialize Firebase App ───────────────────────────────────
-    //    This is your live connection to the Firebase project.
-    const app = initializeApp(firebaseConfig);
-
-
-    // ── Initialize Firestore Database ─────────────────────────────
-    //    `db` is the object you'll use in future steps to
-    //    read and write data. Think of it as your database door handle.
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-window.auth = auth;
-window.confirmationResult =null;
-
-
-    // ── Expose db globally ────────────────────────────────────────
-    //    <script type="module"> is sandboxed — variables inside it
-    //    are invisible to your other <script> tags by default.
-    //    Attaching to `window` makes `db` available everywhere on
-    //    the page so your existing code and future scripts can use it.
-    window.db  = db;
-    window.app = app;
-
-
-    // ── Sanity check — open your browser DevTools (F12) ──────────
-    //    Console tab → you should see both green checkmarks.
-    //    If you see an error instead, check that your Firebase
-    //    project has Firestore enabled in the Firebase Console.
-    console.log("✅ Firebase App initialised:", app.name);
-    console.log("✅ Firestore db handle ready:", db);
-// Expose methods globally
-window.dbMethods = { collection, addDoc, onSnapshot, query, orderBy };
-
-// Real-time listener
-function initRealtimeListeners() {
-    window.dbMethods.onSnapshot(window.dbMethods.collection(window.db, "local_produce"), (snapshot) => {
-        localItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        if (typeof renderLocalMarket === 'function') renderLocalMarket();
-    });
-}
-initRealtimeListeners();
-// Connect Local Produce form to Firestore
-window.handleLocalSubmit = async function(e) {
-    e.preventDefault();
-    const newItem = {
-        item: document.getElementById('l-item').value,
-        qty: document.getElementById('l-qty').value,
-        price: Number(document.getElementById('l-price').value),
-        location: document.getElementById('l-location').value,
-        createdAt: new Date()
-    };
-
-    await window.dbMethods.addDoc(window.dbMethods.collection(window.db, "local_produce"), newItem);
-    document.getElementById('local-form').reset();
-    if (typeof toggleForm === 'function') toggleForm('local-form-container');
-    console.log("Produce saved to database!");
-};
-// Send SMS OTP via Firebase Auth
-window.handleSendOTP = async function(e) {
-    e.preventDefault();
-    const phoneInput = document.getElementById('login-phone').value;
-    const fullPhoneNumber = "+91" + phoneInput; // Append Indian country code
-
-    try {
-        if (!window.recaptchaVerifier) {
-            // Attach invisible reCAPTCHA to the form submit button
-            window.recaptchaVerifier = new RecaptchaVerifier(window.auth, 'form-login-step1', {
-                'size': 'invisible'
-            });
-        }
-        window.confirmationResult = await signInWithPhoneNumber(window.auth, fullPhoneNumber, window.recaptchaVerifier);
-
-        // Transition UI to Step 2
-        document.getElementById('otp-phone-display').innerText = fullPhoneNumber;
-        document.getElementById('form-login-step1').classList.add('hidden');
-        document.getElementById('form-login-step2').classList.remove('hidden');
-        showToast("Live OTP sent to your phone!", "info");
-    } catch (error) {
-        console.error("SMS Error:", error.message);
-        showToast("Failed to send SMS. Ensure domain is whitelisted.", "error");
-    }
-};
-
-// Verify SMS OTP
-window.handleVerifyOTP = async function(e) {
-    e.preventDefault();
-
-    // Combine the 4 input boxes into a single string
-    const boxes = document.querySelectorAll('.otp-box');
-    let codeEntered = "";
-    boxes.forEach(b => codeEntered += b.value);
-
-    try {
-        const result = await window.confirmationResult.confirm(codeEntered);
-        console.log("Verified User UID:", result.user.uid);
-
-        // Set user session and load app
-        currentUser = {
-            name: document.getElementById('login-name').value,
-            phone: document.getElementById('login-phone').value,
-            role: document.getElementById('login-role').value,
-            lang: document.getElementById('lang-select').value
-        };
-        sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
-        showApp();
-        showToast("Phone verified successfully!", "success");
-    } catch (error) {
-        console.error("Invalid OTP:", error.message);
-        showToast("Incorrect OTP code. Try again.", "error");
-    }
-};
-  </script>
-
-  <!-- ============================================================
-    THAT'S IT FOR THIS STEP.
-    Your mock data, UI, and hardcoded logic are completely untouched.
-    In the next step we'll start replacing mock data with real
-    Firestore reads/writes — using the `db` handle we just created.
-    ============================================================ -->
-
-</body>
-</html>
 </body>
 </html>
