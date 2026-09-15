@@ -106,6 +106,10 @@
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base flex items-center justify-center gap-2 mt-2">
                     <span>Send Verification OTP</span> <i class="fa-solid fa-paper-plane text-sm"></i>
                 </button>
+
+                <!-- Dedicated invisible reCAPTCHA container. Firebase's own docs always bind
+                     RecaptchaVerifier to a plain, empty element — never to a <form> id. -->
+                <div id="recaptcha-container"></div>
             </form>
 
             <!-- STEP 2: OTP VERIFICATION FORM (Hidden Initially) -->
@@ -1036,7 +1040,7 @@
 
             addChatMessage(input.value, 'user');
             input.value = '';
-const GEMINI_API_KEY = "AQ.Ab8RN6LbVd_85Tp6cPlW0K6iEBoT1yl63spwsSO8t6OZfA_PQw";
+
 
 try {
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
@@ -1161,8 +1165,8 @@ window.handleSendOTP = async function(e) {
 
     try {
         if (!window.recaptchaVerifier) {
-            // Attach invisible reCAPTCHA to the form submit button
-            window.recaptchaVerifier = new RecaptchaVerifier(window.auth, 'form-login-step1', {
+            // Attach invisible reCAPTCHA to its own dedicated container (never a <form> id)
+            window.recaptchaVerifier = new RecaptchaVerifier(window.auth, 'recaptcha-container', {
                 'size': 'invisible'
             });
         }
@@ -1174,8 +1178,18 @@ window.handleSendOTP = async function(e) {
         document.getElementById('form-login-step2').classList.remove('hidden');
         showToast("Live OTP sent to your phone!", "info");
     } catch (error) {
-        console.error("SMS Error:", error.message);
-        showToast("Failed to send SMS. Ensure domain is whitelisted.", "error");
+        // error.code is what actually tells you which setting to fix — log it,
+        // don't just log the message (which is often generic).
+        console.error("SMS Error:", error.code, error.message);
+
+        // A failed attempt can leave the widget stuck. Tear it down so the next
+        // click builds a fresh one instead of reusing a broken instance.
+        if (window.recaptchaVerifier) {
+            window.recaptchaVerifier.clear();
+            window.recaptchaVerifier = null;
+        }
+
+        showToast(`OTP failed: ${error.code || error.message}`, "error");
     }
 };
 
@@ -1187,6 +1201,11 @@ window.handleVerifyOTP = async function(e) {
     const boxes = document.querySelectorAll('.otp-box');
     let codeEntered = "";
     boxes.forEach(b => codeEntered += b.value);
+
+    if (!window.confirmationResult) {
+        showToast("No OTP request found on this page — go back and resend the code.", "error");
+        return;
+    }
 
     try {
         const result = await window.confirmationResult.confirm(codeEntered);
@@ -1203,8 +1222,8 @@ window.handleVerifyOTP = async function(e) {
         showApp();
         showToast("Phone verified successfully!", "success");
     } catch (error) {
-        console.error("Invalid OTP:", error.message);
-        showToast("Incorrect OTP code. Try again.", "error");
+        console.error("Invalid OTP:", error.code, error.message);
+        showToast(`Verification failed: ${error.code || error.message}`, "error");
     }
 };
   </script>
@@ -1216,7 +1235,5 @@ window.handleVerifyOTP = async function(e) {
     Firestore reads/writes — using the `db` handle we just created.
     ============================================================ -->
 
-</body>
-</html>
 </body>
 </html>
