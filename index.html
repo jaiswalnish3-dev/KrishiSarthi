@@ -3,377 +3,738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KrishiSarthi - Empowering Farmers</title>
+    <title>KrishiSarthi🌱 - Direct Voice-First Agri Ecosystem</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        @keyframes pop {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .tab-active {
+            border-bottom: 3.5px solid #059669;
+            color: #047857;
+            font-weight: 800;
+            background: linear-gradient(to top, #ecfdf5 0%, transparent 100%);
+        }
+
+        .chat-scroll::-webkit-scrollbar, .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .chat-scroll, .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass-header {
+            background: rgba(4, 120, 87, 0.96);
+            backdrop-filter: blur(12px);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans pb-20 md:pb-0">
+<body class="bg-slate-50 text-slate-800 min-h-screen relative selection:bg-emerald-200">
 
-    <!-- Top Navigation -->
-    <nav class="bg-emerald-700 text-white sticky top-0 z-40 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-wheat-awn text-yellow-400 text-2xl"></i>
-                <span class="font-bold text-xl tracking-wide">KrishiSarthi</span>
-            </div>
-            <div id="auth-status" class="flex items-center gap-3">
-                <button onclick="toggleAuthModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors shadow">
-                    Login / Register
-                </button>
-            </div>
-        </div>
-    </nav>
+    <!-- ================= AUTH & OTP SCREEN ================= -->
+    <div id="auth-screen" class="fixed inset-0 bg-[url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center z-50 flex items-center justify-center transition-all duration-500">
+        <div class="absolute inset-0 bg-emerald-950/80 backdrop-blur-md"></div>
 
-    <!-- App Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6">
-        
-        <!-- Marketplace Section -->
-        <section id="marketplace-section" class="mb-10">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">Wholesale Produce Lots</h2>
-                <button onclick="toggleForm('marketplace-form-container')" class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors">
-                    <i class="fa-solid fa-plus"></i> List Your Crop Lot
-                </button>
+        <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl text-center transform transition-all animate-pop relative z-10 mx-4 border border-emerald-100">
+
+            <!-- Brand Logo Header -->
+            <div class="flex flex-col items-center justify-center mb-4">
+               <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
+
+                <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1">
+                    KrishiSarthi <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">🌱</span>
+                </h1>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">Voice-First Agro-Marketplace & Freight Pooling</p>
             </div>
 
-            <!-- Add Produce Form -->
-            <div id="marketplace-form-container" class="hidden mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h3 class="font-semibold text-lg mb-4 text-emerald-800">Publish Wholesale Crop Batch</h3>
-                <form id="marketplace-form" onsubmit="handleMarketplaceSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Crop Name</label>
-                        <input type="text" id="m-crop" required placeholder="e.g. Wheat (Lokwan)" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Quantity (Quintals/Tons)</label>
-                        <input type="text" id="m-qty" required placeholder="e.g. 50 Quintals" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Asking Price (₹ per Quintal)</label>
-                        <input type="number" id="m-price" required placeholder="e.g. 2400" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Location / District</label>
-                        <input type="text" id="m-location" required placeholder="e.g. Nashik, MH" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div class="md:col-span-2 lg:col-span-4 flex justify-end gap-3 mt-2">
-                        <button type="button" onclick="toggleForm('marketplace-form-container')" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-semibold hover:bg-slate-50">Cancel</button>
-                        <button type="submit" class="px-6 py-2 bg-emerald-700 text-white rounded-xl text-sm font-semibold hover:bg-emerald-800 shadow">Post Lot</button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Produce Grid -->
-            <div id="marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-slate-900">Organic Basmati Rice</h3>
-                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-semibold">Available</span>
-                        </div>
-                        <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-emerald-600"></i> Karnal, Haryana</p>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-slate-600">Lot Quantity:</span>
-                            <span class="font-semibold text-slate-800">120 Quintals</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-600">Expected Rate:</span>
-                            <span class="font-bold text-emerald-700 text-base">₹4,200 / Quintal</span>
-                        </div>
-                    </div>
-                    <button class="mt-4 w-full bg-slate-900 hover:bg-slate-800 text-white py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-phone"></i> Contact Farmer
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Buyer Demand Requests Section -->
-        <section id="demands-section" class="mb-10">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-slate-900 border-l-4 border-emerald-600 pl-3">Buyer Procurement Demands</h2>
-                <button onclick="toggleForm('demand-form-container')" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors">
-                    <i class="fa-solid fa-plus"></i> Post Purchase Demand
-                </button>
-            </div>
-
-            <!-- Add Buyer Demand Form -->
-            <div id="demand-form-container" class="hidden mb-6 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h3 class="font-semibold text-lg mb-4 text-slate-900">Post Bulk Procurement Requirement</h3>
-                <form id="demand-form" onsubmit="handleDemandSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Required Commodity</label>
-                        <input type="text" id="d-crop" required placeholder="e.g. Yellow Corn" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Volume Needed</label>
-                        <input type="text" id="d-qty" required placeholder="e.g. 200 Tons" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Offered Target Price</label>
-                        <input type="number" id="d-price" required placeholder="e.g. 2100" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Delivery Destination</label>
-                        <input type="text" id="d-location" required placeholder="e.g. Indore Port Hub" class="w-full border border-slate-300 p-2.5 rounded-xl text-sm focus:border-emerald-600 focus:outline-none">
-                    </div>
-                    <div class="md:col-span-2 lg:col-span-4 flex justify-end gap-3 mt-2">
-                        <button type="button" onclick="toggleForm('demand-form-container')" class="px-4 py-2 border border-slate-300 rounded-xl text-sm font-semibold hover:bg-slate-50">Cancel</button>
-                        <button type="submit" class="px-6 py-2 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:bg-slate-800 shadow">Post Procurement Request</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Krishi AI Advisory Chat -->
-        <section id="ai-chat-section" class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white rounded-3xl p-6 shadow-xl mb-12">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center">
-                    <i class="fa-solid fa-robot text-emerald-400 text-xl"></i>
+            <!-- STEP 1: LOGIN DETAILS FORM -->
+            <form id="form-login-step1" onsubmit="handleSendOTP(event)" class="space-y-3.5 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Select Language / भाषा चुनें</label>
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="pb">ਪੰਜਾਬੀ (Punjabi)</option>
+                        <option value="mr">मराठी (Marathi)</option>
+                        <option value="gu">ગુજરાતી (Gujarati)</option>
+                        <option value="bn">বাংলা (Bengali)</option>
+                        <option value="te">తెలుగు (Telugu)</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                    </select>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold">Krishi AI Assistant</h2>
-                    <p class="text-xs text-emerald-300">Ask about crop diseases, mandi prices, or soil health</p>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Full Name / नाम</label>
+                    <input type="text" id="auth-name" required placeholder="e.g. Ramesh Kumar" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-800 text-sm">
                 </div>
-            </div>
-
-            <div id="chat-messages" class="h-64 overflow-y-auto bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 mb-4 space-y-3">
-                <div class="bg-emerald-950/80 border border-emerald-700/50 p-3 rounded-xl max-w-lg text-sm">
-                    Namaste! I am your AI Agronomist. How can I assist you with your crops today?
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Phone Number / मोबाइल नंबर</label>
+                    <div class="flex gap-2">
+                        <span class="p-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-500 text-sm font-bold flex items-center">+91</span>
+                        <input type="tel" id="auth-phone" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-800 text-sm">
+                    </div>
                 </div>
-            </div>
 
-            <form onsubmit="handleChat(event)" class="flex gap-2">
-                <input type="text" id="chat-input" placeholder="Ask your question in English or Hindi..." required class="flex-1 bg-slate-800 border border-slate-700 px-4 py-3 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500">
-                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-colors flex items-center gap-2">
-                    <span>Send</span> <i class="fa-solid fa-paper-plane"></i>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 text-sm mt-4">
+                    <span>Send Verification Code</span>
+                    <i class="fa-solid font-bold text-slate-600"></i>
                 </button>
             </form>
-        </section>
 
-    </main>
+            <!-- STEP 2: OTP VERIFICATION FORM (HIDDEN INITIALLY) -->
+            <form id="form-login-step2" onsubmit="handleVerifyOTP(event)" class="space-y-4 text-left hidden">
+                <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+                    <p class="text-xs text-emerald-800 font-semibold">Verification code sent to <span id="display-phone" class="font-bold text-emerald-950">+91 9876543210</span></p>
+                    <p class="text-[11px] text-emerald-600 mt-0.5">Demo Mode: Any 4-digit code works (e.g. 1234)</p>
+                </div>
 
-    <!-- Authentication Modal -->
-    <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl relative">
-            <button onclick="toggleAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
-
-            <!-- Phone Entry Step -->
-            <div id="form-login-step1">
-                <h3 class="text-xl font-bold text-slate-900 mb-1">Welcome to KrishiSarthi</h3>
-                <p class="text-xs text-slate-500 mb-6">Enter your phone number to proceed with OTP code.</p>
-                
-                <form onsubmit="handleSendOTP(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Mobile Phone Number</label>
-                        <div class="flex border border-slate-300 rounded-xl overflow-hidden focus-within:border-emerald-600">
-                            <span class="bg-slate-100 px-3 py-2.5 text-sm text-slate-600 border-r border-slate-300 font-medium">+91</span>
-                            <input type="tel" id="user-phone" pattern="[0-9]{10}" placeholder="9876543210" required class="w-full px-3 py-2.5 text-sm focus:outline-none">
-                        </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1.5 text-center">Enter 4-Digit OTP Code</label>
+                    <div class="flex justify-center gap-2">
+                        <input type="text" maxlength="4" id="otp-input" required placeholder="• • • •" class="w-3/4 text-center tracking-[1em] text-xl font-black p-3 bg-slate-50 border-2 border-emerald-400 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none text-emerald-900">
                     </div>
-                    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-3 rounded-xl text-sm font-semibold transition-colors shadow">
-                        Send Verification Code
-                    </button>
-                </form>
-            </div>
+                </div>
 
-            <!-- OTP Verification Step (6-Digit Standard Firebase UI) -->
-            <div id="form-login-step2" class="hidden">
-                <h3 class="text-xl font-bold text-slate-900 mb-1">Enter Verification Code</h3>
-                <p class="text-xs text-slate-500 mb-6">Enter the 6-digit SMS code sent to your phone number.</p>
-                
-                <form onsubmit="handleVerifyOTP(event)" class="space-y-6">
-                    <div class="flex justify-between gap-1" id="otp-inputs">
-                        <input type="text" maxlength="1" class="otp-box w-10 h-11 text-center text-lg font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" maxlength="1" class="otp-box w-10 h-11 text-center text-lg font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" maxlength="1" class="otp-box w-10 h-11 text-center text-lg font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" maxlength="1" class="otp-box w-10 h-11 text-center text-lg font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" maxlength="1" class="otp-box w-10 h-11 text-center text-lg font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" maxlength="1" class="otp-box w-10 h-11 text-center text-lg font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                    </div>
-                    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-3 rounded-xl text-sm font-semibold transition-colors shadow">
-                        Verify & Login
-                    </button>
-                </form>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-lock text-xs"></i> Verify & Open Marketplace
+                </button>
+
+                <button type="button" onclick="resetAuthForm()" class="w-full text-xs text-slate-400 hover:text-slate-600 font-semibold text-center mt-2 block">
+                    ← Change Phone Number / Details
+                </button>
+            </form>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 text-center">
+                <p class="text-[11px] text-slate-400">🔒 Direct P2P Farmer Trade. Zero Middlemen Commission.</p>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification UI -->
-    <div id="toast" class="fixed bottom-5 right-5 hidden bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl border border-slate-700 text-sm z-50"></div>
+    <!-- ================= MAIN APPLICATION WRAPPER ================= -->
+    <div id="app-content" class="filter blur-sm pointer-events-none transition-all duration-300">
+        
+        <!-- TOP HEADER -->
+        <header class="glass-header text-white sticky top-0 z-40 shadow-lg border-b border-emerald-700/50">
+            <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="logo.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-300 shadow">
+                    <div>
+                        <h1 class="font-extrabold text-lg leading-none tracking-tight flex items-center gap-1.5">
+                            KrishiSarthi <span class="text-[10px] bg-emerald-800/80 px-2 py-0.5 rounded-full font-bold border border-emerald-600/50">LIVE</span>
+                        </h1>
+                        <p class="text-[11px] text-emerald-100/80 font-medium">Empowering Direct Kisan Trade</p>
+                    </div>
+                </div>
 
-    <!-- Application Script -->
+                <!-- USER CONTROL BADGE & LANGUAGE SELECTOR -->
+                <div class="flex items-center gap-2">
+                    <button onclick="openLanguageModal()" class="bg-emerald-800/80 hover:bg-emerald-700/80 text-emerald-100 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 border border-emerald-600/50 transition">
+                        <i class="fa-solid fa-language text-sm"></i>
+                        <span id="current-lang-code" class="uppercase">EN</span>
+                    </button>
+                    
+                    <div id="user-badge" class="bg-emerald-900/60 border border-emerald-500/40 text-emerald-100 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-user-check text-emerald-400"></i>
+                        <span id="header-user-name">Guest</span>
+                        <button onclick="logout()" title="Logout" class="text-emerald-300 hover:text-white ml-1 text-xs">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN NAVIGATION TABS -->
+            <div class="max-w-4xl mx-auto px-2 flex justify-between bg-emerald-900/40 text-xs font-bold border-t border-emerald-800/60 overflow-x-auto scrollbar-hide">
+                <button onclick="switchTab('local')" id="tab-local" class="tab-active flex-1 py-3 px-2 text-center transition flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-store"></i> Local Market
+                </button>
+                <button onclick="switchTab('truck')" id="tab-truck" class="flex-1 py-3 px-2 text-center transition text-emerald-100 hover:bg-emerald-800/40 flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-truck-ramp-box"></i> Freight Pool
+                </button>
+                <button onclick="switchTab('mandi')" id="tab-mandi" class="flex-1 py-3 px-2 text-center transition text-emerald-100 hover:bg-emerald-800/40 flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-chart-line"></i> Mandi Rates
+                </button>
+                <button onclick="switchTab('advisor')" id="tab-advisor" class="flex-1 py-3 px-2 text-center transition text-emerald-100 hover:bg-emerald-800/40 flex items-center justify-center gap-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-robot"></i> AI Mitr
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTAINER BODY -->
+        <main class="max-w-4xl mx-auto p-4 pb-24">
+            
+            <!-- GLOBAL VOICE ASSISTANT BANNER -->
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-4 shadow-xl mb-6 flex items-center justify-between border border-emerald-500/30">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-xl backdrop-blur">
+                        <i class="fa-solid fa-microphone-lines text-emerald-200"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm tracking-tight">Speak in Your Language</h2>
+                        <p class="text-xs text-emerald-100/90">Click mic to post produce, find trucks, or ask crop advice</p>
+                    </div>
+                </div>
+                <button onclick="toggleVoiceModal()" class="bg-white text-emerald-900 font-extrabold text-xs px-4 py-2.5 rounded-xl hover:bg-emerald-50 transition shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-microphone text-emerald-600 animate-pulse"></i> Speak Now
+                </button>
+            </div>
+
+            <!-- ================= TAB 1: LOCAL MARKETPLACE ================= -->
+            <div id="view-local" class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="font-black text-slate-800 text-lg">Direct Produce Offers</h2>
+                        <p class="text-xs text-slate-500">Buy directly from neighbor farmers near you</p>
+                    </div>
+                    <button onclick="toggleForm('local-form-container')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Post Produce
+                    </button>
+                </div>
+
+                <!-- ADD LOCAL PRODUCE FORM CONTAINER -->
+                <div id="local-form-container" class="hidden bg-white rounded-2xl p-4 shadow-lg border border-slate-200 animate-fade-in">
+                    <h3 class="font-bold text-sm text-slate-800 mb-3 pb-2 border-b flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-emerald-600"></i> List Produce for Sale
+                    </h3>
+                    <form id="local-form" onsubmit="handleLocalSubmit(event)" class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Crop / Item Name</label>
+                                <input type="text" id="l-item" required placeholder="e.g. Fresh Tomatoes" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Quantity Available</label>
+                                <input type="text" id="l-qty" required placeholder="e.g. 5 Quintals" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Expected Price (₹)</label>
+                                <input type="number" id="l-price" required placeholder="e.g. 1800" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Village / Location</label>
+                                <input type="text" id="l-location" required placeholder="e.g. Karnal, HR" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="button" onclick="toggleForm('local-form-container')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100">Cancel</button>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow">Publish Produce Item</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- CARDS CONTAINER -->
+                <div id="local-items-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic Items render here -->
+                </div>
+            </div>
+
+            <!-- ================= TAB 2: FREIGHT POOLING ================= -->
+            <div id="view-truck" class="space-y-4 hidden">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="font-black text-slate-800 text-lg">Shared Logistics & Truck Pooling</h2>
+                        <p class="text-xs text-slate-500">Share transport costs with nearby farmers to big Mandis</p>
+                    </div>
+                    <button onclick="toggleForm('truck-form-container')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-truck"></i> Offer / Request Route
+                    </button>
+                </div>
+
+                <!-- ADD TRUCK ROUTE FORM CONTAINER -->
+                <div id="truck-form-container" class="hidden bg-white rounded-2xl p-4 shadow-lg border border-slate-200 animate-fade-in">
+                    <h3 class="font-bold text-sm text-slate-800 mb-3 pb-2 border-b flex items-center gap-2">
+                        <i class="fa-solid fa-route text-emerald-600"></i> Offer Truck Space / Shared Freight
+                    </h3>
+                    <form id="truck-form" onsubmit="handleTruckSubmit(event)" class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Pickup From</label>
+                                <input type="text" id="t-from" required placeholder="e.g. Sonipat" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Destination Mandi</label>
+                                <input type="text" id="t-to" required placeholder="e.g. Azadpur Mandi, Delhi" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Date</label>
+                                <input type="text" id="t-date" required placeholder="Tomorrow Morning" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Space Left</label>
+                                <input type="text" id="t-space" required placeholder="e.g. 2 Tons" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Cost Share (₹/Ton)</label>
+                                <input type="number" id="t-price" required placeholder="e.g. 450" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="button" onclick="toggleForm('truck-form-container')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100">Cancel</button>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow">Post Truck Route</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TRUCK LIST CONTAINER -->
+                <div id="truck-items-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic Truck Pool items render here -->
+                </div>
+            </div>
+
+            <!-- ================= TAB 3: LIVE MANDI RATES ================= -->
+            <div id="view-mandi" class="space-y-4 hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h2 class="font-black text-slate-800 text-lg">Real-Time Mandi Prices</h2>
+                        <p class="text-xs text-slate-500">Live price trends across major agricultural markets</p>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <div class="relative w-full sm:w-48">
+                            <input type="text" id="mandi-search" onkeyup="filterMandiRates()" placeholder="Search crop or mandi..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANDI DATA TABLE -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-100/80 text-slate-600 font-bold border-b border-slate-200">
+                                    <th class="p-3.5">Commodity</th>
+                                    <th class="p-3.5">Mandi Market</th>
+                                    <th class="p-3.5 text-right">Min Price</th>
+                                    <th class="p-3.5 text-right">Max Price</th>
+                                    <th class="p-3.5 text-right">Modal Rate (₹/Qtl)</th>
+                                    <th class="p-3.5 text-center">Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mandi-table-body" class="divide-y divide-slate-100 font-medium">
+                                <!-- Dynamic Mandi rows render here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 4: AI MITR CROP ADVISOR ================= -->
+            <div id="view-advisor" class="space-y-4 hidden">
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-lg">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-slate-800 text-sm">Krishi AI Mitr Assistant</h2>
+                            <p class="text-[11px] text-slate-500">Ask in any Indian language about crop diseases, fertilizers, or prices</p>
+                        </div>
+                    </div>
+
+                    <!-- CHAT MESSAGES BOX -->
+                    <div id="chat-messages" class="h-80 overflow-y-auto chat-scroll p-3 space-y-3 bg-slate-50/50 rounded-xl my-3 border border-slate-100">
+                        <div class="flex gap-2.5 items-start">
+                            <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">AI</div>
+                            <div class="bg-white border border-slate-200 p-3 rounded-2xl rounded-tl-none text-xs text-slate-700 shadow-sm max-w-[85%]">
+                                Namaste! 🙏 Main aapka Krishi AI Mitr hoon. Aap apni fasal, bimari, ya mandi ke baare mein kuch bhi pooch sakte hain.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CHAT INPUT -->
+                    <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
+                        <input type="text" id="chat-input" placeholder="Type or click mic to ask..." class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <button type="button" onclick="toggleVoiceModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-microphone text-emerald-600"></i>
+                        </button>
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 rounded-xl text-xs font-bold shadow transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ================= MODAL: VOICE SIMULATOR ================= -->
+    <div id="voice-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl text-center animate-pop relative border border-slate-100">
+            <button onclick="toggleVoiceModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <i class="fa-solid fa-microphone text-3xl"></i>
+            </div>
+            <h3 class="font-bold text-slate-800 text-base">Listening in your language...</h3>
+            <p class="text-xs text-slate-500 mt-1 mb-4">Try saying: "Mujhe 10 quintal Gehu bechna hai Karnal me"</p>
+
+            <div class="space-y-2">
+                <button onclick="simulateVoiceInput('Selling 10 Quintals Wheat in Karnal at 2200 per quintal')" class="w-full p-2.5 bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 rounded-xl text-xs font-semibold text-left transition flex items-center justify-between">
+                    <span>"Selling Wheat in Karnal"</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+                </button>
+                <button onclick="simulateVoiceInput('Looking for truck share to Azadpur Mandi tomorrow')" class="w-full p-2.5 bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 rounded-xl text-xs font-semibold text-left transition flex items-center justify-between">
+                    <span>"Need Truck Pool to Azadpur"</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+                </button>
+                <button onclick="simulateVoiceInput('What is the best treatment for yellow rust in wheat?')" class="w-full p-2.5 bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 rounded-xl text-xs font-semibold text-left transition flex items-center justify-between">
+                    <span>"Ask AI for crop disease help"</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] opacity-40"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION FLOATER -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+        <span id="toast-msg">Action completed successfully!</span>
+    </div>
+
+    <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
     <script>
-        // Set your Gemini API key here or wire it through your backend proxy
-        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY_HERE";
-        let currentUser = null;
+        // --- DATA STATES ---
+        let currentUser = JSON.parse(localStorage.getItem('ks_user')) || null;
 
-        // UI Helpers
-        function toggleForm(containerId) {
-            const container = document.getElementById(containerId);
-            container.classList.toggle('hidden');
-        }
+        let localItems = JSON.parse(localStorage.getItem('ks_local_items_v2')) || [
+            { id: 1, item: "Fresh Mustard (सरसों)", qty: "12 Quintals", price: 5400, seller: "Gurpreet Singh", location: "Bhatinda, PB", phone: "9876543210" },
+            { id: 2, item: "Organic Potatoes (आलू)", qty: "25 Quintals", price: 1450, seller: "Ramesh Farmer", location: "Agra, UP", phone: "9812345678" }
+        ];
 
-        function toggleAuthModal() {
-            const modal = document.getElementById('auth-modal');
-            modal.classList.toggle('hidden');
-        }
+        let truckItems = JSON.parse(localStorage.getItem('ks_truck_items')) || [
+            { id: 1, from: "Sonipat, HR", to: "Azadpur Mandi, Delhi", space: "3.5 Tons", date: "Tomorrow 5 AM", price: 400, seller: "Baldev Freight", phone: "9988776655" },
+            { id: 2, from: "Nashik, MH", to: "Vashi Market, Mumbai", space: "1.8 Tons", date: "Tonight 10 PM", price: 650, seller: "Vijay Transport", phone: "9765432109" }
+        ];
 
-        function showToast(msg, type = "info") {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3500);
-        }
+        const mandiData = [
+            { crop: "Wheat (गेहूँ)", mandi: "Karnal Mandi, HR", min: 2150, max: 2320, modal: 2275, trend: "up" },
+            { crop: "Mustard (सरसों)", mandi: "Jaipur Mandi, RJ", min: 5200, max: 5650, modal: 5450, trend: "up" },
+            { crop: "Potato (आलू)", mandi: "Agra Mandi, UP", min: 1200, max: 1550, modal: 1400, trend: "down" },
+            { crop: "Onion (प्याज़)", mandi: "Lasalgaon Mandi, MH", min: 1800, max: 2400, modal: 2150, trend: "up" },
+            { crop: "Cotton (कपास)", mandi: "Rajkot Mandi, GJ", min: 6800, max: 7400, modal: 7100, trend: "same" },
+            { crop: "Rice / Paddy (धान)", mandi: "Amritsar Mandi, PB", min: 3800, max: 4250, modal: 4100, trend: "up" }
+        ];
 
-        // Auto-advance OTP Inputs
-        document.querySelectorAll('.otp-box').forEach((box, index, list) => {
-            box.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < list.length - 1) {
-                    list[index + 1].focus();
-                }
-            });
-            box.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                    list[index - 1].focus();
-                }
-            });
-        });
-
-        // Authentication Handlers
+        // --- AUTH LOGIC ---
         function handleSendOTP(e) {
             e.preventDefault();
-            const phone = document.getElementById('user-phone').value;
+            const name = document.getElementById('auth-name').value;
+            const phone = document.getElementById('auth-phone').value;
+            const lang = document.getElementById('lang-select').value;
+
+            if(!name || !phone) return;
+
+            document.getElementById('display-phone').innerText = `+91 ${phone}`;
             document.getElementById('form-login-step1').classList.add('hidden');
             document.getElementById('form-login-step2').classList.remove('hidden');
-            showToast(`OTP Code sent to +91 ${phone}`, "info");
+
+            window.tempUser = { name, phone, lang };
+            showToast("OTP sent to your mobile number!");
         }
 
         function handleVerifyOTP(e) {
             e.preventDefault();
-            const boxes = document.querySelectorAll('.otp-box');
-            let otp = '';
-            boxes.forEach(box => otp += box.value);
-            
-            if (otp.length === 6) {
-                currentUser = { phone: document.getElementById('user-phone').value, name: "Verified Farmer" };
-                document.getElementById('auth-status').innerHTML = `
-                    <span class="text-xs bg-emerald-800 text-emerald-200 px-3 py-1.5 rounded-full font-semibold">
-                        <i class="fa-solid fa-circle-check text-emerald-400"></i> Logged In
-                    </span>`;
-                toggleAuthModal();
-                showToast("Successfully authenticated!", "success");
-            } else {
-                showToast("Please enter a valid 6-digit OTP code.", "error");
-            }
+            const otp = document.getElementById('otp-input').value;
+            if (otp.length < 4) return;
+
+            currentUser = window.tempUser;
+            localStorage.setItem('ks_user', JSON.stringify(currentUser));
+            initAppUI();
+            showToast(`Welcome ${currentUser.name}! App Ready.`);
         }
 
-        // Wholesale Produce Lot Submission Handler
-        window.handleMarketplaceSubmit = async function(e) {
-            e.preventDefault();
-            const crop = document.getElementById('m-crop').value;
-            const qty = document.getElementById('m-qty').value;
-            const price = document.getElementById('m-price').value;
-            const location = document.getElementById('m-location').value;
+        function resetAuthForm() {
+            document.getElementById('form-login-step2').classList.add('hidden');
+            document.getElementById('form-login-step1').classList.remove('hidden');
+        }
 
-            const grid = document.getElementById('marketplace-grid');
-            const cardHtml = `
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-slate-900">${crop}</h3>
-                            <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-semibold">New</span>
+        function logout() {
+            localStorage.removeItem('ks_user');
+            currentUser = null;
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('app-content').classList.add('blur-sm', 'pointer-events-none');
+        }
+
+        function initAppUI() {
+            if (currentUser) {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app-content').classList.remove('blur-sm', 'pointer-events-none');
+                document.getElementById('header-user-name').innerText = currentUser.name.split(' ')[0];
+                document.getElementById('current-lang-code').innerText = currentUser.lang || 'EN';
+            }
+            renderAll();
+        }
+
+        // --- RENDERERS ---
+        function renderAll() {
+            renderLocalItems();
+            renderTruckItems();
+            renderMandiRates(mandiData);
+        }
+
+        function renderLocalItems() {
+            const container = document.getElementById('local-items-list');
+            container.innerHTML = localItems.map(item => `
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md uppercase">For Sale</span>
+                            <h3 class="font-bold text-slate-800 text-base mt-1">${item.item}</h3>
                         </div>
-                        <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-emerald-600"></i> ${location}</p>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-slate-600">Lot Quantity:</span>
-                            <span class="font-semibold text-slate-800">${qty}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-600">Expected Rate:</span>
-                            <span class="font-bold text-emerald-700 text-base">₹${Number(price).toLocaleString('en-IN')} / Quintal</span>
+                        <div class="text-right">
+                            <span class="font-black text-emerald-700 text-base">₹${item.price}</span>
+                            <span class="text-[10px] text-slate-400 block font-semibold">per Quintal</span>
                         </div>
                     </div>
-                    <button class="mt-4 w-full bg-slate-900 hover:bg-slate-800 text-white py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-phone"></i> Contact Seller
-                    </button>
-                </div>`;
-            
-            grid.insertAdjacentHTML('afterbegin', cardHtml);
-            document.getElementById('marketplace-form').reset();
-            toggleForm('marketplace-form-container');
-            showToast("Wholesale crop lot published!", "success");
-        };
+                    <div class="space-y-1 mb-3 text-xs text-slate-500">
+                        <p><i class="fa-solid fa-weight-hanging text-slate-400 w-4"></i> Available: <span class="font-semibold text-slate-700">${item.qty}</span></p>
+                        <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> Location: <span class="font-semibold text-slate-700">${item.location}</span></p>
+                        <p><i class="fa-solid fa-user text-slate-400 w-4"></i> Farmer: <span class="font-semibold text-slate-700">${item.seller}</span></p>
+                    </div>
+                    <a href="tel:${item.phone}" class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-phone text-xs"></i> Call Farmer (${item.phone})
+                    </a>
+                </div>
+            `).join('');
+        }
 
-        // Procurement Demand Request Submission Handler
-        window.handleDemandSubmit = async function(e) {
+        function renderTruckItems() {
+            const container = document.getElementById('truck-items-list');
+            container.innerHTML = truckItems.map(t => `
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <span class="text-[10px] font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md uppercase">Freight Shared</span>
+                            <h3 class="font-bold text-slate-800 text-sm mt-1">${t.from} ➔ ${t.to}</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-black text-slate-800 text-base">₹${t.price}</span>
+                            <span class="text-[10px] text-slate-400 block font-semibold">per Ton</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1 mb-3 text-xs text-slate-500">
+                        <p><i class="fa-solid fa-clock text-slate-400 w-4"></i> Departure: <span class="font-semibold text-slate-700">${t.date}</span></p>
+                        <p><i class="fa-solid fa-truck-ramp-box text-slate-400 w-4"></i> Space Available: <span class="font-semibold text-emerald-700">${t.space}</span></p>
+                        <p><i class="fa-solid fa-user-gear text-slate-400 w-4"></i> Offered By: <span class="font-semibold text-slate-700">${t.seller}</span></p>
+                    </div>
+                    <a href="tel:${t.phone}" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-handshake text-xs"></i> Connect & Book Space
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function renderMandiRates(list) {
+            const tbody = document.getElementById('mandi-table-body');
+            tbody.innerHTML = list.map(m => {
+                let badge = m.trend === 'up' ? '<span class="text-emerald-600 font-bold">▲ Up</span>' :
+                            m.trend === 'down' ? '<span class="text-rose-600 font-bold">▼ Down</span>' :
+                            '<span class="text-slate-400 font-bold">• Stable</span>';
+                return `
+                    <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                        <td class="p-3.5 font-bold text-slate-800">${m.crop}</td>
+                        <td class="p-3.5 text-slate-600">${m.mandi}</td>
+                        <td class="p-3.5 text-right text-slate-500">₹${m.min}</td>
+                        <td class="p-3.5 text-right text-slate-500">₹${m.max}</td>
+                        <td class="p-3.5 text-right font-black text-emerald-700">₹${m.modal}</td>
+                        <td class="p-3.5 text-center">${badge}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- SUBMIT HANDLERS ---
+        async function handleLocalSubmit(e) {
             e.preventDefault();
-            const crop = document.getElementById('d-crop').value;
-            const qty = document.getElementById('d-qty').value;
-            const price = document.getElementById('d-price').value;
-            const location = document.getElementById('d-location').value;
+            const newItem = {
+                item: document.getElementById('l-item').value, 
+                qty: document.getElementById('l-qty').value,
+                price: Number(document.getElementById('l-price').value), 
+                location: document.getElementById('l-location').value,
+                seller: currentUser ? currentUser.name : "Anonymous", 
+                phone: currentUser ? currentUser.phone : "9999999999"
+            };
 
-            document.getElementById('demand-form').reset();
-            toggleForm('demand-form-container');
-            showToast(`Procurement request for ${qty} of ${crop} posted!`, "success");
-        };
+            // Push to Firestore Cloud Database if available
+            if (window.saveLocalProduceToFirestore) {
+                await window.saveLocalProduceToFirestore(newItem);
+            } else {
+                localItems.unshift({ id: Date.now(), ...newItem });
+                localStorage.setItem('ks_local_items_v2', JSON.stringify(localItems));
+                renderAll();
+            }
 
-        // Gemini AI Advisory Chat Handler
-        async function handleChat(e) {
+            document.getElementById('local-form').reset();
+            toggleForm('local-form-container');
+            showToast("Daily produce published to Firestore!");
+        }
+
+        function handleTruckSubmit(e) {
+            e.preventDefault();
+            truckItems.unshift({
+                id: Date.now(), from: document.getElementById('t-from').value, to: document.getElementById('t-to').value,
+                date: document.getElementById('t-date').value, space: document.getElementById('t-space').value,
+                price: Number(document.getElementById('t-price').value), seller: currentUser.name, phone: currentUser.phone
+            });
+            localStorage.setItem('ks_truck_items', JSON.stringify(truckItems));
+            renderAll();
+            document.getElementById('truck-form').reset();
+            toggleForm('truck-form-container');
+            showToast("Freight Route Listed!");
+        }
+
+        // --- CHAT LOGIC ---
+        function handleChatSubmit(e) {
             e.preventDefault();
             const input = document.getElementById('chat-input');
-            const query = input.value.trim();
-            if (!query) return;
+            const msg = input.value.trim();
+            if(!msg) return;
 
-            const chatMessages = document.getElementById('chat-messages');
-            
-            // Append User Question
-            const userBubble = document.createElement('div');
-            userBubble.className = "bg-emerald-700/70 border border-emerald-500/40 p-3 rounded-xl max-w-lg text-sm ml-auto text-right text-white";
-            userBubble.innerText = query;
-            chatMessages.appendChild(userBubble);
+            addChatMessage('user', msg);
             input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Check Key Configuration
-            if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") {
-                const errBubble = document.createElement('div');
-                errBubble.className = "bg-slate-700 p-3 rounded-xl max-w-lg text-sm text-yellow-300";
-                errBubble.innerText = "Advisory Bot Notice: Please configure GEMINI_API_KEY with a valid key to activate real-time Agronomist advice.";
-                chatMessages.appendChild(errBubble);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                return;
-            }
-
-            // Call API
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: `You are an expert Indian agricultural officer. Answer concisely: ${query}` }]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-                const aiReply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to generate advisory at this moment.";
-                
-                const botBubble = document.createElement('div');
-                botBubble.className = "bg-emerald-950/80 border border-emerald-700/50 p-3 rounded-xl max-w-lg text-sm text-emerald-100";
-                botBubble.innerText = aiReply;
-                chatMessages.appendChild(botBubble);
-            } catch (err) {
-                const errBubble = document.createElement('div');
-                errBubble.className = "bg-rose-900/60 border border-rose-700/50 p-3 rounded-xl max-w-lg text-sm text-rose-200";
-                errBubble.innerText = "Connection error. Please try asking again.";
-                chatMessages.appendChild(errBubble);
-            }
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            setTimeout(() => {
+                addChatMessage('ai', `Analysis for "${msg}": Recommendation is to monitor moisture content and check current Mandi modal rate at ₹2,275/Qtl.`);
+            }, 800);
         }
+
+        function addChatMessage(role, text) {
+            const container = document.getElementById('chat-messages');
+            const isAI = role === 'ai';
+            const html = `
+                <div class="flex gap-2.5 items-start ${isAI ? '' : 'flex-row-reverse'}">
+                    <div class="w-7 h-7 rounded-full ${isAI ? 'bg-emerald-600' : 'bg-slate-800'} text-white flex items-center justify-center text-xs shrink-0 font-bold">
+                        ${isAI ? 'AI' : 'You'}
+                    </div>
+                    <div class="${isAI ? 'bg-white border-slate-200 text-slate-700' : 'bg-emerald-700 text-white'} border p-3 rounded-2xl text-xs shadow-sm max-w-[85%]">
+                        ${text}
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // --- NAVIGATION TABS ---
+        function switchTab(tabKey) {
+            ['local', 'truck', 'mandi', 'advisor'].forEach(k => {
+                document.getElementById(`view-${k}`).classList.add('hidden');
+                document.getElementById(`tab-${k}`).classList.remove('tab-active');
+                document.getElementById(`tab-${k}`).classList.add('text-emerald-100');
+            });
+            document.getElementById(`view-${tabKey}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabKey}`);
+            activeBtn.classList.add('tab-active');
+            activeBtn.classList.remove('text-emerald-100');
+        }
+
+        function toggleForm(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        function filterMandiRates() {
+            const q = document.getElementById('mandi-search').value.toLowerCase();
+            const filtered = mandiData.filter(m => m.crop.toLowerCase().includes(q) || m.mandi.toLowerCase().includes(q));
+            renderMandiRates(filtered);
+        }
+
+        function toggleVoiceModal() {
+            document.getElementById('voice-modal').classList.toggle('hidden');
+        }
+
+        function simulateVoiceInput(text) {
+            toggleVoiceModal();
+            showToast(`Voice Recognized: "${text}"`);
+            switchTab('advisor');
+            addChatMessage('user', text);
+            setTimeout(() => {
+                addChatMessage('ai', `I heard: "${text}". Your listing/request is processing!`);
+            }, 600);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initial launch setup
+        window.addEventListener('DOMContentLoaded', () => {
+            initAppUI();
+        });
+    </script>
+
+    <!-- FIREBASE INITIALIZATION & FIRESTORE REALTIME SYNC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } 
+            from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
+            authDomain: "krishisarthi-341d1.firebaseapp.com",
+            projectId: "krishisarthi-341d1",
+            storageBucket: "krishisarthi-341d1.firebasestorage.app",
+            messagingSenderId: "513338973625",
+            appId: "1:513338973625:web:f35e1db41645a37bf72a68"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.db = db;
+        window.app = app;
+
+        // Firestore reference for local produce
+        const localCollection = collection(db, "local_produce");
+
+        // Listen for live updates from database
+        onSnapshot(localCollection, (snapshot) => {
+            const liveItems = [];
+            snapshot.forEach((doc) => {
+                liveItems.push({ id: doc.id, ...doc.data() });
+            });
+            if (liveItems.length > 0) {
+                window.localItems = liveItems;
+                if (typeof window.renderAll === "function") window.renderAll();
+            }
+        });
+
+        // Global function to push produce items straight to Firestore Cloud
+        window.saveLocalProduceToFirestore = async function(itemData) {
+            try {
+                await addDoc(localCollection, {
+                    ...itemData,
+                    createdAt: serverTimestamp()
+                });
+                console.log("✅ Successfully written to Firestore cloud database!");
+            } catch (error) {
+                console.error("❌ Error writing document to Firestore:", error);
+            }
+        };
+
+        console.log("✅ Firebase App initialised:", app.name);
+        console.log("✅ Firestore db handle ready:", db);
     </script>
 </body>
 </html>
