@@ -40,11 +40,6 @@
             backdrop-filter: blur(12px);
         }
     </style>
-  <meta property="og:image" content="https://bolt.new/static/og_default.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
-    <script src="/public/js/voiceOutput.js"></script>
-    <script src="/public/js/translator.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen relative selection:bg-emerald-200">
 
@@ -61,13 +56,13 @@
                 <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1">
                     KrishiSarthi <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">🌱</span>
                 </h1>
-                <p class="text-xs font-semibold text-slate-500 mt-0.5" data-i18n>Voice-First Agro-Marketplace & Freight Pooling</p>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5">Voice-First Agro-Marketplace & Freight Pooling</p>
             </div>
 
             <!-- STEP 1: LOGIN DETAILS FORM -->
             <form id="form-login-step1" onsubmit="handleSendOTP(event)" class="space-y-3.5 text-left">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Select Language / भाषा चुनें</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Select Language / भाषा चुनें</label>
                     <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
                         <option value="en">English</option>
                         <option value="hi">हिन्दी (Hindi)</option>
@@ -82,7 +77,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Select Role / भूमिका</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Select Role / भूमिका</label>
                     <select id="login-role" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
                         <option value="Farmer">🌾 Farmer / Producer (किसान)</option>
                         <option value="Consumer">🛒 Consumer / Retailer (ग्राहक / व्यापारी)</option>
@@ -91,12 +86,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Full Name</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Full Name</label>
                     <input type="text" id="login-name" required placeholder="e.g. Ramesh Kumar" class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-sm">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Mobile Number</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Mobile Number</label>
                     <div class="flex">
                         <span class="bg-slate-100 border border-r-0 border-slate-200 px-3.5 py-3 rounded-l-xl text-slate-600 font-bold text-sm">+91</span>
                         <input type="tel" id="login-phone" required pattern="[0-9]{10}" placeholder="10 digit number" class="w-full p-3 border border-slate-200 rounded-r-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-sm">
@@ -105,37 +100,41 @@
 
                 <button type="button" onclick="detectGPSLocation('login-location-status')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl border border-slate-300 flex items-center justify-center gap-2">
                     <i class="fa-solid fa-location-crosshairs text-emerald-600"></i>
-                    <span id="login-location-status" data-i18n>Auto-Detect GPS Location</span>
+                    <span id="login-location-status">Auto-Detect GPS Location</span>
                 </button>
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base flex items-center justify-center gap-2 mt-2">
-                    <span data-i18n>Send Verification OTP</span> <i class="fa-solid fa-paper-plane text-sm"></i>
+                    <span>Send Verification OTP</span> <i class="fa-solid fa-paper-plane text-sm"></i>
                 </button>
+
+                <!-- Dedicated invisible reCAPTCHA container. Firebase's own docs always bind
+                     RecaptchaVerifier to a plain, empty element — never to a <form> id. -->
+                <div id="recaptcha-container"></div>
             </form>
-            <div id="recaptcha-container"></div>
 
             <!-- STEP 2: OTP VERIFICATION FORM (Hidden Initially) -->
-            <form id="form-login-step2" onsubmit="handleVerifyOTP(event)" class="hidden space-y-6 text-left animate-pop">
+            <form id="form-login-step2" onsubmit="handleVerifyOTP(event)" class="hidden space-y-4 text-left animate-pop">
                 <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center">
                     <i class="fa-solid fa-shield-halved text-emerald-600 text-2xl mb-1"></i>
-                    <h3 class="font-extrabold text-emerald-900 text-base" data-i18n>OTP Verification</h3>
-                    <p class="text-xs text-emerald-700 mt-1"><span data-i18n>Sent security code to</span> <span id="otp-phone-display" class="font-bold">+91 9876543210</span></p>
+                    <h3 class="font-extrabold text-emerald-900 text-base">OTP Verification</h3>
+                    <p class="text-xs text-emerald-700 mt-1">Sent 4-digit security code to <span id="otp-phone-display" class="font-bold">+91 9876543210</span></p>
+                    <div class="mt-2 inline-block bg-emerald-200 text-emerald-900 text-[11px] font-extrabold px-3 py-1 rounded-full">
+                        Demo OTP Code: <span class="underline">4321</span>
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-2 text-center" data-i18n>Enter the Security Code</label>
+                    <label class="block text-xs font-bold text-slate-600 mb-2 text-center">Enter 4-Digit Security Code</label>
                     <div class="flex justify-center gap-3" id="otp-inputs">
-                        <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
-                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" maxlength="1" class="otp-box w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" maxlength="1" class="otp-box w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" maxlength="1" class="otp-box w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" maxlength="1" class="otp-box w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
                     </div>
                 </div>
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all text-base flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-circle-check"></i> <span data-i18n>Verify & Access Platform</span>
+                    <i class="fa-solid fa-circle-check"></i> Verify & Access Platform
                 </button>
 
                 <div class="flex justify-between items-center text-xs text-slate-500 pt-1">
@@ -153,17 +152,19 @@
             <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
 
                 <div class="flex items-center gap-3">
-                    <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-10 h-10 rounded-full object-cover shadow-md border-2 border-emerald-300">
+                    <!-- Brand Logo Image Emblem -->
+                    <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
 
                     <div>
                         <h1 class="text-xl font-black tracking-tight leading-none flex items-center gap-1">
                             KrishiSarthi <span class="text-[10px] bg-emerald-400 text-emerald-950 font-extrabold px-1.5 py-0.5 rounded">v2.4</span>
                         </h1>
-                        <p id="welcome-user" class="text-xs text-emerald-200 font-medium mt-0.5">Welcome</p>
+                        <p id="welcome-user" class="text-xs text-emerald-200 font-medium mt-0.5" data-i18n="welcome_text">Welcome</p>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <!-- Global Header Language Switcher -->
                     <select id="header-lang-select" onchange="changeLanguage(this.value)" class="bg-emerald-900 text-emerald-200 border border-emerald-700 px-2.5 py-1.5 rounded-xl text-xs font-semibold outline-none cursor-pointer">
                         <option value="en">English</option>
                         <option value="hi">हिन्दी</option>
@@ -176,14 +177,16 @@
                         <option value="kn">ಕನ್ನಡ</option>
                     </select>
 
+                    <!-- GPS Badge -->
                     <div id="header-gps-badge" onclick="detectGPSLocation()" class="hidden md:flex items-center gap-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border border-emerald-700 px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer" title="Refresh GPS Location">
                         <i class="fa-solid fa-location-dot text-emerald-400"></i>
                         <span id="current-gps-text">Lucknow, UP</span>
                     </div>
 
+                    <!-- Voice Command Trigger -->
                     <button onclick="triggerGlobalVoiceCommand()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md transition-all active:scale-95">
                         <i class="fa-solid fa-microphone text-sm"></i>
-                        <span class="hidden sm:inline" data-i18n>Voice Assistant</span>
+                        <span class="hidden sm:inline">Voice Assistant</span>
                     </button>
 
                     <button onclick="logout()" class="w-9 h-9 bg-emerald-800 rounded-xl flex items-center justify-center hover:bg-red-500 transition-colors shadow-inner" title="Logout">
@@ -226,6 +229,10 @@
             <section id="sec-dashboard" class="space-y-6 animate-fade-in">
                 <div class="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
 
+                    <div class="absolute right-4 bottom-0 opacity-20 transform translate-x-4 translate-y-4">
+                        <img src="WhatsApp%20Image%202026-09-10%20at%202.36.32%20PM.jpeg" alt="Background Watermark" class="w-80 h-80 rounded-full object-cover mix-blend-overlay filter blur-sm">
+                    </div>
+
                     <div class="relative z-10 max-w-2xl">
                         <span class="bg-emerald-500/30 backdrop-blur text-emerald-200 text-xs font-bold px-3 py-1 rounded-full border border-emerald-400/30 uppercase tracking-wider mb-3 inline-block">Verified Agri-Trading Engine</span>
                         <h2 class="text-3xl sm:text-4xl font-black mb-2 leading-tight" data-i18n="dash_title">Direct Farm Trade & Pooled Freight</h2>
@@ -245,12 +252,12 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
                         <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-basket-shopping text-xl"></i></div>
-                        <h3 id="dash-local-count" class="text-2xl font-black text-slate-800">0</h3>
+                        <h3 id="dash-local-count" class="text-2xl font-black text-slate-800">6</h3>
                         <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Local Listings</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
                         <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-boxes-packing text-xl"></i></div>
-                        <h3 id="dash-bulk-count" class="text-2xl font-black text-slate-800">0</h3>
+                        <h3 id="dash-bulk-count" class="text-2xl font-black text-slate-800">6</h3>
                         <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Bulk Wholesale Lots</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
@@ -259,7 +266,7 @@
                         <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Active Freight Routes</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-shield-halved text-xl"></i></div>
                         <h3 class="text-2xl font-black text-slate-800">100% Direct</h3>
                         <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Escrow Protection</p>
                     </div>
@@ -301,10 +308,6 @@
                 </div>
 
                 <div id="localmarket-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                <div id="localmarket-empty" class="hidden text-center py-12 text-slate-400">
-                    <i class="fa-solid fa-basket-shopping text-4xl mb-3"></i>
-                    <p class="font-semibold">No local produce listed yet. Be the first to post!</p>
-                </div>
             </section>
 
             <!-- ================= WHOLESALE ================= -->
@@ -334,31 +337,27 @@
                 </div>
 
                 <div id="marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                <div id="marketplace-empty" class="hidden text-center py-12 text-slate-400">
-                    <i class="fa-solid fa-boxes-packing text-4xl mb-3"></i>
-                    <p class="font-semibold">No wholesale lots listed yet.</p>
-                </div>
             </section>
 
             <!-- ================= BUYER DEMANDS ================= -->
             <section id="sec-demands" class="hidden space-y-6 animate-fade-in">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-purple-100">
                     <div>
-                        <h2 class="text-2xl font-black text-slate-800" data-i18n="buyer_demands_title">Buyer Demand Hub</h2>
+                        <h2 class="text-2xl font-black text-purple-900" data-i18n="buyer_demands_title">Buyer Demand Hub 📢</h2>
                         <p class="text-sm text-slate-500 mt-0.5">Post requirements or fulfill active buying requests from retailers.</p>
                     </div>
-                    <button onclick="toggleForm('demand-form-container')" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 px-5 rounded-xl shadow flex items-center gap-2 text-sm">
+                    <button onclick="toggleForm('demand-form-container')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-5 rounded-xl shadow flex items-center gap-2 text-sm">
                         <i class="fa-solid fa-plus"></i> Post Requirement
                     </button>
                 </div>
 
-                <div id="demand-form-container" class="hidden bg-slate-50 p-6 rounded-3xl border border-slate-200 animate-pop">
+                <div id="demand-form-container" class="hidden bg-purple-50 p-6 rounded-3xl border border-purple-200 animate-pop">
                     <form id="demand-form" onsubmit="handleDemandSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input type="text" id="d-crop" required placeholder="Required Item (e.g. Organic Red Onions)" class="p-3 border rounded-xl text-sm">
                         <input type="text" id="d-qty" required placeholder="Needed Quantity (e.g. 100 Quintal)" class="p-3 border rounded-xl text-sm">
                         <input type="number" id="d-budget" required placeholder="Target Budget (₹)" class="p-3 border rounded-xl text-sm">
                         <input type="text" id="d-location" required placeholder="Delivery Location" class="p-3 border rounded-xl text-sm">
-                        <button type="submit" class="md:col-span-2 bg-slate-700 text-white font-bold py-3.5 rounded-xl shadow">Broadcast Requirement</button>
+                        <button type="submit" class="md:col-span-2 bg-purple-700 text-white font-bold py-3.5 rounded-xl shadow">Broadcast Requirement</button>
                     </form>
                 </div>
 
@@ -409,7 +408,7 @@
             <section id="sec-mandi" class="hidden space-y-6 animate-fade-in">
                 <div class="bg-emerald-900 text-white rounded-3xl p-6 shadow-md flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>
-                        <h2 class="text-2xl font-black flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-400"></i> <span data-i18n="mandi_title">Live Mandi Prices</span></h2>
+                        <h2 class="text-2xl font-black flex items-center gap-2" data-i18n="mandi_title"><i class="fa-solid fa-chart-line text-emerald-400"></i> Live Mandi Prices</h2>
                         <p class="text-xs text-emerald-200 mt-1">Real-time daily mandi benchmark rates across Uttar Pradesh</p>
                     </div>
                     <div class="w-full md:w-72 relative">
@@ -423,9 +422,7 @@
             <!-- ================= MY PROFILE ================= -->
             <section id="sec-profile" class="hidden space-y-6 animate-fade-in">
                 <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center gap-6">
-                    <div class="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center shadow-lg border-4 border-emerald-500">
-                        <i class="fa-solid fa-user text-emerald-600 text-4xl"></i>
-                    </div>
+                    <img src="WhatsApp%20Image%202026-09-10%20at%202.36.32%20PM.jpeg" alt="Profile Avatar" class="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-emerald-500">
 
                     <div class="text-center sm:text-left">
                         <h2 id="prof-name" class="text-2xl font-black text-slate-800">User Name</h2>
@@ -488,7 +485,7 @@
             </div>
 
             <form onsubmit="handleChat(event)" class="p-3 border-t border-slate-100 bg-white flex gap-2 items-center">
-                <input id="chat-input" type="text" autocomplete="off" class="flex-1 p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 text-xs" data-i18n-placeholder placeholder="Ask or speak something...">
+                <input id="chat-input" type="text" autocomplete="off" class="flex-1 p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 text-xs" placeholder="Ask or speak something...">
                 <button type="button" onclick="startVoiceInput('chat-input')" class="bg-slate-100 text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 w-10 h-10 rounded-xl flex items-center justify-center transition">
                     <i class="fa-solid fa-microphone text-sm"></i>
                 </button>
@@ -519,7 +516,7 @@
                 dash_subtitle: "Connect directly with buyers, save 25% on combined truck rentals, and verify transactions via secure escrow.",
                 local_market_title: "Local Daily Market",
                 wholesale_title: "Wholesale Crop Lots",
-                buyer_demands_title: "Buyer Demand Hub",
+                buyer_demands_title: "Buyer Demand Hub 📢",
                 logistics_title: "Pooled Rural Freight & Fleet Dispatch",
                 mandi_title: "Live Mandi Prices",
                 profile_title: "My Active Listings & Orders"
@@ -537,7 +534,7 @@
                 dash_subtitle: "खरीदारों से सीधे जुड़ें, संयुक्त ट्रक किराए पर 25% बचाएं, और सुरक्षित एस्क्रो के माध्यम से लेनदेन सत्यापित करें।",
                 local_market_title: "स्थानीय दैनिक बाज़ार",
                 wholesale_title: "थोक फसल लॉट",
-                buyer_demands_title: "खरीदार मांग केंद्र",
+                buyer_demands_title: "खरीदार मांग केंद्र 📢",
                 logistics_title: "सामूहिक ग्रामीण माल ढुलाई और बेड़े का प्रेषण",
                 mandi_title: "लाइव मंडी भाव",
                 profile_title: "मेरी सक्रिय लिस्टिंग और ऑर्डर"
@@ -545,52 +542,43 @@
         };
 
         function changeLanguage(lang) {
-            currentLang = lang || 'en';
-            if (currentUser) {
-                currentUser.lang = currentLang;
-                sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
-            }
-            if (window.TranslationManager) {
-                window.TranslationManager.setLanguage(currentLang);
-            }
-            if (document.getElementById('lang-select')) document.getElementById('lang-select').value = currentLang;
-            if (document.getElementById('header-lang-select')) document.getElementById('header-lang-select').value = currentLang;
+            currentLang = lang;
+            const selectedDict = translations[lang] || translations['en'];
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (selectedDict[key]) {
+                    element.innerText = selectedDict[key];
+                }
+            });
+            // Keep dropdowns in sync
+            if(document.getElementById('lang-select')) document.getElementById('lang-select').value = lang;
+            if(document.getElementById('header-lang-select')) document.getElementById('header-lang-select').value = lang;
         }
 
-        // --- APP STATE ---
-        // localItems and marketplaceListings are now populated LIVE from Firestore.
-        // No hardcoded mock data — the UI reflects what's in the database in real time.
+        // --- APP STATE & EXPANDED DATA ---
         let currentUser = null;
         let currentLang = 'en';
         let currentCoords = { lat: 26.8467, lng: 80.9462, name: "Lucknow, UP" };
 
-        let localItems = [];
-        let whatsappListings = [];
-        let marketplaceListings = [];
+        let localItems = JSON.parse(localStorage.getItem('ks_local_items_v2')) || [
+            { id: 101, item: "Fresh Farm Tomatoes", qty: "20 Kg", price: 340, location: "Sitapur Farm Hub", seller: "Ramesh Singh", phone: "9876543210" },
+            { id: 102, item: "Desi New Potatoes", qty: "50 Kg", price: 750, location: "Lucknow Rural", seller: "Suresh Patel", phone: "9123456789" },
+            { id: 103, item: "Organic Spinach (Palak)", qty: "15 Kg", price: 280, location: "Barabanki Farms", seller: "Gurpreet Singh", phone: "9811223344" },
+            { id: 104, item: "Green Cauliflower", qty: "30 Pcs", price: 600, location: "Unnao Mandi", seller: "Kisan Kumar", phone: "9765432109" },
+            { id: 105, item: "Fresh Green Chillies", qty: "10 Kg", price: 420, location: "Sitapur", seller: "Mahesh Yadav", phone: "9543210987" },
+            { id: 106, item: "Desi Cucumbers", qty: "25 Kg", price: 500, location: "Kanpur Outskirts", seller: "Rajesh Sharma", phone: "9321098765" }
+        ];
 
-        function last10(phone) {
-            return String(phone || '').replace(/\D/g, '').slice(-10);
-        }
+        let marketplaceListings = JSON.parse(localStorage.getItem('ks_bulk_items_v2')) || [
+            { id: 201, crop: "Sharbati Wheat Grade-A", qty: "100 Quintal", price: 2420, location: "Kanpur Central Mandi", farmer: "Ramesh Singh", phone: "9876543210" },
+            { id: 202, crop: "Basmati Paddy (Pusa 1121)", qty: "80 Quintal", price: 3650, location: "Bareilly Grain Hub", farmer: "Harpreet Singh", phone: "9888776655" },
+            { id: 203, crop: "Yellow Maize (Makka)", qty: "150 Quintal", price: 1980, location: "Sitapur APMC", farmer: "Kisan Yadav", phone: "9776655443" },
+            { id: 204, crop: "Mustard Seeds (Sarson)", qty: "60 Quintal", price: 5400, location: "Agra Mandi Hub", farmer: "Shiv Kumar", phone: "9665544332" },
+            { id: 205, crop: "Chana (Bengal Gram)", qty: "120 Quintal", price: 5150, location: "Jhansi Wholesale", farmer: "Ram Lal", phone: "9554433221" },
+            { id: 206, crop: "Sugarcane Raw Batch", qty: "200 Quintal", price: 380, location: "Lakhimpur Kheri", farmer: "Gurmeet Khan", phone: "9443322110" }
+        ];
 
-        function phonesMatch(listingPhone, userPhone) {
-            const a = last10(listingPhone);
-            const b = last10(userPhone);
-            return Boolean(a && a === b);
-        }
-
-        function allLocalItems() {
-            const seen = new Set();
-            const merged = [];
-            for (const item of [...whatsappListings, ...localItems]) {
-                const key = String(item.id || item._id || `${item.item}-${item.phone}-${item.qty}-${item.price}`);
-                if (seen.has(key)) continue;
-                seen.add(key);
-                merged.push(item);
-            }
-            return merged;
-        }
-
-        let buyerDemands = [
+        let buyerDemands = JSON.parse(localStorage.getItem('ks_buyer_demands_v2')) || [
             { id: 301, crop: "Red Onions", qty: "200 Quintal", budget: 240000, location: "Lucknow Hotel Assoc.", buyer: "Verma Traders", phone: "9988776655" },
             { id: 302, crop: "Bulk Garlic Batch", qty: "50 Quintal", budget: 350000, location: "Delhi Export Hub", buyer: "Global Spices Ltd", phone: "9877665544" },
             { id: 303, crop: "Processing Tomatoes", qty: "150 Quintal", budget: 180000, location: "Kanpur Food Park", buyer: "Ketchup Unit #4", phone: "9766554433" },
@@ -598,7 +586,7 @@
             { id: 305, crop: "Soybean Beans", qty: "300 Quintal", budget: 1350000, location: "Indore Oil Mill", buyer: "National Agro Oil", phone: "9544332211" }
         ];
 
-        let logisticsBatches = [
+        let logisticsBatches = JSON.parse(localStorage.getItem('ks_logistics_batches_v2')) || [
             {
                 id: "LOG-902", route: "Sitapur → Kanpur Grain Mandi", carrier: "Eicher 14ft Truck (UP-32-T-8890)", driver: "Vikram Sharma (9871122334)",
                 filled: 120, capacity: 150, farmers: ["Ramesh S. (40 Qtl)", "Suresh P. (50 Qtl)", "Mahesh K. (30 Qtl)"],
@@ -632,18 +620,15 @@
             { id: 8, crop: "Garlic (लहसुन)", mandi: "Mandsaur Mandi", price: 8200, unit: "Qtl", trend: "up", change: 250 }
         ];
 
+        let generatedDemoOTP = "4321";
+
         document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const savedUser = sessionStorage.getItem('ks_user_v2');
-                if(savedUser) {
-                    currentUser = JSON.parse(savedUser);
-                    currentLang = currentUser.lang || 'en';
-                    changeLanguage(currentLang);
-                    showApp();
-                }
-            } catch (err) {
-                console.error("Failed to restore session:", err);
-                sessionStorage.removeItem('ks_user_v2');
+            const savedUser = sessionStorage.getItem('ks_user_v2');
+            if(savedUser) {
+                currentUser = JSON.parse(savedUser);
+                currentLang = currentUser.lang || 'en';
+                changeLanguage(currentLang);
+                showApp();
             }
 
             setupOTPInputs();
@@ -666,40 +651,40 @@
             });
         }
 
-        function completeKrishiLogin(user) {
-            currentUser = {
-                name: user.name || document.getElementById('login-name')?.value || '',
-                phone: String(user.phone || document.getElementById('login-phone')?.value || '').replace(/\D/g, '').slice(-10),
-                role: user.role || document.getElementById('login-role')?.value || '',
-                lang: user.lang || document.getElementById('lang-select')?.value || 'en',
-                uid: user.uid || null
-            };
-            currentLang = currentUser.lang;
-            sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
-            changeLanguage(currentLang);
-            showApp();
-        }
-        window.completeKrishiLogin = completeKrishiLogin;
-
-        // Firebase Auth OTP handlers live in /public/js/auth.js
-        async function handleSendOTP(e) {
-            if (e && typeof e.preventDefault === 'function') e.preventDefault();
-            if (typeof window.sendOTP !== 'function') {
-                showToast("Auth is still loading. Try again in a moment.", "info");
-            }
-        }
-
-        async function handleVerifyOTP(e) {
-            if (e && typeof e.preventDefault === 'function') e.preventDefault();
-            if (typeof window.verifyOTP !== 'function') {
-                showToast("Auth is still loading. Try again in a moment.", "info");
+        function handleSendOTP(e) {
+            e.preventDefault();
+            const phone = document.getElementById('login-phone').value;
+            if(!phone || phone.length !== 10) {
+                showToast("Please enter a valid 10-digit mobile number", "error");
                 return;
             }
-            try {
-                await window.verifyOTP();
-            } catch (error) {
-                console.error("OTP verify failed:", error);
-                showToast(error.message || "OTP verification failed", "error");
+
+            document.getElementById('otp-phone-display').innerText = `+91 ${phone}`;
+            document.getElementById('form-login-step1').classList.add('hidden');
+            document.getElementById('form-login-step2').classList.remove('hidden');
+            showToast("Demo Security OTP Sent: 4321", "info");
+        }
+
+        function handleVerifyOTP(e) {
+            e.preventDefault();
+            const boxes = document.querySelectorAll('.otp-box');
+            let enteredOTP = "";
+            boxes.forEach(b => enteredOTP += b.value);
+
+            if(enteredOTP === generatedDemoOTP || enteredOTP === "1234") {
+                currentUser = {
+                    name: document.getElementById('login-name').value,
+                    phone: document.getElementById('login-phone').value,
+                    role: document.getElementById('login-role').value,
+                    lang: document.getElementById('lang-select').value
+                };
+                currentLang = currentUser.lang;
+                changeLanguage(currentLang);
+                sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
+                showApp();
+                showToast(`OTP Verified! Welcome ${currentUser.name}`, "success");
+            } else {
+                showToast("Invalid OTP Code! Please use demo code 4321", "error");
             }
         }
 
@@ -709,7 +694,7 @@
         }
 
         function resendOTP() {
-            showToast("New OTP code sent!", "info");
+            showToast("New OTP code sent! Use 4321", "info");
         }
 
         function logout() {
@@ -776,38 +761,24 @@
                 showToast("Voice recognition not supported in browser", "error");
                 return;
             }
-            if (window.KrishiVoice) window.KrishiVoice.unlock();
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const rec = new SpeechRecognition();
-            rec.lang = window.KrishiVoice ? window.KrishiVoice.bcp47(currentLang) : 'en-IN';
-            rec.interimResults = false;
-            rec.maxAlternatives = 1;
+            rec.lang = 'en-US';
             rec.start();
             showToast("Listening... Speak now", "info");
             rec.onresult = (e) => {
-                const transcript = e.results[0][0].transcript;
-                document.getElementById(targetInputId).value = transcript;
-                showToast(`Recognized: "${transcript}"`, "success");
-                if (targetInputId === 'chat-input') {
-                    const form = document.querySelector('#chat-window form');
-                    if (form) form.requestSubmit();
-                }
-            };
-            rec.onerror = (e) => {
-                if (e.error !== 'aborted' && e.error !== 'no-speech') {
-                    showToast("Voice input failed. Try again.", "error");
-                }
+                document.getElementById(targetInputId).value = e.results[0][0].transcript;
+                showToast(`Recognized: "${e.results[0][0].transcript}"`, "success");
             };
         }
 
         function triggerGlobalVoiceCommand() {
-            const chatWindow = document.getElementById('chat-window');
-            if (chatWindow.classList.contains('hidden')) toggleChat();
+            toggleChat();
             startVoiceInput('chat-input');
         }
 
         function renderAll() {
-            document.getElementById('dash-local-count').innerText = allLocalItems().length;
+            document.getElementById('dash-local-count').innerText = localItems.length;
             document.getElementById('dash-bulk-count').innerText = marketplaceListings.length;
             document.getElementById('dash-logistics-count').innerText = logisticsBatches.length;
 
@@ -820,28 +791,17 @@
         }
 
         function renderLocalMarket() {
-            const grid = document.getElementById('localmarket-grid');
-            const empty = document.getElementById('localmarket-empty');
-
-            const items = allLocalItems();
-            if (items.length === 0) {
-                grid.innerHTML = '';
-                empty.classList.remove('hidden');
-                return;
-            }
-            empty.classList.add('hidden');
-
-            grid.innerHTML = items.map(item => `
+            document.getElementById('localmarket-grid').innerHTML = localItems.map(item => `
                 <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-extrabold text-slate-800">${item.item || ''}</h3>
-                            <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-lg border border-emerald-100">${item.qty || ''}</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">${item.item}</h3>
+                            <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-lg border border-emerald-100">${item.qty}</span>
                         </div>
-                        <p class="text-3xl font-black text-emerald-600 mb-3">₹${item.price || 0}</p>
+                        <p class="text-3xl font-black text-emerald-600 mb-3">₹${item.price}</p>
                         <div class="space-y-1 text-xs text-slate-500">
-                            <p><i class="fa-solid fa-user text-slate-400 w-4"></i> Seller: <strong class="text-slate-700">${item.seller || 'Unknown'}</strong></p>
-                            <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> ${item.location || ''}</p>
+                            <p><i class="fa-solid fa-user text-slate-400 w-4"></i> Seller: <strong class="text-slate-700">${item.seller}</strong></p>
+                            <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> ${item.location}</p>
                         </div>
                     </div>
                     <button onclick='openBuyModal(${JSON.stringify(item)}, "Local")' class="mt-5 w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition">
@@ -851,28 +811,20 @@
             `).join('');
         }
 
+
+
         function renderMarketplace() {
-            const grid = document.getElementById('marketplace-grid');
-            const empty = document.getElementById('marketplace-empty');
-
-            if (marketplaceListings.length === 0) {
-                grid.innerHTML = '';
-                empty.classList.remove('hidden');
-                return;
-            }
-            empty.classList.add('hidden');
-
-            grid.innerHTML = marketplaceListings.map(item => `
+            document.getElementById('marketplace-grid').innerHTML = marketplaceListings.map(item => `
                 <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-extrabold text-slate-800">${item.crop || ''}</h3>
-                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-lg border border-blue-100">${item.qty || ''}</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">${item.crop}</h3>
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-lg border border-blue-100">${item.qty}</span>
                         </div>
-                        <p class="text-3xl font-black text-blue-600 mb-3">₹${item.price || 0} <span class="text-xs text-slate-400 font-normal">/ Qtl</span></p>
+                        <p class="text-3xl font-black text-blue-600 mb-3">₹${item.price} <span class="text-xs text-slate-400 font-normal">/ Qtl</span></p>
                         <div class="space-y-1 text-xs text-slate-500">
-                            <p><i class="fa-solid fa-user-tie text-slate-400 w-4"></i> Farmer: <strong class="text-slate-700">${item.farmer || 'Unknown'}</strong></p>
-                            <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> ${item.location || ''}</p>
+                            <p><i class="fa-solid fa-user-tie text-slate-400 w-4"></i> Farmer: <strong class="text-slate-700">${item.farmer}</strong></p>
+                            <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> ${item.location}</p>
                         </div>
                     </div>
                     <button onclick='openBuyModal(${JSON.stringify(item)}, "Wholesale")' class="mt-5 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition">
@@ -882,26 +834,28 @@
             `).join('');
         }
 
+
         function renderBuyerDemands() {
             document.getElementById('demands-grid').innerHTML = buyerDemands.map(item => `
-                <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div class="bg-white rounded-3xl p-6 border border-purple-100 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-xl font-extrabold text-slate-800">${item.crop}</h3>
-                            <span class="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-lg">Target: ${item.qty}</span>
+                            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-lg">Target: ${item.qty}</span>
                         </div>
-                        <p class="text-2xl font-black text-slate-700 mb-3">Budget: ₹${item.budget.toLocaleString()}</p>
+                        <p class="text-2xl font-black text-purple-700 mb-3">Budget: ₹${item.budget.toLocaleString()}</p>
                         <div class="space-y-1 text-xs text-slate-500">
                             <p><i class="fa-solid fa-building w-4"></i> Buyer: <strong>${item.buyer}</strong></p>
                             <p><i class="fa-solid fa-location-dot w-4"></i> ${item.location}</p>
                         </div>
                     </div>
-                    <button onclick="showToast('Supply offer sent to buyer!', 'success')" class="mt-5 w-full bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">
+                    <button onclick="showToast('Supply offer sent to buyer!', 'success')" class="mt-5 w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition">
                         <i class="fa-solid fa-handshake"></i> Fulfill Requirement
                     </button>
                 </div>
             `).join('');
         }
+
 
         function renderLogisticsList() {
             const container = document.getElementById('logistics-list-container');
@@ -945,6 +899,8 @@
             `}).join('');
         }
 
+
+
         function poolHarvestIntoBatch(batchId) {
             const batch = logisticsBatches.find(b => b.id === batchId);
             if(batch) {
@@ -955,6 +911,7 @@
                 batch.filled = Math.min(batch.capacity, batch.filled + 10);
                 const tag = `${currentUser.name} (10 Qtl)`;
                 if(!batch.farmers.includes(tag)) batch.farmers.push(tag);
+                localStorage.setItem('ks_logistics_batches_v2', JSON.stringify(logisticsBatches));
                 renderLogisticsList();
                 showToast(`Added 10 Quintal into ${batchId}! Space locked.`, 'success');
             }
@@ -1023,8 +980,8 @@
             document.getElementById('prof-role').innerText = currentUser.role;
             document.getElementById('prof-lang').innerText = currentUser.lang.toUpperCase();
 
-            const myDeals = allLocalItems().filter(i => phonesMatch(i.phone, currentUser.phone))
-                            .concat(marketplaceListings.filter(i => phonesMatch(i.phone, currentUser.phone)));
+            const myDeals = localItems.filter(i => i.phone === currentUser.phone)
+                            .concat(marketplaceListings.filter(i => i.phone === currentUser.phone));
 
             const container = document.getElementById('profile-deals-grid');
             if(myDeals.length === 0) {
@@ -1075,32 +1032,38 @@
             document.getElementById('chat-window').classList.toggle('hidden');
         }
 
-        // Chat now routes through the backend proxy — the Gemini API key is never
-        // exposed to the browser. The backend forwards the message and returns the reply.
-        async function handleChat(e) {
+       async function handleChat(e) {
             e.preventDefault();
             const input = document.getElementById('chat-input');
-            const q = input.value.trim();
+            const q = input.value.trim().toLowerCase();
             if(!q) return;
 
             addChatMessage(input.value, 'user');
             input.value = '';
 
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: q, language: currentLang })
-                });
 
-                const data = await res.json();
-                const reply = data.reply || "Sorry, I couldn't generate a response.";
-                addChatMessage(reply, 'bot');
-                if (window.KrishiVoice) window.KrishiVoice.speak(reply, currentLang);
-            } catch (err) {
-                console.error("Chat proxy error:", err);
-                addChatMessage("Sorry, I'm having trouble connecting right now.", 'bot');
-            }
+try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: "You are KrishiSarthi Voice AI, a helpful agricultural assistant for Indian farmers. Answer concisely: " + q }]
+            }]
+        })
+    });
+
+    const data = await res.json();
+    const aiResponse = data.candidates[0].content.parts[0].text;
+
+    // Displays the live AI response using your existing UI function on line 1106
+    addChatMessage(aiResponse, 'bot');
+
+} catch (err) {
+    console.error("Gemini API Error:", err);
+    addChatMessage("Sorry, I'm having trouble connecting right now.", 'bot');
+}
+
         }
 
         function addChatMessage(text, sender) {
@@ -1114,142 +1077,163 @@
             container.scrollTop = container.scrollHeight;
         }
     </script>
-
     <script type="module">
-        import { initializeApp, getApps, getApp }
-          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy }
-          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    // ── Import only what we need from the Firebase CDN ────────────
+    //    firebase-app   → creates the Firebase connection
+    //    firebase-firestore → gives us the Firestore database handle
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-        const firebaseConfig = {
-          apiKey:            "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
-          authDomain:        "krishisarthi-341d1.firebaseapp.com",
-          projectId:         "krishisarthi-341d1",
-          storageBucket:     "krishisarthi-341d1.firebasestorage.app",
-          messagingSenderId: "513338973625",
-          appId:             "1:513338973625:web:f35e1db41645a37bf72a68"
-        };
+   import { getFirestore, collection, addDoc, onSnapshot, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        window.db = db;
-        window.app = app;
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    // ── Your Firebase project credentials ────────────────────────
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
+      authDomain:        "krishisarthi-341d1.firebaseapp.com",
+      projectId:         "krishisarthi-341d1",
+      storageBucket:     "krishisarthi-341d1.firebasestorage.app",
+      messagingSenderId: "513338973625",
+      appId:             "1:513338973625:web:f35e1db41645a37bf72a68"
+    };
 
-        window.dbMethods = { collection, addDoc, onSnapshot, query, orderBy };
 
-        // ── REAL-TIME FIRESTORE LISTENERS ──────────────────────────
-        //   These replace the old hardcoded mock arrays. The UI now
-        //   updates live whenever a document is added, modified, or
-        //   removed in Firestore — no page refresh needed.
+    // ── Initialize Firebase App ───────────────────────────────────
+    //    This is your live connection to the Firebase project.
+    const app = initializeApp(firebaseConfig);
 
-        function initRealtimeListeners() {
-            // Local Market produce
-            window.dbMethods.onSnapshot(
-                window.dbMethods.collection(window.db, "local_produce"),
-                (snapshot) => {
-                    localItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    document.getElementById('dash-local-count').innerText = allLocalItems().length;
-                    if (typeof renderLocalMarket === 'function') renderLocalMarket();
-                    if (typeof renderProfile === 'function') renderProfile();
-                },
-                (err) => console.error("Firestore local_produce listener error:", err)
-            );
 
-            // Wholesale marketplace listings
-            window.dbMethods.onSnapshot(
-                window.dbMethods.collection(window.db, "marketplace_listings"),
-                (snapshot) => {
-                    marketplaceListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    document.getElementById('dash-bulk-count').innerText = marketplaceListings.length;
-                    if (typeof renderMarketplace === 'function') renderMarketplace();
-                    if (typeof renderProfile === 'function') renderProfile();
-                },
-                (err) => console.error("Firestore marketplace_listings listener error:", err)
-            );
+    // ── Initialize Firestore Database ─────────────────────────────
+    //    `db` is the object you'll use in future steps to
+    //    read and write data. Think of it as your database door handle.
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+window.auth = auth;
+window.confirmationResult =null;
+
+
+    // ── Expose db globally ────────────────────────────────────────
+    //    <script type="module"> is sandboxed — variables inside it
+    //    are invisible to your other <script> tags by default.
+    //    Attaching to `window` makes `db` available everywhere on
+    //    the page so your existing code and future scripts can use it.
+    window.db  = db;
+    window.app = app;
+
+
+    // ── Sanity check — open your browser DevTools (F12) ──────────
+    //    Console tab → you should see both green checkmarks.
+    //    If you see an error instead, check that your Firebase
+    //    project has Firestore enabled in the Firebase Console.
+    console.log("✅ Firebase App initialised:", app.name);
+    console.log("✅ Firestore db handle ready:", db);
+// Expose methods globally
+window.dbMethods = { collection, addDoc, onSnapshot, query, orderBy };
+
+// Real-time listener
+function initRealtimeListeners() {
+    window.dbMethods.onSnapshot(window.dbMethods.collection(window.db, "local_produce"), (snapshot) => {
+        localItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (typeof renderLocalMarket === 'function') renderLocalMarket();
+    });
+}
+initRealtimeListeners();
+// Connect Local Produce form to Firestore
+window.handleLocalSubmit = async function(e) {
+    e.preventDefault();
+    const newItem = {
+        item: document.getElementById('l-item').value,
+        qty: document.getElementById('l-qty').value,
+        price: Number(document.getElementById('l-price').value),
+        location: document.getElementById('l-location').value,
+        createdAt: new Date()
+    };
+
+    await window.dbMethods.addDoc(window.dbMethods.collection(window.db, "local_produce"), newItem);
+    document.getElementById('local-form').reset();
+    if (typeof toggleForm === 'function') toggleForm('local-form-container');
+    console.log("Produce saved to database!");
+};
+// Send SMS OTP via Firebase Auth
+window.handleSendOTP = async function(e) {
+    e.preventDefault();
+    const phoneInput = document.getElementById('login-phone').value;
+    const fullPhoneNumber = "+91" + phoneInput; // Append Indian country code
+
+    try {
+        if (!window.recaptchaVerifier) {
+            // Attach invisible reCAPTCHA to its own dedicated container (never a <form> id)
+            window.recaptchaVerifier = new RecaptchaVerifier(window.auth, 'recaptcha-container', {
+                'size': 'invisible'
+            });
         }
-        initRealtimeListeners();
+        window.confirmationResult = await signInWithPhoneNumber(window.auth, fullPhoneNumber, window.recaptchaVerifier);
 
-        async function loadWhatsAppListings() {
-            try {
-                const res = await fetch('/api/listings');
-                const data = await res.json();
-                whatsappListings = (data.listings || []).map((l) => ({
-                    id: l._id,
-                    item: l.item,
-                    qty: l.qty,
-                    price: l.price,
-                    location: l.location,
-                    seller: l.farmerName || 'WhatsApp Farmer',
-                    phone: l.phone,
-                    source: l.source || 'whatsapp'
-                }));
-                document.getElementById('dash-local-count').innerText = allLocalItems().length;
-                if (typeof renderLocalMarket === 'function') renderLocalMarket();
-                if (typeof renderProfile === 'function') renderProfile();
-            } catch (err) {
-                console.error('Mongo listings fetch error:', err);
-            }
+        // Transition UI to Step 2
+        document.getElementById('otp-phone-display').innerText = fullPhoneNumber;
+        document.getElementById('form-login-step1').classList.add('hidden');
+        document.getElementById('form-login-step2').classList.remove('hidden');
+        showToast("Live OTP sent to your phone!", "info");
+    } catch (error) {
+        // error.code is what actually tells you which setting to fix — log it,
+        // don't just log the message (which is often generic).
+        console.error("SMS Error:", error.code, error.message);
+
+        // A failed attempt can leave the widget stuck. Tear it down so the next
+        // click builds a fresh one instead of reusing a broken instance.
+        if (window.recaptchaVerifier) {
+            window.recaptchaVerifier.clear();
+            window.recaptchaVerifier = null;
         }
-        loadWhatsAppListings();
-        setInterval(loadWhatsAppListings, 8000);
 
-        // ── LOCAL PRODUCE FORM SUBMISSION ──────────────────────────
-        window.handleLocalSubmit = async function(e) {
-            e.preventDefault();
-            const newItem = {
-                item: document.getElementById('l-item').value,
-                qty: document.getElementById('l-qty').value,
-                price: Number(document.getElementById('l-price').value),
-                location: document.getElementById('l-location').value,
-                seller: currentUser ? currentUser.name : 'Unknown',
-                phone: currentUser ? '+91' + currentUser.phone : '',
-                source: 'web',
-                createdAt: new Date()
-            };
+        showToast(`OTP failed: ${error.code || error.message}`, "error");
+    }
+};
 
-            try {
-                await window.dbMethods.addDoc(
-                    window.dbMethods.collection(window.db, "local_produce"),
-                    newItem
-                );
-                document.getElementById('local-form').reset();
-                if (typeof toggleForm === 'function') toggleForm('local-form-container');
-                showToast("Produce published to Local Market!", "success");
-            } catch (err) {
-                console.error("Firestore write error:", err);
-                showToast("Failed to publish produce. Check connection.", "error");
-            }
+// Verify SMS OTP
+window.handleVerifyOTP = async function(e) {
+    e.preventDefault();
+
+    // Combine the 4 input boxes into a single string
+    const boxes = document.querySelectorAll('.otp-box');
+    let codeEntered = "";
+    boxes.forEach(b => codeEntered += b.value);
+
+    if (!window.confirmationResult) {
+        showToast("No OTP request found on this page — go back and resend the code.", "error");
+        return;
+    }
+
+    try {
+        const result = await window.confirmationResult.confirm(codeEntered);
+        console.log("Verified User UID:", result.user.uid);
+
+        // Set user session and load app
+        currentUser = {
+            name: document.getElementById('login-name').value,
+            phone: document.getElementById('login-phone').value,
+            role: document.getElementById('login-role').value,
+            lang: document.getElementById('lang-select').value
         };
+        sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
+        showApp();
+        showToast("Phone verified successfully!", "success");
+    } catch (error) {
+        console.error("Invalid OTP:", error.code, error.message);
+        showToast(`Verification failed: ${error.code || error.message}`, "error");
+    }
+};
+  </script>
 
-        // ── WHOLESALE FORM SUBMISSION ──────────────────────────────
-        window.handleMarketplaceSubmit = async function(e) {
-            e.preventDefault();
-            const newListing = {
-                crop: document.getElementById('m-crop').value,
-                qty: document.getElementById('m-qty').value,
-                price: Number(document.getElementById('m-price').value),
-                location: document.getElementById('m-location').value,
-                farmer: currentUser ? currentUser.name : 'Unknown',
-                phone: currentUser ? '+91' + currentUser.phone : '',
-                source: 'web',
-                createdAt: new Date()
-            };
+  <!-- ============================================================
+    THAT'S IT FOR THIS STEP.
+    Your mock data, UI, and hardcoded logic are completely untouched.
+    In the next step we'll start replacing mock data with real
+    Firestore reads/writes — using the `db` handle we just created.
+    ============================================================ -->
 
-            try {
-                await window.dbMethods.addDoc(
-                    window.dbMethods.collection(window.db, "marketplace_listings"),
-                    newListing
-                );
-                document.getElementById('marketplace-form').reset();
-                if (typeof toggleForm === 'function') toggleForm('marketplace-form-container');
-                showToast("Wholesale batch published!", "success");
-            } catch (err) {
-                console.error("Firestore write error:", err);
-                showToast("Failed to publish batch. Check connection.", "error");
-            }
-        };
-    </script>
-    <script type="module" src="/public/js/auth.js"></script>
 </body>
 </html>
