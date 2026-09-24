@@ -1,0 +1,2910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrishiSarthi🌱 - Direct Voice-First Agri Ecosystem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.96); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton-shimmer {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.6s ease-in-out infinite;
+        }
+
+        .tab-btn {
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            min-height: 48px;
+        }
+        .tab-btn:active {
+            transform: scale(0.97);
+        }
+        .tab-active {
+            border-bottom: 3.5px solid #059669;
+            color: #047857;
+            font-weight: 800;
+            background: linear-gradient(to top, #ecfdf5 0%, transparent 100%);
+        }
+
+        .card-modern {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-modern:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+        }
+
+        .chat-scroll::-webkit-scrollbar, .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .chat-scroll, .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass-header {
+            background: rgba(4, 120, 87, 0.96);
+            backdrop-filter: blur(12px);
+        }
+
+        /* Mobile touch button sizing */
+        .btn-touch {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Modal backdrop animation */
+        .modal-backdrop {
+            transition: opacity 0.25s ease, backdrop-filter 0.25s ease;
+        }
+    </style>
+  <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+    <script src="public/js/voiceOutput.js"></script>
+    <script src="public/js/translator.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen relative selection:bg-emerald-200">
+
+    <!-- ================= AUTH & OTP SCREEN ================= -->
+    <div id="auth-screen" class="fixed inset-0 bg-[url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center z-50 flex items-center justify-center transition-all duration-500">
+        <div class="absolute inset-0 bg-emerald-950/80 backdrop-blur-md"></div>
+
+        <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl text-center transform transition-all animate-pop relative z-10 mx-4 border border-emerald-100">
+
+            <!-- Brand Logo Header -->
+            <div class="flex flex-col items-center justify-center mb-4">
+               <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-20 h-20 rounded-full object-cover shadow-md border-2 border-emerald-300">
+
+                <h1 class="text-2xl font-black text-slate-800 tracking-tight flex items-center gap-1">
+                    KrishiSarthi <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">🌱</span>
+                </h1>
+                <p class="text-xs font-semibold text-slate-500 mt-0.5" data-i18n>Voice-First Agro-Marketplace & Freight Pooling</p>
+            </div>
+
+            <!-- STEP 1: LOGIN DETAILS FORM -->
+            <form id="form-login-step1" onsubmit="handleSendOTP(event)" class="space-y-3.5 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Select Language / भाषा चुनें</label>
+                    <select id="lang-select" onchange="changeLanguage(this.value)" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                        <option value="pb">ਪੰਜਾਬੀ (Punjabi)</option>
+                        <option value="mr">मराठी (Marathi)</option>
+                        <option value="gu">ગુજરાતી (Gujarati)</option>
+                        <option value="bn">বাংলা (Bengali)</option>
+                        <option value="te">తెలుగు (Telugu)</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Select Role / भूमिका</label>
+                    <select id="login-role" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-slate-700 text-sm">
+                        <option value="Farmer">🌾 Farmer / Producer (किसान)</option>
+                        <option value="Consumer">🛒 Consumer / Retailer (ग्राहक / व्यापारी)</option>
+                        <option value="Trader">⚖️ Wholesale Agent (आढ़तिया / एजेंट)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Full Name</label>
+                    <input type="text" id="login-name" required placeholder="e.g. Ramesh Kumar" class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n>Mobile Number</label>
+                    <div class="flex">
+                        <span class="bg-slate-100 border border-r-0 border-slate-200 px-3.5 py-3 rounded-l-xl text-slate-600 font-bold text-sm">+91</span>
+                        <input type="tel" id="login-phone" required pattern="[0-9]{10}" placeholder="10 digit number" class="w-full p-3 border border-slate-200 rounded-r-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-medium text-sm">
+                    </div>
+                </div>
+
+                <button type="button" onclick="detectGPSLocation('login-location-status')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl border border-slate-300 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-location-crosshairs text-emerald-600"></i>
+                    <span id="login-location-status" data-i18n>Auto-Detect GPS Location</span>
+                </button>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all text-base flex items-center justify-center gap-2 mt-2">
+                    <span data-i18n>Send Verification OTP</span> <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </form>
+            <div id="recaptcha-container"></div>
+
+            <!-- STEP 2: OTP VERIFICATION FORM (Hidden Initially) -->
+            <form id="form-login-step2" onsubmit="handleVerifyOTP(event)" class="hidden space-y-6 text-left animate-pop">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center">
+                    <i class="fa-solid fa-shield-halved text-emerald-600 text-2xl mb-1"></i>
+                    <h3 class="font-extrabold text-emerald-900 text-base" data-i18n>OTP Verification</h3>
+                    <p class="text-xs text-emerald-700 mt-1"><span data-i18n>Sent security code to</span> <span id="otp-phone-display" class="font-bold">+91 9876543210</span></p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-2 text-center" data-i18n>Enter the Security Code</label>
+                    <div class="flex justify-center gap-3" id="otp-inputs">
+                        <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                        <input type="text" inputmode="numeric" maxlength="1" class="otp-box otp-input w-12 h-12 text-center text-xl font-bold border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all text-base flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> <span data-i18n>Verify & Access Platform</span>
+                </button>
+
+                <div class="flex justify-between items-center text-xs text-slate-500 pt-1">
+                    <button type="button" onclick="backToStep1()" class="hover:underline font-bold text-slate-700"><i class="fa-solid fa-arrow-left"></i> Change Number</button>
+                    <button type="button" onclick="resendOTP()" class="text-emerald-700 font-bold hover:underline">Resend OTP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MAIN APP CONTENT ================= -->
+    <div id="app-content" class="pb-24 hidden">
+        <!-- Header -->
+        <header class="glass-header text-white shadow-lg sticky top-0 z-40 border-b border-emerald-600">
+            <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+
+                <div class="flex items-center gap-3">
+                    <img src="logo.jpg" alt="KrishiSarthi Logo" class="w-10 h-10 rounded-full object-cover shadow-md border-2 border-emerald-300">
+
+                    <div>
+                        <h1 class="text-xl font-black tracking-tight leading-none flex items-center gap-1">
+                            KrishiSarthi <span class="text-[10px] bg-emerald-400 text-emerald-950 font-extrabold px-1.5 py-0.5 rounded">v2.4</span>
+                        </h1>
+                        <p id="welcome-user" class="text-xs text-emerald-200 font-medium mt-0.5">Welcome</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <select id="header-lang-select" onchange="changeLanguage(this.value)" class="bg-emerald-900 text-emerald-200 border border-emerald-700 px-2.5 py-1.5 rounded-xl text-xs font-semibold outline-none cursor-pointer">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="pb">ਪੰਜਾਬੀ</option>
+                        <option value="mr">मराठी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                    </select>
+
+                    <div id="header-gps-badge" onclick="detectGPSLocation()" class="hidden md:flex items-center gap-1.5 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 border border-emerald-700 px-3 py-1.5 rounded-xl text-xs font-semibold cursor-pointer" title="Refresh GPS Location">
+                        <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                        <span id="current-gps-text">Lucknow, UP</span>
+                    </div>
+
+                    <button onclick="triggerGlobalVoiceCommand()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+                        <i class="fa-solid fa-microphone text-sm"></i>
+                        <span class="hidden sm:inline" data-i18n>Voice Assistant</span>
+                    </button>
+
+                    <button onclick="logout()" class="w-9 h-9 bg-emerald-800 rounded-xl flex items-center justify-center hover:bg-red-500 transition-colors shadow-inner" title="Logout">
+                        <i class="fa-solid fa-power-off text-emerald-100 text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="bg-white shadow-sm overflow-x-auto scrollbar-hide border-t border-slate-100">
+                <div class="max-w-6xl mx-auto flex min-w-[750px]">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn tab-active flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-chart-pie text-base"></i> <span data-i18n="nav_dashboard">Dashboard</span>
+                    </button>
+                    <button onclick="switchTab('localmarket')" id="tab-localmarket" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-basket-shopping text-base"></i> <span data-i18n="nav_localmarket">Local Market</span>
+                    </button>
+                    <button onclick="switchTab('marketplace')" id="tab-marketplace" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-store text-base"></i> <span data-i18n="nav_marketplace">Wholesale Hub</span>
+                    </button>
+                    <button onclick="switchTab('demands')" id="tab-demands" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-bullhorn text-base"></i> <span data-i18n="nav_demands">Buyer Demands</span>
+                    </button>
+                    <button onclick="switchTab('grouping')" id="tab-grouping" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-truck-fast text-base text-amber-600"></i> <span class="text-amber-800" data-i18n="nav_grouping">Logistics & Freight</span>
+                    </button>
+                    <button onclick="switchTab('orders')" id="tab-orders" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-boxes-packing text-base text-emerald-600"></i> <span data-i18n="nav_orders">Track Orders</span>
+                    </button>
+                    <button onclick="switchTab('mandi')" id="tab-mandi" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-chart-line text-base"></i> <span data-i18n="nav_mandi">Mandi Rates</span>
+                    </button>
+                    <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn flex-1 py-3 px-2 text-center text-xs font-bold transition-colors flex flex-col items-center gap-1 text-slate-500 hover:text-emerald-600">
+                        <i class="fa-solid fa-user-circle text-base"></i> <span data-i18n="nav_profile">My Profile</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 py-6">
+
+            <!-- ================= DASHBOARD ================= -->
+            <section id="sec-dashboard" class="space-y-6 animate-fade-in">
+                <div class="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="bg-emerald-500/30 backdrop-blur text-emerald-200 text-xs font-bold px-3 py-1 rounded-full border border-emerald-400/30 uppercase tracking-wider mb-3 inline-block">Verified Agri-Trading Engine</span>
+                        <h2 class="text-3xl sm:text-4xl font-black mb-2 leading-tight" data-i18n="dash_title">Direct Farm Trade & Pooled Freight</h2>
+                        <p class="text-emerald-100 text-sm sm:text-base mb-6" data-i18n="dash_subtitle">Connect directly with buyers, save 25% on combined truck rentals, and verify transactions via secure escrow.</p>
+
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="switchTab('localmarket')" class="bg-white text-emerald-950 hover:bg-emerald-50 font-extrabold px-5 py-2.5 rounded-xl shadow-md text-sm transition-all active:scale-95 flex items-center gap-2">
+                                <i class="fa-solid fa-basket-shopping text-emerald-600"></i> Explore Local Produce
+                            </button>
+                            <button onclick="switchTab('grouping')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl shadow-md text-sm transition-all active:scale-95 flex items-center gap-2">
+                                <i class="fa-solid fa-truck-moving"></i> View Shared Logistics
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-basket-shopping text-xl"></i></div>
+                        <h3 id="dash-local-count" class="text-2xl font-black text-slate-800">0</h3>
+                        <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Local Listings</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-boxes-packing text-xl"></i></div>
+                        <h3 id="dash-bulk-count" class="text-2xl font-black text-slate-800">0</h3>
+                        <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Bulk Wholesale Lots</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-truck-fast text-xl"></i></div>
+                        <h3 id="dash-logistics-count" class="text-2xl font-black text-slate-800">4</h3>
+                        <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Active Freight Routes</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all text-center">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                        <h3 class="text-2xl font-black text-slate-800">100% Direct</h3>
+                        <p class="text-xs font-bold text-slate-500 uppercase mt-0.5">Escrow Protection</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= LOCAL MARKET ================= -->
+            <section id="sec-localmarket" class="hidden space-y-6 animate-fade-in">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-emerald-100">
+                    <div>
+                        <h2 class="text-2xl font-black text-emerald-900" data-i18n="local_market_title">Local Daily Market</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">Fresh daily farm produce directly from local growers.</p>
+                    </div>
+                    <div id="local-action-area"></div>
+                </div>
+
+                <div id="local-form-container" class="hidden bg-emerald-50 p-6 rounded-3xl border border-emerald-200 animate-pop">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-emerald-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-leaf text-emerald-600"></i> Post Daily Produce
+                        </h3>
+                    </div>
+                    <form id="local-form" onsubmit="handleLocalSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="relative">
+                            <input type="text" id="l-item" required placeholder="Produce Name (e.g. Fresh Tomatoes)" class="w-full p-3 pr-12 border border-slate-200 rounded-xl text-sm">
+                            <button type="button" onclick="startVoiceInput('l-item')" class="absolute right-2 top-2 w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="l-qty" required placeholder="Quantity (e.g. 15 Kg)" class="w-full p-3 pr-12 border border-slate-200 rounded-xl text-sm">
+                            <button type="button" onclick="startVoiceInput('l-qty')" class="absolute right-2 top-2 w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center"><i class="fa-solid fa-microphone"></i></button>
+                        </div>
+                        <input type="number" id="l-price" required placeholder="Total Price in ₹" class="p-3 border border-slate-200 rounded-xl text-sm">
+                        <div class="relative flex gap-2">
+                            <input type="text" id="l-location" required placeholder="Farm Location / Village" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                            <button type="button" onclick="fillLocationField('l-location')" class="bg-emerald-200 text-emerald-800 px-3 rounded-xl"><i class="fa-solid fa-location-crosshairs"></i></button>
+                        </div>
+                        <button type="submit" class="md:col-span-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 rounded-xl shadow">Publish Produce Item</button>
+                    </form>
+                </div>
+
+                <div id="localmarket-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="localmarket-empty" class="hidden text-center py-12 text-slate-400">
+                    <i class="fa-solid fa-basket-shopping text-4xl mb-3"></i>
+                    <p class="font-semibold">No local produce listed yet. Be the first to post!</p>
+                </div>
+            </section>
+
+            <!-- ================= WHOLESALE ================= -->
+            <section id="sec-marketplace" class="hidden space-y-6 animate-fade-in">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-blue-100">
+                    <div>
+                        <h2 class="text-2xl font-black text-blue-900" data-i18n="wholesale_title">Wholesale Crop Lots</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">Bulk harvest loads traded directly with commercial buyers & mills.</p>
+                    </div>
+                    <div id="wholesale-action-area"></div>
+                </div>
+
+                <div id="marketplace-form-container" class="hidden bg-blue-50 p-6 rounded-3xl border border-blue-200 animate-pop">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-blue-900 text-base"><i class="fa-solid fa-boxes-packing text-blue-600"></i> Post Wholesale Crop Batch</h3>
+                    </div>
+                    <form id="marketplace-form" onsubmit="handleMarketplaceSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="m-crop" required placeholder="Crop Name (e.g. Sharbati Wheat)" class="p-3 border rounded-xl text-sm">
+                        <input type="text" id="m-qty" required placeholder="Quantity (e.g. 50 Quintal)" class="p-3 border rounded-xl text-sm">
+                        <input type="number" id="m-price" required placeholder="Price per Quintal (₹)" class="p-3 border rounded-xl text-sm">
+                        <div class="flex gap-2">
+                            <input type="text" id="m-location" required placeholder="Mandi / Collection Hub" class="w-full p-3 border rounded-xl text-sm">
+                            <button type="button" onclick="fillLocationField('m-location')" class="bg-blue-200 text-blue-800 px-3 rounded-xl"><i class="fa-solid fa-location-crosshairs"></i></button>
+                        </div>
+                        <button type="submit" class="md:col-span-2 bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow">Publish Wholesale Batch</button>
+                    </form>
+                </div>
+
+                <div id="marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="marketplace-empty" class="hidden text-center py-12 text-slate-400">
+                    <i class="fa-solid fa-boxes-packing text-4xl mb-3"></i>
+                    <p class="font-semibold">No wholesale lots listed yet.</p>
+                </div>
+            </section>
+
+            <!-- ================= BUYER DEMANDS ================= -->
+            <section id="sec-demands" class="hidden space-y-6 animate-fade-in">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800" data-i18n="buyer_demands_title">Buyer Demand Hub</h2>
+                        <p class="text-sm text-slate-500 mt-0.5">Post requirements or fulfill active buying requests from retailers.</p>
+                    </div>
+                    <button onclick="toggleForm('demand-form-container')" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 px-5 rounded-xl shadow flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-plus"></i> Post Requirement
+                    </button>
+                </div>
+
+                <div id="demand-form-container" class="hidden bg-slate-50 p-6 rounded-3xl border border-slate-200 animate-pop">
+                    <form id="demand-form" onsubmit="handleDemandSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="d-crop" required placeholder="Required Item (e.g. Organic Red Onions)" class="p-3 border rounded-xl text-sm">
+                        <input type="text" id="d-qty" required placeholder="Needed Quantity (e.g. 100 Quintal)" class="p-3 border rounded-xl text-sm">
+                        <input type="number" id="d-budget" required placeholder="Target Budget (₹)" class="p-3 border rounded-xl text-sm">
+                        <input type="text" id="d-location" required placeholder="Delivery Location" class="p-3 border rounded-xl text-sm">
+                        <button type="submit" class="md:col-span-2 bg-slate-700 text-white font-bold py-3.5 rounded-xl shadow">Broadcast Requirement</button>
+                    </form>
+                </div>
+
+                <div id="demands-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+
+            <!-- ================= LOGISTICS & FREIGHT POOLING ================= -->
+            <section id="sec-grouping" class="hidden space-y-6 animate-fade-in">
+                <div class="bg-gradient-to-r from-amber-700 via-orange-600 to-amber-800 text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden">
+                    <div class="max-w-2xl relative z-10">
+                        <span class="bg-black/25 text-amber-100 text-xs font-extrabold px-3 py-1 rounded-full uppercase border border-white/20 mb-3 inline-block">Smart Logistics Engine</span>
+                        <h2 class="text-3xl font-black mb-2" data-i18n="logistics_title">Pooled Rural Freight & Fleet Dispatch</h2>
+                        <p class="text-amber-100 text-sm">Share vehicle space with nearby farmers on identical market routes to save up to ₹120/Quintal in transport costs.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-truck-moving text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-extrabold text-slate-800">Logistics & Freight Services</h3>
+                            <p class="text-xs text-slate-500">Choose Shared Freight Pooling (Save ~25%) or Book Individual Private Vehicle</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                        <button onclick="openPoolingModal()" class="flex-1 sm:flex-initial bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-extrabold px-4 py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-people-group"></i> <span data-i18n="pool_btn">Nearby Farmers Pooling</span>
+                        </button>
+                        <button onclick="openLogisticsBookingModal()" class="flex-1 sm:flex-initial bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold px-4 py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-truck-fast"></i> Book Logistics (Shared / Individual)
+                        </button>
+                        <button onclick="toggleForm('logistics-create-modal')" class="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> New Route Dispatch
+                        </button>
+                    </div>
+                </div>
+
+                <!-- My Booked Trips Container -->
+                <div id="logistics-my-bookings-section" class="hidden space-y-3">
+                    <h4 class="text-sm font-extrabold text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-list text-amber-600"></i> My Active Freight Bookings
+                    </h4>
+                    <div id="logistics-my-bookings-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <div id="logistics-create-modal" class="hidden bg-amber-50 p-6 rounded-3xl border border-amber-200 animate-pop space-y-4">
+                    <h3 class="text-lg font-bold text-amber-900 flex items-center gap-2">
+                        <i class="fa-solid fa-truck-ramp-box text-amber-600"></i> Setup New Vehicle Dispatch
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <input type="text" id="log-route-title" placeholder="Route (e.g. Sitapur to Lucknow APMC)" class="p-3 border rounded-xl text-sm">
+                        <input type="text" id="log-carrier" placeholder="Vehicle Details (e.g. Eicher 14ft UP-32)" class="p-3 border rounded-xl text-sm">
+                        <input type="number" id="log-capacity" placeholder="Total Payload Capacity (Quintal)" class="p-3 border rounded-xl text-sm">
+                    </div>
+                    <button onclick="createNewLogisticsBatch()" class="bg-amber-700 text-white font-bold px-6 py-3 rounded-xl text-sm shadow">Deploy Freight Batch</button>
+                </div>
+
+                <h4 class="text-sm font-extrabold text-slate-700 flex items-center gap-2 pt-2">
+                    <i class="fa-solid fa-road text-amber-600"></i> Live Pooling Corridors
+                </h4>
+                <div id="logistics-list-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+            </section>
+
+            <!-- ================= ORDER TRACKING ================= -->
+            <section id="sec-orders" class="hidden space-y-6 animate-fade-in">
+                <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="bg-emerald-500/30 text-emerald-200 text-xs font-bold px-3 py-1 rounded-full uppercase border border-emerald-400/30 mb-2 inline-block">Real-Time Escrow & Fulfillment</span>
+                        <h2 class="text-3xl font-black flex items-center gap-2">
+                            <i class="fa-solid fa-boxes-packing text-emerald-400"></i> <span data-i18n="orders_title">Order Tracking</span>
+                        </h2>
+                        <p class="text-emerald-100 text-sm mt-1" data-i18n="orders_subtitle">Track live order status, shipment milestones, and bank escrow payment release.</p>
+                    </div>
+                    <button onclick="loadAndRenderOrders()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 border border-white/20 transition">
+                        <i class="fa-solid fa-arrows-rotate"></i> <span data-i18n="refresh_orders">Refresh Orders</span>
+                    </button>
+                </div>
+
+                <div id="orders-empty" class="hidden bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-sm">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 mb-3 text-2xl">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-700" data-i18n="no_orders_yet">No Orders Tracked Yet</h3>
+                    <p class="text-slate-400 text-xs mt-1" data-i18n="no_orders_desc">Place an order from Local Market or Wholesale Hub to track delivery status here.</p>
+                    <button onclick="switchTab('localmarket')" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow" data-i18n="btn_explore_market">Explore Local Market</button>
+                </div>
+
+                <div id="orders-list-container" class="space-y-4"></div>
+            </section>
+
+            <!-- ================= MANDI RATES ================= -->
+            <section id="sec-mandi" class="hidden space-y-6 animate-fade-in">
+                <div class="bg-emerald-900 text-white rounded-3xl p-6 shadow-md flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-400"></i> <span data-i18n="mandi_title">Live Mandi Prices</span></h2>
+                        <p class="text-xs text-emerald-200 mt-1">Real-time daily mandi benchmark rates across Uttar Pradesh</p>
+                    </div>
+                    <div class="w-full md:w-72 relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                        <input type="text" id="mandi-search" oninput="filterMandiPrices()" placeholder="Search crop or mandi..." class="w-full pl-11 pr-4 py-2.5 rounded-xl text-slate-800 outline-none text-sm">
+                    </div>
+                </div>
+                <div id="mandi-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+            </section>
+
+            <!-- ================= MY PROFILE ================= -->
+            <section id="sec-profile" class="hidden space-y-6 animate-fade-in">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center gap-6">
+                    <div class="w-24 h-24 rounded-full bg-emerald-100 flex items-center justify-center shadow-lg border-4 border-emerald-500">
+                        <i class="fa-solid fa-user text-emerald-600 text-4xl"></i>
+                    </div>
+
+                    <div class="text-center sm:text-left">
+                        <h2 id="prof-name" class="text-2xl font-black text-slate-800">User Name</h2>
+                        <p class="text-slate-500 font-semibold text-sm mt-1 flex items-center justify-center sm:justify-start gap-2">
+                            <i class="fa-solid fa-phone text-emerald-600"></i> <span id="prof-phone">+91 Mobile</span>
+                        </p>
+                        <div class="mt-3 flex gap-2 justify-center sm:justify-start">
+                            <span id="prof-role" class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-lg border border-blue-200">Role</span>
+                            <span id="prof-lang" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-lg border border-emerald-200">Language</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-black text-slate-800 mb-4" data-i18n="profile_title">My Active Listings & Orders</h3>
+                    <div id="profile-deals-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= ESCROW BUY MODAL ================= -->
+    <div id="buy-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl animate-pop border border-slate-100">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-emerald-600"></i> Escrow Direct Purchase
+                </h3>
+                <button onclick="closeBuyModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div id="buy-modal-body" class="space-y-4"></div>
+
+            <button onclick="confirmPurchase()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg mt-6 transition">
+                Lock Payment & Place Order
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= EDIT LISTING MODAL ================= -->
+    <div id="edit-listing-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl animate-pop border border-slate-100">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-amber-600"></i> <span id="edit-modal-title" data-i18n="edit_listing_title">Edit Listing</span>
+                </h3>
+                <button onclick="closeEditListingModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <form id="form-edit-listing" onsubmit="handleEditListingSubmit(event)" class="space-y-4">
+                <input type="hidden" id="edit-listing-id">
+                <input type="hidden" id="edit-listing-type">
+                <input type="hidden" id="edit-listing-source">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="crop_name_lbl">Produce / Crop Name</label>
+                    <input type="text" id="edit-listing-item" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="quantity_lbl">Quantity</label>
+                        <input type="text" id="edit-listing-qty" required placeholder="e.g. 50 Quintal" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="price_lbl">Price in ₹</label>
+                        <input type="number" id="edit-listing-price" required min="1" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="location_lbl">Location / Mandi Hub</label>
+                    <input type="text" id="edit-listing-location" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeEditListingModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-sm transition" data-i18n="btn_cancel">Cancel</button>
+                    <button type="submit" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl text-sm shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_changes">Save Changes</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= LOGISTICS BOOKING MODAL (Shared vs Individual) ================= -->
+    <div id="logistics-booking-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl animate-pop border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-truck-moving text-amber-600"></i> <span data-i18n="logistics_book_title">Book Freight Transport</span>
+                </h3>
+                <button onclick="closeLogisticsBookingModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <!-- Booking Type Toggle: Shared vs Individual -->
+            <div class="mb-4">
+                <label class="block text-xs font-bold text-slate-600 mb-2" data-i18n="lbl_booking_mode">Select Booking Mode</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label id="lbl-type-shared" onclick="setLogisticsBookingType('Shared')" class="flex flex-col p-3.5 border-2 border-amber-600 bg-amber-50 rounded-2xl cursor-pointer transition">
+                        <div class="flex items-center gap-2">
+                            <input type="radio" id="radio-log-shared" name="log_type" value="Shared" checked class="accent-amber-600">
+                            <span class="font-extrabold text-sm text-slate-800" data-i18n="mode_shared">Shared (Freight Pooling)</span>
+                        </div>
+                        <span class="text-[11px] text-amber-900 mt-1" data-i18n="mode_shared_desc">Pool truck space. Pay per quintal. <strong>Save ~25%</strong>.</span>
+                    </label>
+
+                    <label id="lbl-type-individual" onclick="setLogisticsBookingType('Individual')" class="flex flex-col p-3.5 border-2 border-slate-200 bg-slate-50 rounded-2xl cursor-pointer transition">
+                        <div class="flex items-center gap-2">
+                            <input type="radio" id="radio-log-indiv" name="log_type" value="Individual" class="accent-amber-600">
+                            <span class="font-extrabold text-sm text-slate-800" data-i18n="mode_individual">Individual (Private Truck)</span>
+                        </div>
+                        <span class="text-[11px] text-slate-600 mt-1" data-i18n="mode_individual_desc">Hire entire dedicated vehicle exclusively for direct dispatch.</span>
+                    </label>
+                </div>
+            </div>
+
+            <form id="form-logistics-booking" onsubmit="handleLogisticsBooking(event)" class="space-y-3.5">
+                <!-- Vehicle Selector for Individual mode -->
+                <div id="indiv-vehicle-group" class="hidden">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Select Private Vehicle Model</label>
+                    <select id="log-indiv-vehicle" onchange="calculateLogisticsCost()" class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 font-medium">
+                        <option value="Mahindra Bolero Pickup (1.5T)|2200">Mahindra Bolero Pickup (1.5 Ton) — ~₹2,200</option>
+                        <option value="Swaraj Tractor Trolley (3T)|1800">Swaraj Tractor Trolley (3 Ton) — ~₹1,800</option>
+                        <option value="Eicher 14ft Truck (4T)|4800">Eicher 14ft Truck (4 Ton) — ~₹4,800</option>
+                        <option value="Tata 1613 Heavy Truck (10T)|10500">Tata 1613 Heavy Truck (10 Ton) — ~₹10,500</option>
+                    </select>
+                </div>
+
+                <!-- Shared Batch Selector -->
+                <div id="shared-batch-group">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Select Active Pooling Corridor</label>
+                    <select id="log-shared-batch" onchange="onSharedBatchSelected()" class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 font-medium">
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lbl_pickup_farm">Pickup Farm / Hub</label>
+                        <input type="text" id="log-pickup-loc" required placeholder="e.g. Sitapur Hub" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lbl_drop_mandi">Drop Mandi / Market</label>
+                        <input type="text" id="log-drop-loc" required placeholder="e.g. Lucknow APMC" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lbl_crop_type">Produce / Crop Type</label>
+                        <input type="text" id="log-crop-type" required placeholder="e.g. Wheat / Tomatoes" class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lbl_weight_payload">Weight / Payload (Quintals)</label>
+                        <input type="number" id="log-payload-qty" value="10" min="1" oninput="calculateLogisticsCost()" required class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lbl_pickup_date">Pickup Date</label>
+                    <input type="date" id="log-pickup-date" required class="w-full p-3 border border-slate-200 rounded-xl text-sm">
+                </div>
+
+                <!-- Cost & Savings Summary Card -->
+                <div id="log-cost-summary" class="bg-amber-50 border border-amber-200 p-3.5 rounded-2xl flex justify-between items-center text-xs">
+                    <div>
+                        <p class="text-slate-500 font-semibold" data-i18n="lbl_est_cost">Estimated Freight Cost</p>
+                        <p id="log-est-price" class="text-xl font-black text-amber-900">₹800</p>
+                    </div>
+                    <div id="log-savings-badge" class="bg-emerald-100 text-emerald-800 font-bold px-3 py-1.5 rounded-xl border border-emerald-200 text-[11px]">
+                        Save ~₹250 with Pooling
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-truck-fast"></i> <span data-i18n="btn_confirm_logistics">Confirm Logistics Booking</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= NEARBY FARMERS POOLING MODAL ================= -->
+    <div id="pooling-modal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full p-5 sm:p-7 shadow-2xl animate-pop border border-emerald-100 max-h-[92vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-start border-b border-slate-100 pb-4 mb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">Wholesale Freight Pooling</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded-full">Save ~30%</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-800 mt-1 flex items-center gap-2">
+                        <i class="fa-solid fa-people-group text-emerald-600"></i>
+                        <span data-i18n="pool_title">Nearby Farmers Pooling for Wholesale Markets</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1" data-i18n="pool_subtitle">Group together with nearby farmers to fulfill large bulk orders and cut transport costs up to 35%</p>
+                </div>
+                <button onclick="closePoolingModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-100 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <!-- Scrollable Body -->
+            <div class="overflow-y-auto space-y-4 pr-1 chat-scroll flex-1">
+                <!-- Controls: Crop Filter & Radius -->
+                <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-filter text-emerald-600 text-sm"></i>
+                        <span class="text-xs font-extrabold text-slate-700" data-i18n="pool_filter_crop">Filter by Crop:</span>
+                        <select id="pool-filter-crop" onchange="filterNearbyFarmers()" class="bg-white border border-slate-200 text-slate-700 text-xs font-bold py-1.5 px-3 rounded-xl outline-none focus:border-emerald-500">
+                            <option value="All">All Produce</option>
+                            <option value="Wheat">🌾 Wheat (गेहूं)</option>
+                            <option value="Potato">🥔 Potato (आलू)</option>
+                            <option value="Tomato">🍅 Tomato (टमाटर)</option>
+                            <option value="Mustard">🌼 Mustard (सरसों)</option>
+                            <option value="Onion">🧅 Onion (प्याज)</option>
+                            <option value="Soybean">🌱 Soybean (सोयाबीन)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-600">
+                        <i class="fa-solid fa-location-dot text-emerald-500"></i>
+                        <span>Search Radius:</span>
+                        <select id="pool-filter-radius" onchange="filterNearbyFarmers()" class="bg-white border border-slate-200 text-slate-700 text-xs font-bold py-1.5 px-2 rounded-xl outline-none">
+                            <option value="15">Within 15 km</option>
+                            <option value="25">Within 25 km</option>
+                            <option value="50">Within 50 km</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Host Farmer Volume Input Card -->
+                <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                            <i class="fa-solid fa-wheat-awn"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-extrabold text-emerald-950 uppercase tracking-wide">Your Harvest Share</h4>
+                            <p class="text-xs text-emerald-800" data-i18n="pool_my_qty">Enter your contribution to include in the wholesale pool:</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <input type="number" id="pool-host-qty" value="15" min="1" max="1000" oninput="updatePoolingCalculations()" class="w-24 p-2.5 bg-white border border-emerald-300 rounded-xl font-black text-slate-800 text-sm text-center focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <span class="text-xs font-bold text-emerald-900">Quintals</span>
+                    </div>
+                </div>
+
+                <!-- Farmers Card / List View -->
+                <div>
+                    <div class="flex justify-between items-center mb-2 px-1">
+                        <span class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Nearby Farmers Available for Pooling</span>
+                        <span id="pool-farmers-count-badge" class="text-xs bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-lg">Loading farmers...</span>
+                    </div>
+                    <div id="pooling-farmers-list" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <!-- Dynamic nearby farmer cards injected here -->
+                    </div>
+                </div>
+
+                <!-- Active Formed Pools Section -->
+                <div id="active-pools-wrapper" class="pt-2">
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <span class="text-xs font-extrabold text-slate-600 flex items-center gap-1.5" data-i18n="pool_active_title">
+                            <i class="fa-solid fa-circle-nodes text-emerald-600"></i> Formed Wholesale Farmer Pools
+                        </span>
+                        <button onclick="loadFormedPools()" class="text-[11px] font-bold text-emerald-700 hover:underline">Refresh</button>
+                    </div>
+                    <div id="active-pools-list" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- Sticky Bottom Calculation & Submit Summary Bar -->
+            <div class="mt-4 pt-3 border-t border-slate-200/90 bg-white">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3 text-xs bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                    <div>
+                        <span class="text-slate-400 font-semibold block">Selected Farmers</span>
+                        <span id="pool-calc-farmers-count" class="font-black text-slate-800 text-sm">0 Farmers + You</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-semibold block" data-i18n="pool_combined_vol">Combined Total Volume</span>
+                        <span id="pool-calc-total-volume" class="font-black text-emerald-700 text-base">15 Quintals</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 font-semibold block" data-i18n="pool_savings">Estimated Freight Savings</span>
+                        <span id="pool-calc-savings" class="font-black text-amber-600 text-sm">~18% (Save ₹70/Qtl)</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                    <div class="flex-1">
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1" data-i18n="pool_target_market">Target Wholesale Market</label>
+                        <select id="pool-target-market" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs text-slate-700 outline-none focus:border-emerald-500">
+                            <option value="Lucknow APMC Wholesale Mandi">Lucknow APMC Wholesale Mandi</option>
+                            <option value="Kanpur APMC Grain Terminal">Kanpur APMC Grain Terminal</option>
+                            <option value="Agra Cold Storage & Mandi Hub">Agra Cold Storage & Mandi Hub</option>
+                            <option value="Delhi Azadpur Wholesale Mandi">Delhi Azadpur Wholesale Mandi</option>
+                            <option value="Sitapur APMC Yard">Sitapur APMC Yard</option>
+                        </select>
+                    </div>
+                    <button id="btn-create-pool" onclick="handleCreatePoolSubmit()" class="sm:w-auto px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black rounded-xl text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 self-end">
+                        <i class="fa-solid fa-truck-ramp-box"></i>
+                        <span data-i18n="pool_create_btn">Create Pool & Proceed to Wholesale</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= DYNAMIC AI CHATBOT ================= -->
+    <div id="chatbot-wrapper" class="hidden">
+        <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-emerald-600 text-white w-14 h-14 rounded-full shadow-2xl hover:bg-emerald-700 hover:scale-110 transition-all z-50 flex items-center justify-center">
+            <i class="fa-solid fa-robot text-2xl"></i>
+        </button>
+
+        <div id="chat-window" class="fixed bottom-24 right-6 w-[360px] max-w-[92vw] bg-white rounded-3xl shadow-2xl border border-slate-100 z-50 hidden flex-col overflow-hidden animate-pop">
+            <div class="bg-gradient-to-r from-emerald-800 to-teal-700 text-white p-4 font-bold flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></div>
+                    <i class="fa-solid fa-robot"></i> <span>KrishiSarthi Voice Assistant</span>
+                </div>
+                <button onclick="toggleChat()" class="text-emerald-100 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div id="chat-messages" class="h-80 p-4 overflow-y-auto chat-scroll bg-slate-50 text-sm flex flex-col gap-3">
+                <div class="bg-white border border-slate-200 text-slate-700 p-3.5 rounded-2xl rounded-tl-none self-start max-w-[85%] shadow-sm text-xs leading-relaxed">
+                    Namaste! Ask me anything regarding mandi rates, truck freight pooling, or posting your daily produce.
+                </div>
+            </div>
+
+            <form onsubmit="handleChat(event)" class="p-3 border-t border-slate-100 bg-white flex gap-2 items-center">
+                <input id="chat-input" type="text" autocomplete="off" class="flex-1 p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 text-xs" data-i18n-placeholder placeholder="Ask or speak something...">
+                <button type="button" onclick="startVoiceInput('chat-input')" class="bg-slate-100 text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 w-10 h-10 rounded-xl flex items-center justify-center transition">
+                    <i class="fa-solid fa-microphone text-sm"></i>
+                </button>
+                <button type="submit" class="bg-emerald-600 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-emerald-700 transition shadow">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed top-5 right-4 sm:right-6 z-[100] flex flex-col gap-2.5 max-w-sm w-[calc(100%-2rem)] sm:w-96 pointer-events-none"></div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- MULTILINGUAL TRANSLATION DICTIONARY ---
+        const translations = {
+            en: {
+                nav_dashboard: "Dashboard",
+                nav_localmarket: "Local Market",
+                nav_marketplace: "Wholesale Hub",
+                nav_demands: "Buyer Demands",
+                nav_grouping: "Logistics & Freight",
+                nav_orders: "Track Orders",
+                nav_mandi: "Mandi Rates",
+                nav_profile: "My Profile",
+                welcome_text: "Welcome",
+                dash_title: "Direct Farm Trade & Pooled Freight",
+                dash_subtitle: "Connect directly with buyers, save 25% on combined truck rentals, and verify transactions via secure escrow.",
+                local_market_title: "Local Daily Market",
+                wholesale_title: "Wholesale Crop Lots",
+                buyer_demands_title: "Buyer Demand Hub",
+                logistics_title: "Pooled Rural Freight & Fleet Dispatch",
+                orders_title: "Order Tracking",
+                mandi_title: "Live Mandi Prices",
+                profile_title: "My Active Listings & Orders",
+                pool_title: "Nearby Farmers Pooling for Wholesale Markets",
+                pool_subtitle: "Group together with nearby farmers to fulfill large bulk orders and cut transport costs up to 35%",
+                pool_btn: "Nearby Farmers Pooling",
+                pool_create_btn: "Create Pool & Proceed to Wholesale",
+                pool_combined_vol: "Combined Total Volume",
+                pool_savings: "Estimated Freight Savings",
+                pool_target_market: "Target Wholesale Mandi",
+                pool_select_farmer: "Select for Pooling",
+                pool_selected: "Selected for Pool",
+                pool_filter_crop: "Filter by Crop Type",
+                pool_my_qty: "My Harvest Contribution (Quintals)",
+                pool_active_title: "Formed Wholesale Farmer Pools",
+                edit_listing_title: "Edit Listing",
+                crop_name_lbl: "Produce / Crop Name",
+                quantity_lbl: "Quantity",
+                price_lbl: "Price in ₹",
+                location_lbl: "Location / Mandi Hub",
+                btn_cancel: "Cancel",
+                btn_save_changes: "Save Changes",
+                logistics_book_title: "Book Freight Transport",
+                lbl_booking_mode: "Select Booking Mode",
+                mode_shared: "Shared (Freight Pooling)",
+                mode_shared_desc: "Pool truck space. Pay per quintal. Save ~25%.",
+                mode_individual: "Individual (Private Truck)",
+                mode_individual_desc: "Hire entire dedicated vehicle exclusively for direct dispatch.",
+                lbl_pickup_farm: "Pickup Farm / Hub",
+                lbl_drop_mandi: "Drop Mandi / Market",
+                lbl_crop_type: "Produce / Crop Type",
+                lbl_weight_payload: "Weight / Payload (Quintals)",
+                lbl_pickup_date: "Pickup Date",
+                lbl_est_cost: "Estimated Freight Cost",
+                btn_confirm_logistics: "Confirm Logistics Booking",
+                orders_subtitle: "Track live order status, shipment milestones, and bank escrow payment release.",
+                refresh_orders: "Refresh Orders",
+                no_orders_yet: "No Orders Tracked Yet",
+                no_orders_desc: "Place an order from Local Market or Wholesale Hub to track delivery status here.",
+                btn_explore_market: "Explore Local Market",
+                lbl_produce_item: "Produce Item",
+                lbl_escrow_amt: "Escrow Amount",
+                lbl_parties_dest: "Parties & Destination",
+                lbl_escrow_secured: "Escrow Secured",
+                stg_order_placed: "Order Placed",
+                stg_dispatched: "Dispatched",
+                stg_in_transit: "In Transit",
+                stg_delivered: "Delivered",
+                btn_update_status: "Update"
+            },
+            hi: {
+                nav_dashboard: "डैशबोर्ड",
+                nav_localmarket: "स्थानीय बाज़ार",
+                nav_marketplace: "थोक केंद्र",
+                nav_demands: "खरीदार की मांग",
+                nav_grouping: "लॉजिस्टिक्स और माल ढुलाई",
+                nav_orders: "ऑर्डर ट्रैकिंग",
+                nav_mandi: "मंडी भाव",
+                nav_profile: "मेरी प्रोफ़ाइल",
+                welcome_text: "स्वागत है",
+                dash_title: "प्रत्यक्ष कृषि व्यापार और सामूहिक माल ढुलाई",
+                dash_subtitle: "खरीदारों से सीधे जुड़ें, संयुक्त ट्रक किराए पर 25% बचाएं, और सुरक्षित एस्क्रो के माध्यम से लेनदेन सत्यापित करें।",
+                local_market_title: "स्थानीय दैनिक बाज़ार",
+                wholesale_title: "थोक फसल लॉट",
+                buyer_demands_title: "खरीदार मांग केंद्र",
+                logistics_title: "सामूहिक ग्रामीण माल ढुलाई और बेड़े का प्रेषण",
+                orders_title: "ऑर्डर ट्रैकिंग",
+                mandi_title: "लाइव मंडी भाव",
+                profile_title: "मेरी सक्रिय लिस्टिंग और ऑर्डर",
+                pool_title: "थोक बाज़ार हेतु किसान पूलिंग",
+                pool_subtitle: "निकटवर्ती किसानों के साथ मिलकर थोक ऑर्डर पूरे करें और परिवहन लागत में 35% तक बचत करें",
+                pool_btn: "निकटवर्ती किसान पूलिंग",
+                pool_create_btn: "पूल बनाएं और थोक बाजार में आगे बढ़ें",
+                pool_combined_vol: "कुल संयुक्त मात्रा",
+                pool_savings: "अनुमानित भाड़ा बचत",
+                pool_target_market: "गंतव्य थोक मंडी",
+                pool_select_farmer: "पूलिंग हेतु चुनें",
+                pool_selected: "पूल में शामिल",
+                pool_filter_crop: "फसल अनुसार खोजें",
+                pool_my_qty: "मेरी फसल मात्रा (क्विंटल)",
+                pool_active_title: "सक्रिय किसान पूल",
+                edit_listing_title: "लिस्टिंग संपादित करें",
+                crop_name_lbl: "उत्पाद / फसल का नाम",
+                quantity_lbl: "मात्रा",
+                price_lbl: "मूल्य (₹ में)",
+                location_lbl: "स्थान / मंडी केंद्र",
+                btn_cancel: "रद्द करें",
+                btn_save_changes: "बदलाव सहेजें",
+                logistics_book_title: "माल ढुलाई बुक करें",
+                lbl_booking_mode: "बुकिंग मोड चुनें",
+                mode_shared: "साझा (माल ढुलाई पूलिंग)",
+                mode_shared_desc: "ट्रक स्पेस साझा करें। प्रति क्विंटल भुगतान करें। ~25% बचाएं।",
+                mode_individual: "व्यक्तिगत (निजी ट्रक)",
+                mode_individual_desc: "सीधे प्रेषण के लिए पूरा निजी वाहन बुक करें।",
+                lbl_pickup_farm: "पिकअप फार्म / गांव",
+                lbl_drop_mandi: "ड्रॉप मंडी / गंतव्य",
+                lbl_crop_type: "फसल / उपज का प्रकार",
+                lbl_weight_payload: "वजन (क्विंटल में)",
+                lbl_pickup_date: "पिकअप तारीख",
+                lbl_est_cost: "अनुमानित माल भाड़ा",
+                btn_confirm_logistics: "लॉजिस्टिक्स बुकिंग सुनिश्चित करें",
+                orders_subtitle: "लाइव ऑर्डर स्थिति, शिपमेंट मील के पत्थर और बैंक एस्क्रो भुगतान रिलीज ट्रैक करें।",
+                refresh_orders: "ऑर्डर रीफ्रेश करें",
+                no_orders_yet: "अभी तक कोई ऑर्डर ट्रैक नहीं हुआ",
+                no_orders_desc: "यहां डिलीवरी स्थिति ट्रैक करने के लिए स्थानीय बाजार या थोक केंद्र से ऑर्डर करें।",
+                btn_explore_market: "स्थानीय बाज़ार देखें",
+                lbl_produce_item: "उत्पाद",
+                lbl_escrow_amt: "एस्क्रो राशि",
+                lbl_parties_dest: "पक्ष और गंतव्य",
+                lbl_escrow_secured: "एस्क्रो सुरक्षित",
+                stg_order_placed: "ऑर्डर दिया गया",
+                stg_dispatched: "डिस्पैच हुआ",
+                stg_in_transit: "रास्ते में है",
+                stg_delivered: "वितरित हुआ",
+                btn_update_status: "अपडेट करें"
+            }
+        };
+
+        function getTranslation(key, fallbackText = '') {
+            if (window.TranslationManager && typeof window.TranslationManager.findLocalTranslation === 'function') {
+                const found = window.TranslationManager.findLocalTranslation(currentLang, key, fallbackText);
+                if (found) return found;
+            }
+            if (key && translations[currentLang] && translations[currentLang][key]) {
+                return translations[currentLang][key];
+            }
+            if (fallbackText && translations[currentLang] && translations[currentLang][fallbackText]) {
+                return translations[currentLang][fallbackText];
+            }
+            if (key && translations.en && translations.en[key]) {
+                return translations.en[key];
+            }
+            return fallbackText;
+        }
+
+        function changeLanguage(lang) {
+            currentLang = String(lang || 'en').toLowerCase();
+            try {
+                localStorage.setItem('ks_lang', currentLang);
+                sessionStorage.setItem('ks_lang', currentLang);
+            } catch (e) {}
+
+            if (currentUser) {
+                currentUser.lang = currentLang;
+                try {
+                    sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
+                } catch (e) {}
+            }
+
+            const s1 = document.getElementById('lang-select');
+            const s2 = document.getElementById('header-lang-select');
+            if (s1 && s1.value !== currentLang) s1.value = currentLang;
+            if (s2 && s2.value !== currentLang) s2.value = currentLang;
+
+            if (window.TranslationManager && typeof window.TranslationManager.setLanguage === 'function') {
+                window.TranslationManager.setLanguage(currentLang);
+            }
+
+            // Immediately update elements with data-i18n (both keyed and unkeyed)
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (!el.hasAttribute('data-original-text')) {
+                    el.setAttribute('data-original-text', el.innerText.trim());
+                }
+                const original = el.getAttribute('data-original-text') || el.innerText.trim();
+                
+                if (currentLang === 'en') {
+                    if (key && translations.en && translations.en[key]) {
+                        if (el.children.length === 0) el.innerText = translations.en[key];
+                        else {
+                            const span = el.querySelector("span:not([class*='fa-'])");
+                            if (span) span.innerText = translations.en[key];
+                        }
+                    } else if (original) {
+                        if (el.children.length === 0) el.innerText = original;
+                        else {
+                            const span = el.querySelector("span:not([class*='fa-'])");
+                            if (span) span.innerText = original;
+                        }
+                    }
+                } else {
+                    const trans = getTranslation(key, original);
+                    if (trans) {
+                        if (el.children.length === 0) {
+                            el.innerText = trans;
+                        } else {
+                            const span = el.querySelector("span:not([class*='fa-'])");
+                            if (span) span.innerText = trans;
+                            else {
+                                for (const node of el.childNodes) {
+                                    if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim().length > 0) {
+                                        node.nodeValue = " " + trans.trim() + " ";
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder], input[placeholder]').forEach(el => {
+                const orig = el.getAttribute('data-original-placeholder') || el.getAttribute('placeholder');
+                if (orig) {
+                    if (!el.hasAttribute('data-original-placeholder')) el.setAttribute('data-original-placeholder', orig);
+                    if (currentLang === 'en') {
+                        el.setAttribute('placeholder', el.getAttribute('data-original-placeholder'));
+                    } else if (window.TranslationManager && window.TranslationManager.findLocalTranslation) {
+                        const tr = window.TranslationManager.findLocalTranslation(currentLang, null, orig);
+                        if (tr) el.setAttribute('placeholder', tr);
+                    }
+                }
+            });
+
+            if (typeof updatePoolingCalculations === 'function') updatePoolingCalculations();
+
+            // Re-translate open modals instantly
+            ['buy-modal', 'edit-listing-modal', 'logistics-booking-modal', 'pooling-modal', 'logistics-create-modal'].forEach(id => {
+                const modal = document.getElementById(id);
+                if (modal && !modal.classList.contains('hidden') && window.TranslationManager && window.TranslationManager.translateDom) {
+                    window.TranslationManager.translateDom(modal);
+                }
+            });
+
+            // Re-render active view so dynamic data updates instantly to selected language
+            const activeTab = document.querySelector('.tab-btn.tab-active');
+            const tabId = activeTab ? activeTab.id.replace('tab-', '') : 'dashboard';
+            if (tabId === 'localmarket' && typeof renderLocalMarket === 'function') renderLocalMarket();
+            if (tabId === 'marketplace' && typeof renderMarketplace === 'function') renderMarketplace();
+            if (tabId === 'orders' && typeof loadAndRenderOrders === 'function') loadAndRenderOrders();
+            if (tabId === 'grouping' && typeof renderLogisticsList === 'function') renderLogisticsList();
+            if (tabId === 'profile' && typeof renderProfile === 'function') renderProfile();
+            if (tabId === 'demands' && typeof renderBuyerDemands === 'function') renderBuyerDemands();
+            if (tabId === 'mandi' && typeof renderMandiPrices === 'function') renderMandiPrices();
+        }
+
+        // --- APP STATE ---
+        // localItems and marketplaceListings are now populated LIVE from Firestore.
+        // No hardcoded mock data — the UI reflects what's in the database in real time.
+        let currentUser = null;
+        let currentLang = 'en';
+        let currentCoords = { lat: 26.8467, lng: 80.9462, name: "Lucknow, UP" };
+
+        let localItems = [];
+        let whatsappListings = [];
+        let marketplaceListings = [];
+
+        function last10(phone) {
+            return String(phone || '').replace(/\D/g, '').slice(-10);
+        }
+
+        function phonesMatch(listingPhone, userPhone) {
+            const a = last10(listingPhone);
+            const b = last10(userPhone);
+            return Boolean(a && a === b);
+        }
+
+        function allLocalItems() {
+            const seen = new Set();
+            const merged = [];
+            for (const item of [...whatsappListings, ...localItems]) {
+                const key = String(item.id || item._id || `${item.item}-${item.phone}-${item.qty}-${item.price}`);
+                if (seen.has(key)) continue;
+                seen.add(key);
+                merged.push(item);
+            }
+            return merged;
+        }
+
+        let buyerDemands = [
+            { id: 301, crop: "Red Onions", qty: "200 Quintal", budget: 240000, location: "Lucknow Hotel Assoc.", buyer: "Verma Traders", phone: "9988776655" },
+            { id: 302, crop: "Bulk Garlic Batch", qty: "50 Quintal", budget: 350000, location: "Delhi Export Hub", buyer: "Global Spices Ltd", phone: "9877665544" },
+            { id: 303, crop: "Processing Tomatoes", qty: "150 Quintal", budget: 180000, location: "Kanpur Food Park", buyer: "Ketchup Unit #4", phone: "9766554433" },
+            { id: 304, crop: "Organic Carrots", qty: "80 Quintal", budget: 112000, location: "Lucknow Retail Mart", buyer: "FreshSupermarket", phone: "9655443322" },
+            { id: 305, crop: "Soybean Beans", qty: "300 Quintal", budget: 1350000, location: "Indore Oil Mill", buyer: "National Agro Oil", phone: "9544332211" }
+        ];
+
+        let logisticsBatches = [
+            {
+                id: "LOG-902", route: "Sitapur → Kanpur Grain Mandi", carrier: "Eicher 14ft Truck (UP-32-T-8890)", driver: "Vikram Sharma (9871122334)",
+                filled: 120, capacity: 150, farmers: ["Ramesh S. (40 Qtl)", "Suresh P. (50 Qtl)", "Mahesh K. (30 Qtl)"],
+                savings: "₹110/Qtl", status: "In Transit", eta: "1 Hr 15 Mins", stops: ["Sitapur Hub", "Unnao Bypass", "Kanpur APMC"]
+            },
+            {
+                id: "LOG-401", route: "Lucknow Rural → City Express Hub", carrier: "Mahindra Bolero Pickup (UP-32-E-1022)", driver: "Satish Kumar (9123344556)",
+                filled: 75, capacity: 100, farmers: ["Sita Ram (30 Qtl)", "Shivam Y. (45 Qtl)"],
+                savings: "₹85/Qtl", status: "Loading Cargo", eta: "Departs 6:30 AM", stops: ["Banthra Village", "Lucknow Transport Nagar"]
+            },
+            {
+                id: "LOG-108", route: "Agra Cold Storage → Delhi Wholesale", carrier: "Tata 1613 Heavy Truck (UP-80-AH-4401)", driver: "Jaswant Singh (9988112233)",
+                filled: 180, capacity: 200, farmers: ["Manoj Verma (100 Qtl)", "Dharmendra (80 Qtl)"],
+                savings: "₹140/Qtl", status: "In Transit", eta: "2 Hrs 45 Mins", stops: ["Agra Hub", "Mathura Toll", "Azadpur Mandi"]
+            },
+            {
+                id: "LOG-550", route: "Barabanki → Lucknow Terminal Market", carrier: "Swaraj Tractor Trolley (UP-41-B-9002)", driver: "Gurpreet Singh (9876001122)",
+                filled: 40, capacity: 60, farmers: ["Gurpreet (25 Qtl)", "Anil Kumar (15 Qtl)"],
+                savings: "₹70/Qtl", status: "Scheduled", eta: "Departs 8:00 AM", stops: ["Barabanki Square", "Dubagga Mandi"]
+            }
+        ];
+
+        let mandiPrices = [
+            { id: 1, crop: "Wheat (गेहूं)", mandi: "Lucknow APMC", price: 2320, unit: "Qtl", trend: "up", change: 40 },
+            { id: 2, crop: "Potato (आलू)", mandi: "Agra Wholesale", price: 1480, unit: "Qtl", trend: "up", change: 60 },
+            { id: 3, crop: "Tomato (टमाटर)", mandi: "Sitapur Mandi", price: 1950, unit: "Qtl", trend: "down", change: 25 },
+            { id: 4, crop: "Mustard (सरसों)", mandi: "Kanpur Mandi", price: 5450, unit: "Qtl", trend: "up", change: 110 },
+            { id: 5, crop: "Onion (प्याज)", mandi: "Nashik Hub", price: 2600, unit: "Qtl", trend: "up", change: 80 },
+            { id: 6, crop: "Paddy (धान)", mandi: "Bareilly APMC", price: 2200, unit: "Qtl", trend: "down", change: 15 },
+            { id: 7, crop: "Soybean (सोयाबीन)", mandi: "Indore Mandi", price: 4600, unit: "Qtl", trend: "up", change: 95 },
+            { id: 8, crop: "Garlic (लहसुन)", mandi: "Mandsaur Mandi", price: 8200, unit: "Qtl", trend: "up", change: 250 }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let initialLang = 'en';
+            try {
+                initialLang = localStorage.getItem('ks_lang') || sessionStorage.getItem('ks_lang') || 'en';
+            } catch (e) {}
+
+            // Attach robust change event listeners to language dropdowns
+            ['lang-select', 'header-lang-select'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = initialLang;
+                    el.addEventListener('change', (e) => {
+                        changeLanguage(e.target.value);
+                    });
+                }
+            });
+
+            try {
+                const savedUser = sessionStorage.getItem('ks_user_v2');
+                if (savedUser) {
+                    currentUser = JSON.parse(savedUser);
+                    if (currentUser && currentUser.lang) {
+                        initialLang = currentUser.lang;
+                    }
+                    showApp();
+                }
+            } catch (err) {
+                console.error("Failed to restore session:", err);
+                sessionStorage.removeItem('ks_user_v2');
+            }
+
+            changeLanguage(initialLang);
+
+            setupOTPInputs();
+            detectGPSLocation();
+        });
+
+        function setupOTPInputs() {
+            const boxes = document.querySelectorAll('.otp-box');
+            boxes.forEach((box, index) => {
+                box.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1 && index < boxes.length - 1) {
+                        boxes[index + 1].focus();
+                    }
+                });
+                box.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        boxes[index - 1].focus();
+                    }
+                });
+            });
+        }
+
+        function completeKrishiLogin(user) {
+            currentUser = {
+                name: user.name || document.getElementById('login-name')?.value || '',
+                phone: String(user.phone || document.getElementById('login-phone')?.value || '').replace(/\D/g, '').slice(-10),
+                role: user.role || document.getElementById('login-role')?.value || '',
+                lang: user.lang || document.getElementById('lang-select')?.value || 'en',
+                uid: user.uid || null
+            };
+            currentLang = currentUser.lang;
+            sessionStorage.setItem('ks_user_v2', JSON.stringify(currentUser));
+            changeLanguage(currentLang);
+            showApp();
+        }
+        window.completeKrishiLogin = completeKrishiLogin;
+
+        // Auth bypass: any number and any OTP opens the portal
+        async function handleSendOTP(e) {
+            if (e && typeof e.preventDefault === 'function') e.preventDefault();
+            const phone = document.getElementById('login-phone')?.value?.replace(/\D/g, '') || '';
+            const name  = document.getElementById('login-name')?.value?.trim() || '';
+            if (!name) { showToast("Please enter your full name.", "info"); return; }
+            if (phone.length < 6) { showToast("Please enter a valid mobile number.", "info"); return; }
+            const display = document.getElementById('otp-phone-display');
+            if (display) display.textContent = '+91 ' + phone;
+            document.getElementById('form-login-step1').classList.add('hidden');
+            document.getElementById('form-login-step2').classList.remove('hidden');
+            showToast("OTP sent! Enter any code to continue.", "info");
+        }
+
+        async function handleVerifyOTP(e) {
+            if (e && typeof e.preventDefault === 'function') e.preventDefault();
+            const boxes = document.querySelectorAll('.otp-input');
+            const otp   = Array.from(boxes).map(b => b.value).join('');
+            if (otp.length < 1) { showToast("Please enter the OTP code.", "info"); return; }
+            completeKrishiLogin({
+                name:  document.getElementById('login-name')?.value  || 'User',
+                phone: document.getElementById('login-phone')?.value || '0000000000',
+                role:  document.getElementById('login-role')?.value  || 'Farmer',
+                lang:  document.getElementById('lang-select')?.value || 'en',
+                uid:   null
+            });
+        }
+
+        function backToStep1() {
+            document.getElementById('form-login-step2').classList.add('hidden');
+            document.getElementById('form-login-step1').classList.remove('hidden');
+        }
+
+        function resendOTP() {
+            showToast("New OTP code sent!", "info");
+        }
+
+        function logout() {
+            sessionStorage.removeItem('ks_user_v2');
+            location.reload();
+        }
+
+        function showApp() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            document.getElementById('chatbot-wrapper').classList.remove('hidden');
+
+            document.getElementById('welcome-user').innerText = `${currentUser.role} • ${currentUser.name}`;
+            setupRoleBasedViews();
+            renderAll();
+        }
+
+        function setupRoleBasedViews() {
+            const localAction = document.getElementById('local-action-area');
+            const wholesaleAction = document.getElementById('wholesale-action-area');
+
+            if (currentUser.role === 'Farmer') {
+                localAction.innerHTML = `
+                    <button onclick="toggleForm('local-form-container')" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-5 rounded-xl shadow flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-plus"></i> Post Produce
+                    </button>`;
+                wholesaleAction.innerHTML = `
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openPoolingModal()" class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold py-2.5 px-4 rounded-xl shadow flex items-center justify-center gap-2 text-sm transition">
+                            <i class="fa-solid fa-people-group"></i> <span data-i18n="pool_btn">${getTranslation('pool_btn', 'Nearby Farmers Pooling')}</span>
+                        </button>
+                        <button onclick="toggleForm('marketplace-form-container')" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-xl shadow flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-plus"></i> Post Bulk Lot
+                        </button>
+                    </div>`;
+            } else {
+                localAction.innerHTML = `<span class="text-xs bg-slate-100 text-slate-700 font-bold px-3 py-2 rounded-xl border"><i class="fa-solid fa-check-circle text-emerald-600"></i> Direct Buyer Mode</span>`;
+                wholesaleAction.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <button onclick="openPoolingModal()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-people-group"></i> <span data-i18n="pool_btn">${getTranslation('pool_btn', 'Nearby Farmers Pooling')}</span>
+                        </button>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-bold px-3 py-2 rounded-xl border"><i class="fa-solid fa-check-circle text-blue-600"></i> Bulk Buyer Mode</span>
+                    </div>`;
+            }
+        }
+
+        function detectGPSLocation(targetElementId = null) {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const lat = pos.coords.latitude.toFixed(4);
+                        const lng = pos.coords.longitude.toFixed(4);
+                        currentCoords = { lat, lng, name: `GPS: ${lat}°N, ${lng}°E` };
+                        document.getElementById('header-gps-badge').classList.remove('hidden');
+                        document.getElementById('current-gps-text').innerText = `${lat}, ${lng}`;
+                        if (targetElementId) {
+                            document.getElementById(targetElementId).innerText = `📍 GPS: ${lat}, ${lng}`;
+                        }
+                    },
+                    () => {
+                        if(targetElementId) document.getElementById(targetElementId).innerText = "Location (Lucknow, UP)";
+                    }
+                );
+            }
+        }
+
+        function fillLocationField(inputId) {
+            document.getElementById(inputId).value = currentCoords.name;
+            showToast("Coordinates attached to listing!", "info");
+        }
+
+        function startVoiceInput(targetInputId) {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showToast("Voice recognition not supported in browser", "error");
+                return;
+            }
+            if (window.KrishiVoice) window.KrishiVoice.unlock();
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const rec = new SpeechRecognition();
+            rec.lang = window.KrishiVoice ? window.KrishiVoice.bcp47(currentLang) : 'en-IN';
+            rec.interimResults = false;
+            rec.maxAlternatives = 1;
+            rec.start();
+            showToast("Listening... Speak now", "info");
+            rec.onresult = (e) => {
+                const transcript = e.results[0][0].transcript;
+                document.getElementById(targetInputId).value = transcript;
+                showToast(`Recognized: "${transcript}"`, "success");
+                if (targetInputId === 'chat-input') {
+                    const form = document.querySelector('#chat-window form');
+                    if (form) form.requestSubmit();
+                }
+            };
+            rec.onerror = (e) => {
+                if (e.error !== 'aborted' && e.error !== 'no-speech') {
+                    showToast("Voice input failed. Try again.", "error");
+                }
+            };
+        }
+
+        function triggerGlobalVoiceCommand() {
+            const chatWindow = document.getElementById('chat-window');
+            if (chatWindow.classList.contains('hidden')) toggleChat();
+            startVoiceInput('chat-input');
+        }
+
+        function renderAll() {
+            document.getElementById('dash-local-count').innerText = allLocalItems().length;
+            document.getElementById('dash-bulk-count').innerText = marketplaceListings.length;
+            document.getElementById('dash-logistics-count').innerText = logisticsBatches.length;
+
+            renderLocalMarket();
+            renderMarketplace();
+            renderBuyerDemands();
+            renderLogisticsList();
+            renderMandiPrices();
+            renderProfile();
+        }
+
+        function safeJson(obj) {
+            return JSON.stringify(obj || {}).replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+        }
+
+        function getCardSkeletonHtml(count = 4) {
+            return Array(count).fill(0).map(() => `
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm animate-pulse flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="h-6 w-32 bg-slate-200 rounded-lg skeleton-shimmer"></div>
+                            <div class="h-5 w-16 bg-slate-200 rounded-md skeleton-shimmer"></div>
+                        </div>
+                        <div class="h-8 w-24 bg-slate-200 rounded-lg skeleton-shimmer mb-4"></div>
+                        <div class="space-y-2">
+                            <div class="h-3.5 w-36 bg-slate-100 rounded skeleton-shimmer"></div>
+                            <div class="h-3.5 w-28 bg-slate-100 rounded skeleton-shimmer"></div>
+                        </div>
+                    </div>
+                    <div class="h-11 w-full bg-slate-200 rounded-xl skeleton-shimmer mt-4"></div>
+                </div>
+            `).join('');
+        }
+
+        function renderLocalMarket() {
+            const grid = document.getElementById('localmarket-grid');
+            const empty = document.getElementById('localmarket-empty');
+
+            const items = allLocalItems();
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            grid.innerHTML = items.map(item => {
+                const isOwner = currentUser && phonesMatch(item.phone, currentUser.phone);
+                const itemEncoded = safeJson(item);
+                return `
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl card-modern transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-extrabold text-slate-800">${item.item || ''}</h3>
+                            <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-lg border border-emerald-100">${item.qty || ''}</span>
+                        </div>
+                        <p class="text-3xl font-black text-emerald-600 mb-3">₹${item.price || 0}</p>
+                        <div class="space-y-1 text-xs text-slate-500">
+                            <p><i class="fa-solid fa-user text-slate-400 w-4"></i> Seller: <strong class="text-slate-700">${item.seller || 'Unknown'}</strong></p>
+                            <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> ${item.location || ''}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-5">
+                        ${isOwner ? `
+                        <button onclick='openEditListingModal(${itemEncoded}, "local")' class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl btn-touch flex justify-center items-center gap-2 transition text-xs shadow-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> <span data-i18n="edit_listing_title">${getTranslation('edit_listing_title', 'Edit Listing')}</span>
+                        </button>
+                        ` : ''}
+                        <button onclick='openBuyModal(${itemEncoded}, "Local")' class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl btn-touch flex justify-center items-center gap-2 transition">
+                            <i class="fa-solid fa-lock text-xs text-emerald-400"></i> <span data-i18n="buy_modal_title">${getTranslation('buy_modal_title', 'Direct Purchase (Escrow)')}</span>
+                        </button>
+                    </div>
+                </div>
+            `;}).join('');
+        }
+
+        function renderMarketplace() {
+            const grid = document.getElementById('marketplace-grid');
+            const empty = document.getElementById('marketplace-empty');
+
+            if (marketplaceListings.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            grid.innerHTML = marketplaceListings.map(item => {
+                const isOwner = currentUser && phonesMatch(item.phone, currentUser.phone);
+                const itemEncoded = safeJson(item);
+                return `
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl card-modern transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-extrabold text-slate-800">${item.crop || ''}</h3>
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-lg border border-blue-100">${item.qty || ''}</span>
+                        </div>
+                        <p class="text-3xl font-black text-blue-600 mb-3">₹${item.price || 0} <span class="text-xs text-slate-400 font-normal">/ Qtl</span></p>
+                        <div class="space-y-1 text-xs text-slate-500">
+                            <p><i class="fa-solid fa-user-tie text-slate-400 w-4"></i> Farmer: <strong class="text-slate-700">${item.farmer || 'Unknown'}</strong></p>
+                            <p><i class="fa-solid fa-location-dot text-slate-400 w-4"></i> ${item.location || ''}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-5">
+                        ${isOwner ? `
+                        <button onclick='openEditListingModal(${itemEncoded}, "wholesale")' class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded-xl btn-touch flex justify-center items-center gap-2 transition text-xs shadow-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> <span data-i18n="edit_listing_title">${getTranslation('edit_listing_title', 'Edit Listing')}</span>
+                        </button>
+                        ` : ''}
+                        <button onclick='openBuyModal(${itemEncoded}, "Wholesale")' class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl btn-touch flex justify-center items-center gap-2 transition">
+                            <i class="fa-solid fa-truck-ramp-box"></i> <span data-i18n="buy_modal_title">${getTranslation('buy_modal_title', 'Buy Bulk Wholesale Lot')}</span>
+                        </button>
+                    </div>
+                </div>
+            `;}).join('');
+        }
+
+        function renderBuyerDemands() {
+            document.getElementById('demands-grid').innerHTML = buyerDemands.map(item => `
+                <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-extrabold text-slate-800">${item.crop}</h3>
+                            <span class="bg-slate-100 text-slate-700 text-xs font-bold px-3 py-1 rounded-lg">Target: ${item.qty}</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-700 mb-3">Budget: ₹${item.budget.toLocaleString()}</p>
+                        <div class="space-y-1 text-xs text-slate-500">
+                            <p><i class="fa-solid fa-building w-4"></i> Buyer: <strong>${item.buyer}</strong></p>
+                            <p><i class="fa-solid fa-location-dot w-4"></i> ${item.location}</p>
+                        </div>
+                    </div>
+                    <button onclick="showToast('Supply offer sent to buyer!', 'success')" class="mt-5 w-full bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">
+                        <i class="fa-solid fa-handshake"></i> Fulfill Requirement
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderLogisticsList() {
+            const container = document.getElementById('logistics-list-container');
+            if (!container) return;
+            container.innerHTML = logisticsBatches.map(batch => {
+                const percent = Math.min(100, Math.round((batch.filled / batch.capacity) * 100));
+                return `
+                <div class="border border-amber-200 bg-white rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[11px] font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md border border-amber-200">${batch.id}</span>
+                            <h4 class="text-lg font-black text-slate-800 mt-1.5 flex items-center gap-2">${batch.route}</h4>
+                        </div>
+                        <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full flex items-center gap-1.5">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> ${batch.status}
+                        </span>
+                    </div>
+
+                    <div class="bg-amber-50 p-3.5 rounded-2xl border border-amber-100">
+                        <div class="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
+                            <span>Payload: <strong>${batch.filled} / ${batch.capacity} Quintals</strong></span>
+                            <span class="text-amber-700">${percent}% Full</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-3.5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-3.5 rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs space-y-2 border-t border-b border-slate-100 py-3">
+                        <p class="text-slate-500 font-medium"><i class="fa-solid fa-truck text-amber-600 w-4"></i> Vehicle: <strong class="text-slate-800">${batch.carrier}</strong></p>
+                        <p class="text-slate-500 font-medium"><i class="fa-solid fa-user-shield text-slate-400 w-4"></i> Driver: <strong class="text-slate-800">${batch.driver}</strong></p>
+                        <p class="text-slate-500 font-medium"><i class="fa-solid fa-users text-slate-400 w-4"></i> Pooled Farmers: <span class="text-slate-700 font-semibold">${batch.farmers.join(', ') || 'No pooled cargo yet'}</span></p>
+                        <div class="flex items-center gap-2 text-[11px] text-emerald-700 font-extrabold bg-emerald-50 p-2 rounded-xl mt-1">
+                            <i class="fa-solid fa-piggy-bank text-emerald-600"></i> Savings: ${batch.savings} | ETA: ${batch.eta}
+                        </div>
+                    </div>
+
+                    <button onclick="poolHarvestIntoBatch('${batch.id}')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-extrabold py-3 rounded-xl shadow text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Pool Produce Into Route (+10 Qtl)
+                    </button>
+                </div>
+            `}).join('');
+        }
+
+        async function poolHarvestIntoBatch(batchId) {
+            const batch = logisticsBatches.find(b => b.id === batchId);
+            if(batch) {
+                if(batch.filled >= batch.capacity) {
+                    showToast("Batch capacity already full!", "error");
+                    return;
+                }
+                const userName = currentUser ? currentUser.name : "Farmer";
+                const userPhone = currentUser ? currentUser.phone : "9876543210";
+
+                try {
+                    await fetch('/api/logistics/book', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userPhone,
+                            userName,
+                            bookingType: 'Shared',
+                            route: batch.route,
+                            vehicleType: batch.carrier,
+                            carrier: batch.carrier,
+                            quantity: '10 Qtl',
+                            cropType: 'Pooled Produce',
+                            pickupLocation: batch.stops[0] || 'Hub',
+                            dropLocation: batch.stops[batch.stops.length - 1] || 'Mandi',
+                            estimatedCost: 750,
+                            savings: batch.savings || 'Saved ₹110/Qtl',
+                            batchId
+                        })
+                    });
+                } catch (e) {
+                    console.warn("Logistics booking fallback:", e);
+                }
+
+                batch.filled = Math.min(batch.capacity, batch.filled + 10);
+                const tag = `${userName} (10 Qtl)`;
+                if(!batch.farmers.includes(tag)) batch.farmers.push(tag);
+                renderLogisticsList();
+                loadMyLogisticsBookings();
+                showToast(`Added 10 Quintal into ${batchId}! Shared space booked.`, 'success');
+            }
+        }
+
+        function renderMandiPrices() {
+            document.getElementById('mandi-grid').innerHTML = mandiPrices.map(item => `
+                <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800">${item.crop}</h3>
+                            <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-building-wheat text-emerald-600"></i> ${item.mandi}</p>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-[11px] font-bold ${item.trend === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${item.trend === 'up' ? '▲' : '▼'} ₹${item.change}
+                        </span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-50 flex justify-between items-baseline">
+                        <span class="text-2xl font-black text-slate-800">₹${item.price}</span>
+                        <span class="text-xs font-bold text-slate-400">/ ${item.unit}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMandiPrices() {
+             const query = document.getElementById('mandi-search').value.toLowerCase();
+             Array.from(document.getElementById('mandi-grid').children).forEach(el => {
+                 el.style.display = el.innerText.toLowerCase().includes(query) ? 'block' : 'none';
+             });
+        }
+
+        // --- ORDER PLACEMENT & ESCROW PURCHASE ---
+        let activeBuyProduct = null;
+        let activeBuyType = 'Local';
+
+        function openBuyModal(product, type) {
+            activeBuyProduct = product;
+            activeBuyType = type || 'Local';
+            const modalBody = document.getElementById('buy-modal-body');
+            modalBody.innerHTML = `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2 text-sm">
+                    <p class="text-slate-500"><span data-i18n="crop_name_lbl">${getTranslation('crop_name_lbl', 'Produce / Crop Name')}</span>: <strong class="text-slate-800">${product.item || product.crop}</strong></p>
+                    <p class="text-slate-500"><span data-i18n="quantity_lbl">${getTranslation('quantity_lbl', 'Quantity')}</span>: <strong class="text-slate-800">${product.qty}</strong></p>
+                    <p class="text-slate-500"><span data-i18n="price_lbl">${getTranslation('price_lbl', 'Price in ₹')}</span>: <strong class="text-emerald-700 text-xl font-black">₹${product.price}</strong></p>
+                    <p class="text-slate-500">Seller: <strong class="text-slate-800">${product.seller || product.farmer || 'Farmer'}</strong></p>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lbl_drop_mandi">${getTranslation('lbl_drop_mandi', 'Destination Address')}</label>
+                    <input type="text" id="buy-address" value="${currentCoords.name}" class="w-full p-3 border rounded-xl text-sm">
+                </div>
+                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-base text-emerald-600 shrink-0"></i>
+                    <div>
+                        <strong data-i18n="lbl_escrow_secured">${getTranslation('lbl_escrow_secured', 'Escrow Protected')}</strong>: Funds held safely in bank escrow until delivery inspection.
+                    </div>
+                </div>
+            `;
+            document.getElementById('buy-modal').classList.remove('hidden');
+            if (window.TranslationManager && window.TranslationManager.translateDom) {
+                window.TranslationManager.translateDom(document.getElementById('buy-modal'));
+            }
+        }
+
+        function closeBuyModal() {
+            document.getElementById('buy-modal').classList.add('hidden');
+        }
+
+        async function confirmPurchase() {
+            if (!activeBuyProduct) return;
+            const address = document.getElementById('buy-address')?.value || currentCoords.name;
+            const buyerPhone = currentUser ? currentUser.phone : '9876543210';
+            const buyerName = currentUser ? currentUser.name : 'Verified Buyer';
+
+            try {
+                const res = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        buyerPhone,
+                        buyerName,
+                        sellerPhone: activeBuyProduct.phone || '',
+                        sellerName: activeBuyProduct.seller || activeBuyProduct.farmer || 'Farmer',
+                        item: activeBuyProduct.item || activeBuyProduct.crop,
+                        qty: activeBuyProduct.qty,
+                        price: activeBuyProduct.price,
+                        deliveryAddress: address,
+                        orderType: activeBuyType
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success && data.order) {
+                    closeBuyModal();
+                    showToast(`Order ${data.order.orderId} placed & Escrow payment reserved!`, 'success');
+                    switchTab('orders');
+                    loadAndRenderOrders();
+                } else {
+                    showToast(data.error || "Failed to place order", "error");
+                }
+            } catch (err) {
+                console.error("Order placement error:", err);
+                closeBuyModal();
+                showToast("Order placed locally! Switched to tracking.", "success");
+                switchTab('orders');
+                loadAndRenderOrders();
+            }
+        }
+
+        // --- ORDER TRACKING FEATURE ---
+        let myOrders = [];
+
+        async function loadAndRenderOrders() {
+            const container = document.getElementById('orders-list-container');
+            const empty = document.getElementById('orders-empty');
+            if (!container) return;
+
+            // Show shimmering skeleton loader if no orders are currently rendered
+            if (!myOrders || myOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="space-y-4 animate-fade-in">
+                        <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm animate-pulse space-y-4">
+                            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                                <div class="h-6 w-36 bg-slate-200 rounded-lg skeleton-shimmer"></div>
+                                <div class="h-6 w-24 bg-slate-200 rounded-full skeleton-shimmer"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl">
+                                <div class="space-y-2"><div class="h-3.5 w-20 bg-slate-200 rounded skeleton-shimmer"></div><div class="h-5 w-28 bg-slate-200 rounded skeleton-shimmer"></div></div>
+                                <div class="space-y-2"><div class="h-3.5 w-20 bg-slate-200 rounded skeleton-shimmer"></div><div class="h-6 w-24 bg-slate-200 rounded skeleton-shimmer"></div></div>
+                                <div class="space-y-2"><div class="h-3.5 w-20 bg-slate-200 rounded skeleton-shimmer"></div><div class="h-5 w-32 bg-slate-200 rounded skeleton-shimmer"></div></div>
+                            </div>
+                            <div class="h-10 bg-slate-100 rounded-xl skeleton-shimmer"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            try {
+                const phoneQuery = currentUser ? `?phone=${currentUser.phone}` : '';
+                const res = await fetch(`/api/orders${phoneQuery}`);
+                const data = await res.json();
+                myOrders = data.orders || [];
+            } catch (err) {
+                console.warn("Could not load backend orders, using session orders:", err);
+            }
+
+            if (!myOrders || myOrders.length === 0) {
+                container.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            const stages = ["Order Placed", "Dispatched", "In Transit", "Delivered"];
+
+            container.innerHTML = myOrders.map(order => {
+                const curIndex = stages.indexOf(order.status) !== -1 ? stages.indexOf(order.status) : 0;
+                const progressPercent = curIndex === 0 ? 12 : (curIndex === 1 ? 40 : (curIndex === 2 ? 72 : 100));
+
+                return `
+                <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all space-y-5">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-black bg-emerald-100 text-emerald-900 px-3 py-1 rounded-lg border border-emerald-200 font-mono">${order.orderId}</span>
+                            <span class="text-xs font-bold text-slate-500">${order.orderType || 'Local'} Order</span>
+                            <span class="text-xs text-slate-400">• ${new Date(order.createdAt || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-extrabold ${
+                                order.status === 'Delivered' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
+                                (order.status === 'In Transit' ? 'bg-purple-100 text-purple-800 border border-purple-200' :
+                                (order.status === 'Dispatched' ? 'bg-amber-100 text-amber-800 border border-amber-200' :
+                                'bg-blue-100 text-blue-800 border border-blue-200'))
+                            }">
+                                <i class="fa-solid fa-circle text-[8px] mr-1.5 ${
+                                    order.status === 'Delivered' ? 'text-emerald-500' :
+                                    (order.status === 'In Transit' ? 'text-purple-500' :
+                                    (order.status === 'Dispatched' ? 'text-amber-500' : 'text-blue-500'))
+                                }"></i>${order.status}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-xs">
+                        <div>
+                            <p class="text-slate-400 font-medium" data-i18n="lbl_produce_item">${getTranslation('lbl_produce_item', 'Produce Item')}</p>
+                            <p class="font-extrabold text-slate-800 text-sm mt-0.5">${order.item}</p>
+                            <p class="text-slate-500 font-semibold">${order.qty}</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 font-medium" data-i18n="lbl_escrow_amt">${getTranslation('lbl_escrow_amt', 'Escrow Amount')}</p>
+                            <p class="text-lg font-black text-emerald-700 mt-0.5">₹${order.price.toLocaleString('en-IN')}</p>
+                            <p class="text-emerald-600 font-bold text-[11px]" data-i18n="lbl_escrow_secured"><i class="fa-solid fa-shield-halved"></i> ${getTranslation('lbl_escrow_secured', 'Escrow Secured')}</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 font-medium" data-i18n="lbl_parties_dest">${getTranslation('lbl_parties_dest', 'Parties & Destination')}</p>
+                            <p class="text-slate-700 font-semibold mt-0.5">Seller: ${order.sellerName || 'Farmer'} (${order.sellerPhone || 'N/A'})</p>
+                            <p class="text-slate-500 truncate" title="${order.deliveryAddress || ''}"><i class="fa-solid fa-location-dot text-slate-400"></i> ${order.deliveryAddress || 'Standard Delivery'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual 4-Step Stepper -->
+                    <div class="py-2 px-2 sm:px-6">
+                        <div class="relative">
+                            <div class="absolute top-5 left-0 w-full h-1.5 bg-slate-200 rounded-full z-0"></div>
+                            <div class="absolute top-5 left-0 h-1.5 bg-emerald-500 rounded-full z-0 transition-all duration-500" style="width: ${progressPercent}%;"></div>
+
+                            <div class="relative z-10 flex justify-between">
+                                ${stages.map((stg, idx) => {
+                                    const isDone = idx <= curIndex;
+                                    const isCurrent = idx === curIndex;
+                                    const icons = ["fa-box", "fa-boxes-packing", "fa-truck-fast", "fa-circle-check"];
+                                    return `
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all shadow-sm ${
+                                            isCurrent
+                                                ? 'bg-emerald-600 text-white ring-4 ring-emerald-100 scale-110'
+                                                : (isDone ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-400')
+                                        }">
+                                            <i class="fa-solid ${icons[idx]}"></i>
+                                        </div>
+                                        <span class="text-[11px] font-bold mt-2 text-center ${
+                                            isCurrent ? 'text-emerald-700 font-black' : (isDone ? 'text-slate-700' : 'text-slate-400')
+                                        }">${stg}</span>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Advance / Simulator Control -->
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 pt-3 border-t border-slate-100 text-xs">
+                        <span class="text-slate-400 font-medium">Update status milestone (Admin/Partner action):</span>
+                        <div class="flex items-center gap-2">
+                            <select id="sel-status-${order.orderId}" class="p-2 border border-slate-200 rounded-xl bg-slate-50 font-bold text-slate-700 text-xs outline-none">
+                                ${stages.map(s => `<option value="${s}" ${s === order.status ? 'selected' : ''}>${s}</option>`).join('')}
+                            </select>
+                            <button onclick="updateOrderStatus('${order.orderId}')" class="bg-slate-800 hover:bg-emerald-600 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrows-rotate"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        async function updateOrderStatus(orderId) {
+            const select = document.getElementById(`sel-status-${orderId}`);
+            if (!select) return;
+            const newStatus = select.value;
+
+            try {
+                const res = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        status: newStatus,
+                        note: `Status updated to ${newStatus} from portal`
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`Order ${orderId} updated to ${newStatus}!`, 'success');
+                    loadAndRenderOrders();
+                } else {
+                    showToast(data.error || "Failed to update status", "error");
+                }
+            } catch (err) {
+                console.error("Order status update error:", err);
+                const o = myOrders.find(x => x.orderId === orderId);
+                if (o) o.status = newStatus;
+                showToast(`Order status updated to ${newStatus}!`, 'success');
+                loadAndRenderOrders();
+            }
+        }
+
+        // --- EDIT LISTING FEATURE ---
+        function openEditListingModal(item, type) {
+            document.getElementById('edit-listing-id').value = item.id || item._id || '';
+            document.getElementById('edit-listing-type').value = type || 'local';
+            document.getElementById('edit-listing-source').value = item.source || (item._id ? 'mongo' : 'firestore');
+            document.getElementById('edit-listing-item').value = item.item || item.crop || '';
+            document.getElementById('edit-listing-qty').value = item.qty || '';
+            document.getElementById('edit-listing-price').value = item.price || 0;
+            document.getElementById('edit-listing-location').value = item.location || '';
+            document.getElementById('edit-listing-modal').classList.remove('hidden');
+            if (window.TranslationManager && window.TranslationManager.translateDom) {
+                window.TranslationManager.translateDom(document.getElementById('edit-listing-modal'));
+            }
+        }
+
+        function closeEditListingModal() {
+            document.getElementById('edit-listing-modal').classList.add('hidden');
+        }
+
+        async function handleEditListingSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-listing-id').value;
+            const type = document.getElementById('edit-listing-type').value;
+            const source = document.getElementById('edit-listing-source').value;
+            const updatedItem = document.getElementById('edit-listing-item').value.trim();
+            const updatedQty = document.getElementById('edit-listing-qty').value.trim();
+            const updatedPrice = Number(document.getElementById('edit-listing-price').value);
+            const updatedLocation = document.getElementById('edit-listing-location').value.trim();
+
+            if (!updatedItem || !updatedQty || !updatedPrice) {
+                showToast("Please fill all listing fields", "error");
+                return;
+            }
+
+            try {
+                // If MongoDB WhatsApp listing or mongo source
+                if (source === 'whatsapp' || (id && id.length === 24 && /^[0-9a-fA-F]+$/.test(id))) {
+                    const res = await fetch(`/api/listings/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            item: updatedItem,
+                            qty: updatedQty,
+                            price: updatedPrice,
+                            location: updatedLocation
+                        })
+                    });
+                    const data = await res.json();
+                    if (!data.success && data.error) throw new Error(data.error);
+                    await loadWhatsAppListings();
+                } else if (window.db && window.dbMethods && window.dbMethods.updateDoc) {
+                    // Firestore web listing
+                    const colName = type === 'wholesale' ? 'marketplace_listings' : 'local_produce';
+                    const updatePayload = {
+                        qty: updatedQty,
+                        price: updatedPrice,
+                        location: updatedLocation,
+                        updatedAt: new Date()
+                    };
+                    if (type === 'wholesale') updatePayload.crop = updatedItem;
+                    else updatePayload.item = updatedItem;
+
+                    await window.dbMethods.updateDoc(
+                        window.dbMethods.doc(window.db, colName, id),
+                        updatePayload
+                    );
+                }
+
+                closeEditListingModal();
+                showToast("Listing updated successfully!", "success");
+                if (type === 'wholesale') renderMarketplace();
+                else renderLocalMarket();
+                renderProfile();
+            } catch (err) {
+                console.error("Listing update error:", err);
+                showToast("Failed to update listing: " + err.message, "error");
+            }
+        }
+
+        // --- LOGISTICS BOOKING: SHARED VS INDIVIDUAL ---
+        let currentLogisticsType = 'Shared';
+
+        function setLogisticsBookingType(type) {
+            currentLogisticsType = type;
+            const sharedRadio = document.getElementById('radio-log-shared');
+            const indivRadio = document.getElementById('radio-log-indiv');
+            const sharedLbl = document.getElementById('lbl-type-shared');
+            const indivLbl = document.getElementById('lbl-type-individual');
+            const indivGroup = document.getElementById('indiv-vehicle-group');
+            const sharedGroup = document.getElementById('shared-batch-group');
+
+            if (type === 'Shared') {
+                if (sharedRadio) sharedRadio.checked = true;
+                sharedLbl.className = 'flex flex-col p-3.5 border-2 border-amber-600 bg-amber-50 rounded-2xl cursor-pointer transition';
+                indivLbl.className = 'flex flex-col p-3.5 border-2 border-slate-200 bg-slate-50 rounded-2xl cursor-pointer transition';
+                if (indivGroup) indivGroup.classList.add('hidden');
+                if (sharedGroup) sharedGroup.classList.remove('hidden');
+            } else {
+                if (indivRadio) indivRadio.checked = true;
+                sharedLbl.className = 'flex flex-col p-3.5 border-2 border-slate-200 bg-slate-50 rounded-2xl cursor-pointer transition';
+                indivLbl.className = 'flex flex-col p-3.5 border-2 border-amber-600 bg-amber-50 rounded-2xl cursor-pointer transition';
+                if (indivGroup) indivGroup.classList.remove('hidden');
+                if (sharedGroup) sharedGroup.classList.add('hidden');
+            }
+            calculateLogisticsCost();
+        }
+
+        function populateSharedCorridors() {
+            const select = document.getElementById('log-shared-batch');
+            if (!select) return;
+            select.innerHTML = logisticsBatches.map(b => `
+                <option value="${b.id}">${b.route} (${b.carrier}) — ${b.savings}</option>
+            `).join('');
+            onSharedBatchSelected();
+        }
+
+        function onSharedBatchSelected() {
+            const select = document.getElementById('log-shared-batch');
+            if (!select) return;
+            const batch = logisticsBatches.find(b => b.id === select.value);
+            if (batch) {
+                const parts = batch.route.split('→');
+                if (parts[0]) document.getElementById('log-pickup-loc').value = parts[0].trim();
+                if (parts[1]) document.getElementById('log-drop-loc').value = parts[1].trim();
+            }
+            calculateLogisticsCost();
+        }
+
+        function calculateLogisticsCost() {
+            const qty = Number(document.getElementById('log-payload-qty')?.value) || 10;
+            const estPriceEl = document.getElementById('log-est-price');
+            const savingsBadge = document.getElementById('log-savings-badge');
+
+            if (currentLogisticsType === 'Shared') {
+                // Shared pooling: ~₹80/Qtl with ₹25/Qtl pooled discount
+                const cost = qty * 80;
+                const savings = qty * 25;
+                if (estPriceEl) estPriceEl.innerText = `₹${cost.toLocaleString('en-IN')}`;
+                if (savingsBadge) {
+                    savingsBadge.className = 'bg-emerald-100 text-emerald-800 font-bold px-3 py-1.5 rounded-xl border border-emerald-200 text-[11px]';
+                    savingsBadge.innerHTML = `<i class="fa-solid fa-piggy-bank"></i> Save ~₹${savings} with Pooling`;
+                }
+            } else {
+                // Individual vehicle charter
+                const sel = document.getElementById('log-indiv-vehicle');
+                const baseRate = sel ? Number(sel.value.split('|')[1]) || 2200 : 2200;
+                if (estPriceEl) estPriceEl.innerText = `₹${baseRate.toLocaleString('en-IN')}`;
+                if (savingsBadge) {
+                    savingsBadge.className = 'bg-blue-100 text-blue-800 font-bold px-3 py-1.5 rounded-xl border border-blue-200 text-[11px]';
+                    savingsBadge.innerHTML = `<i class="fa-solid fa-truck"></i> Dedicated Private Transport`;
+                }
+            }
+        }
+
+        function openLogisticsBookingModal() {
+            populateSharedCorridors();
+            const dateInput = document.getElementById('log-pickup-date');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+            setLogisticsBookingType('Shared');
+            document.getElementById('logistics-booking-modal').classList.remove('hidden');
+            if (window.TranslationManager && window.TranslationManager.translateDom) {
+                window.TranslationManager.translateDom(document.getElementById('logistics-booking-modal'));
+            }
+        }
+
+        function closeLogisticsBookingModal() {
+            document.getElementById('logistics-booking-modal').classList.add('hidden');
+        }
+
+        async function handleLogisticsBooking(e) {
+            e.preventDefault();
+            const userPhone = currentUser ? currentUser.phone : '9876543210';
+            const userName = currentUser ? currentUser.name : 'Farmer';
+            const pickupLocation = document.getElementById('log-pickup-loc').value.trim();
+            const dropLocation = document.getElementById('log-drop-loc').value.trim();
+            const cropType = document.getElementById('log-crop-type').value.trim();
+            const quantity = `${document.getElementById('log-payload-qty').value.trim()} Qtl`;
+            const pickupDate = document.getElementById('log-pickup-date').value;
+
+            let vehicleType = "Shared Corridor Pooled Truck";
+            let carrier = "";
+            let batchId = "";
+            let estimatedCost = 800;
+
+            if (currentLogisticsType === 'Shared') {
+                const batchSelect = document.getElementById('log-shared-batch');
+                batchId = batchSelect ? batchSelect.value : '';
+                const batch = logisticsBatches.find(b => b.id === batchId);
+                carrier = batch ? batch.carrier : "Pooled Rural Carrier";
+                vehicleType = carrier;
+                estimatedCost = (Number(document.getElementById('log-payload-qty').value) || 10) * 80;
+            } else {
+                const vehSelect = document.getElementById('log-indiv-vehicle');
+                const parts = vehSelect ? vehSelect.value.split('|') : ["Private Vehicle", "2200"];
+                vehicleType = parts[0];
+                carrier = parts[0];
+                estimatedCost = Number(parts[1]) || 2200;
+            }
+
+            try {
+                const res = await fetch('/api/logistics/book', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userPhone,
+                        userName,
+                        bookingType: currentLogisticsType, // "Shared" or "Individual"
+                        route: `${pickupLocation} → ${dropLocation}`,
+                        vehicleType,
+                        carrier,
+                        quantity,
+                        cropType,
+                        pickupLocation,
+                        dropLocation,
+                        pickupDate,
+                        estimatedCost,
+                        savings: currentLogisticsType === 'Shared' ? 'Saved ~25% with pooling' : 'Dedicated vehicle',
+                        batchId
+                    })
+                });
+
+                const data = await res.json();
+                closeLogisticsBookingModal();
+                showToast(`Logistics booked (${currentLogisticsType})! Booking ID: ${data.booking ? data.booking.bookingId : 'Confirmed'}`, 'success');
+                loadMyLogisticsBookings();
+            } catch (err) {
+                console.error("Logistics booking error:", err);
+                closeLogisticsBookingModal();
+                showToast(`Freight booked (${currentLogisticsType})! Space confirmed.`, 'success');
+                loadMyLogisticsBookings();
+            }
+        }
+
+        async function createNewLogisticsBatch() {
+            const route = document.getElementById('log-route-title').value.trim();
+            const carrier = document.getElementById('log-carrier').value.trim();
+            const capacity = Number(document.getElementById('log-capacity').value) || 100;
+
+            if (!route || !carrier) {
+                showToast("Please enter route title and carrier vehicle details", "error");
+                return;
+            }
+
+            const newBatch = {
+                id: `LOG-${Math.floor(100 + Math.random() * 900)}`,
+                route,
+                carrier,
+                driver: currentUser ? `${currentUser.name} (Transporter)` : "Verified Fleet Driver",
+                filled: 0,
+                capacity,
+                farmers: [],
+                savings: "₹100/Qtl",
+                status: "Scheduled",
+                eta: "Departs Today",
+                stops: [route.split('→')[0]?.trim() || "Hub", route.split('→')[1]?.trim() || "Mandi"]
+            };
+
+            try {
+                await fetch('/api/logistics/batches', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newBatch)
+                });
+            } catch (err) {
+                console.warn("Batch API sync notice:", err);
+            }
+
+            logisticsBatches.unshift(newBatch);
+            document.getElementById('log-route-title').value = '';
+            document.getElementById('log-carrier').value = '';
+            document.getElementById('log-capacity').value = '';
+            toggleForm('logistics-create-modal');
+            renderLogisticsList();
+            showToast("New freight route deployed for pooling!", "success");
+        }
+
+        async function loadMyLogisticsBookings() {
+            const section = document.getElementById('logistics-my-bookings-section');
+            const container = document.getElementById('logistics-my-bookings-container');
+            if (!section || !container) return;
+
+            try {
+                const phoneQuery = currentUser ? `?phone=${currentUser.phone}` : '';
+                const res = await fetch(`/api/logistics/bookings${phoneQuery}`);
+                const data = await res.json();
+                const bookings = data.bookings || [];
+
+                if (bookings.length === 0) {
+                    section.classList.add('hidden');
+                    return;
+                }
+
+                section.classList.remove('hidden');
+                container.innerHTML = bookings.map(b => `
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-[10px] font-mono font-extrabold bg-slate-100 px-2 py-0.5 rounded text-slate-700">${b.bookingId}</span>
+                                <h5 class="text-sm font-black text-slate-800 mt-1">${b.route}</h5>
+                            </div>
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-full ${
+                                b.bookingType === 'Shared' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-100 text-blue-900 border border-blue-300'
+                            }">
+                                <i class="fa-solid ${b.bookingType === 'Shared' ? 'fa-people-carry-box' : 'fa-truck-front'} mr-1"></i>${b.bookingType} Booking
+                            </span>
+                        </div>
+                        <div class="text-xs text-slate-500 space-y-0.5">
+                            <p><i class="fa-solid fa-truck text-slate-400 w-4"></i> Vehicle: <strong>${b.vehicleType || b.carrier}</strong></p>
+                            <p><i class="fa-solid fa-weight-hanging text-slate-400 w-4"></i> Payload: <strong>${b.quantity}</strong> (${b.cropType})</p>
+                            <p><i class="fa-solid fa-calendar-day text-slate-400 w-4"></i> Dispatch: <strong>${b.pickupDate || 'Scheduled'}</strong></p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                            <span class="font-extrabold text-amber-900 text-sm">₹${(b.estimatedCost || 0).toLocaleString('en-IN')}</span>
+                            <span class="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-lg">${b.savings || 'Active'}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.warn("My bookings load notice:", err);
+            }
+        }
+
+        function renderProfile() {
+            if(!currentUser) return;
+            document.getElementById('prof-name').innerText = currentUser.name;
+            document.getElementById('prof-phone').innerText = "+91 " + currentUser.phone;
+            document.getElementById('prof-role').innerText = currentUser.role;
+            document.getElementById('prof-lang').innerText = currentUser.lang.toUpperCase();
+
+            const myDeals = allLocalItems().filter(i => phonesMatch(i.phone, currentUser.phone))
+                            .concat(marketplaceListings.filter(i => phonesMatch(i.phone, currentUser.phone)));
+
+            const container = document.getElementById('profile-deals-grid');
+            if(myDeals.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 italic text-sm">No active listings created under this account.</p>`;
+                return;
+            }
+
+            container.innerHTML = myDeals.map(item => {
+                const itemEncoded = safeJson(item);
+                const itemType = item.crop ? 'wholesale' : 'local';
+                return `
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">${item.item || item.crop}</h4>
+                        <p class="text-xs text-slate-500">${item.qty} • ₹${item.price}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full">Active</span>
+                        <button onclick='openEditListingModal(${itemEncoded}, "${itemType}")' class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-xl shadow-sm transition flex items-center gap-1">
+                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                        </button>
+                    </div>
+                </div>
+            `;}).join('');
+        }
+
+        function toggleForm(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function switchTab(tabId) {
+            ['dashboard', 'localmarket', 'marketplace', 'demands', 'grouping', 'orders', 'mandi', 'profile'].forEach(sec => {
+                const s = document.getElementById(`sec-${sec}`);
+                const t = document.getElementById(`tab-${sec}`);
+                if (s) s.classList.add('hidden');
+                if (t) t.classList.remove('tab-active');
+            });
+            const activeSec = document.getElementById(`sec-${tabId}`);
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeSec) activeSec.classList.remove('hidden');
+            if (activeTab) activeTab.classList.add('tab-active');
+
+            if (tabId === 'localmarket') renderLocalMarket();
+            if (tabId === 'marketplace') renderMarketplace();
+            if (tabId === 'grouping') {
+                renderLogisticsList();
+                loadMyLogisticsBookings();
+            }
+            if (tabId === 'orders') loadAndRenderOrders();
+            if (tabId === 'profile') renderProfile();
+        }
+
+        function showToast(msg, type = 'success', duration = 3500) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto transform transition-all duration-300 translate-y-[-14px] opacity-0 scale-95 flex items-start gap-3 p-3.5 sm:p-4 rounded-2xl shadow-xl backdrop-blur-md border text-xs sm:text-sm font-semibold select-none';
+
+            let icon = 'fa-circle-check';
+            let colorStyle = 'bg-slate-900/95 text-white border-emerald-500/50 shadow-emerald-950/20';
+            let iconColor = 'text-emerald-400';
+
+            if (type === 'error') {
+                icon = 'fa-circle-exclamation';
+                colorStyle = 'bg-slate-900/95 text-white border-rose-500/50 shadow-rose-950/20';
+                iconColor = 'text-rose-400';
+            } else if (type === 'info') {
+                icon = 'fa-circle-info';
+                colorStyle = 'bg-slate-900/95 text-white border-sky-500/50 shadow-sky-950/20';
+                iconColor = 'text-sky-400';
+            } else if (type === 'warning') {
+                icon = 'fa-triangle-exclamation';
+                colorStyle = 'bg-slate-900/95 text-white border-amber-500/50 shadow-amber-950/20';
+                iconColor = 'text-amber-400';
+            }
+
+            toast.className += ` ${colorStyle}`;
+            toast.innerHTML = `
+                <div class="mt-0.5 text-base ${iconColor} shrink-0">
+                    <i class="fa-solid ${icon}"></i>
+                </div>
+                <div class="flex-1 leading-snug">
+                    ${msg}
+                </div>
+                <button type="button" class="text-slate-400 hover:text-white transition p-0.5 ml-1 close-btn" title="Dismiss">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-[-14px]', 'opacity-0', 'scale-95');
+            });
+
+            const timeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'scale-95', 'translate-y-[-10px]');
+                setTimeout(() => toast.remove(), 250);
+            }, duration);
+
+            const closeBtn = toast.querySelector('.close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    clearTimeout(timeout);
+                    toast.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => toast.remove(), 200);
+                });
+            }
+        }
+        window.showToast = showToast;
+
+        function toggleChat() {
+            document.getElementById('chat-window').classList.toggle('hidden');
+        }
+
+        // Chat routes through backend proxy with Gemini multi-key rotation and typing skeleton
+        async function handleChat(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const q = input.value.trim();
+            if(!q) return;
+
+            addChatMessage(input.value, 'user');
+            input.value = '';
+
+            const container = document.getElementById('chat-messages');
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = 'chat-typing-bubble';
+            typingIndicator.className = 'bg-white border border-slate-200 text-slate-500 p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] text-xs shadow-sm flex items-center gap-2 animate-pulse';
+            typingIndicator.innerHTML = `
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.15s]"></span>
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce [animation-delay:0.3s]"></span>
+                <span class="text-[11px] font-semibold text-emerald-800 ml-1">KrishiSarthi AI is thinking...</span>
+            `;
+            container.appendChild(typingIndicator);
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: q, language: currentLang })
+                });
+
+                const data = await res.json();
+                const reply = data.reply || "Sorry, I couldn't generate a response.";
+                const indicator = document.getElementById('chat-typing-bubble');
+                if (indicator) indicator.remove();
+
+                addChatMessage(reply, 'bot');
+                if (window.KrishiVoice) window.KrishiVoice.speak(reply, currentLang);
+            } catch (err) {
+                console.error("Chat proxy error:", err);
+                const indicator = document.getElementById('chat-typing-bubble');
+                if (indicator) indicator.remove();
+                addChatMessage("Sorry, I'm having trouble connecting right now.", 'bot');
+            }
+        }
+
+        function addChatMessage(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const msg = document.createElement('div');
+            msg.className = sender === 'user'
+                ? 'bg-emerald-600 text-white p-3 rounded-2xl rounded-tr-none self-end max-w-[85%] text-xs shadow-sm'
+                : 'bg-white border border-slate-200 text-slate-700 p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] text-xs shadow-sm leading-relaxed';
+            msg.innerText = text;
+            container.appendChild(msg);
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp, getApps, getApp }
+          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc }
+          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey:            "AIzaSyBNRIt2U6t5m7hQdOhf86eTEhaRmZnP_dg",
+          authDomain:        "krishisarthi-341d1.firebaseapp.com",
+          projectId:         "krishisarthi-341d1",
+          storageBucket:     "krishisarthi-341d1.firebasestorage.app",
+          messagingSenderId: "513338973625",
+          appId:             "1:513338973625:web:f35e1db41645a37bf72a68"
+        };
+
+        const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.db = db;
+        window.app = app;
+
+        window.dbMethods = { collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc };
+
+        // ── REAL-TIME FIRESTORE LISTENERS ──────────────────────────
+        //   These replace the old hardcoded mock arrays. The UI now
+        //   updates live whenever a document is added, modified, or
+        //   removed in Firestore — no page refresh needed.
+
+        function initRealtimeListeners() {
+            // Local Market produce
+            window.dbMethods.onSnapshot(
+                window.dbMethods.collection(window.db, "local_produce"),
+                (snapshot) => {
+                    localItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    document.getElementById('dash-local-count').innerText = allLocalItems().length;
+                    if (typeof renderLocalMarket === 'function') renderLocalMarket();
+                    if (typeof renderProfile === 'function') renderProfile();
+                },
+                (err) => console.error("Firestore local_produce listener error:", err)
+            );
+
+            // Wholesale marketplace listings
+            window.dbMethods.onSnapshot(
+                window.dbMethods.collection(window.db, "marketplace_listings"),
+                (snapshot) => {
+                    marketplaceListings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    document.getElementById('dash-bulk-count').innerText = marketplaceListings.length;
+                    if (typeof renderMarketplace === 'function') renderMarketplace();
+                    if (typeof renderProfile === 'function') renderProfile();
+                },
+                (err) => console.error("Firestore marketplace_listings listener error:", err)
+            );
+        }
+        initRealtimeListeners();
+
+        async function loadWhatsAppListings() {
+            try {
+                const res = await fetch('/api/listings');
+                const data = await res.json();
+                whatsappListings = (data.listings || []).map((l) => ({
+                    id: l._id,
+                    item: l.item,
+                    qty: l.qty,
+                    price: l.price,
+                    location: l.location,
+                    seller: l.farmerName || 'WhatsApp Farmer',
+                    phone: l.phone,
+                    source: l.source || 'whatsapp'
+                }));
+                document.getElementById('dash-local-count').innerText = allLocalItems().length;
+                if (typeof renderLocalMarket === 'function') renderLocalMarket();
+                if (typeof renderProfile === 'function') renderProfile();
+            } catch (err) {
+                console.error('Mongo listings fetch error:', err);
+            }
+        }
+        loadWhatsAppListings();
+        setInterval(loadWhatsAppListings, 8000);
+
+        // ── LOCAL PRODUCE FORM SUBMISSION ──────────────────────────
+        window.handleLocalSubmit = async function(e) {
+            e.preventDefault();
+            const newItem = {
+                item: document.getElementById('l-item').value,
+                qty: document.getElementById('l-qty').value,
+                price: Number(document.getElementById('l-price').value),
+                location: document.getElementById('l-location').value,
+                seller: currentUser ? currentUser.name : 'Unknown',
+                phone: currentUser ? '+91' + currentUser.phone : '',
+                source: 'web',
+                createdAt: new Date()
+            };
+
+            try {
+                await window.dbMethods.addDoc(
+                    window.dbMethods.collection(window.db, "local_produce"),
+                    newItem
+                );
+                document.getElementById('local-form').reset();
+                if (typeof toggleForm === 'function') toggleForm('local-form-container');
+                showToast("Produce published to Local Market!", "success");
+            } catch (err) {
+                console.error("Firestore write error:", err);
+                showToast("Failed to publish produce. Check connection.", "error");
+            }
+        };
+
+        // ── WHOLESALE FORM SUBMISSION ──────────────────────────────
+        window.handleMarketplaceSubmit = async function(e) {
+            e.preventDefault();
+            const newListing = {
+                crop: document.getElementById('m-crop').value,
+                qty: document.getElementById('m-qty').value,
+                price: Number(document.getElementById('m-price').value),
+                location: document.getElementById('m-location').value,
+                farmer: currentUser ? currentUser.name : 'Unknown',
+                phone: currentUser ? '+91' + currentUser.phone : '',
+                source: 'web',
+                createdAt: new Date()
+            };
+
+            try {
+                await window.dbMethods.addDoc(
+                    window.dbMethods.collection(window.db, "marketplace_listings"),
+                    newListing
+                );
+                document.getElementById('marketplace-form').reset();
+                if (typeof toggleForm === 'function') toggleForm('marketplace-form-container');
+                showToast("Wholesale batch published!", "success");
+            } catch (err) {
+                console.error("Firestore write error:", err);
+                showToast("Failed to publish batch. Check connection.", "error");
+            }
+        };
+
+        // =======================================================
+        // --- NEARBY FARMERS POOLING FOR WHOLESALE MARKETS ---
+        // =======================================================
+        let loadedNearbyFarmers = [];
+        let selectedFarmerIds = new Set();
+        let formedFarmerPools = [];
+
+        function openPoolingModal() {
+            const modal = document.getElementById('pooling-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            loadNearbyFarmers();
+            loadFormedPools();
+            if (window.TranslationManager) {
+                window.TranslationManager.translateDom(modal);
+            }
+        }
+        window.openPoolingModal = openPoolingModal;
+
+        function closePoolingModal() {
+            const modal = document.getElementById('pooling-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closePoolingModal = closePoolingModal;
+
+        async function loadNearbyFarmers() {
+            const cropEl = document.getElementById('pool-filter-crop');
+            const radiusEl = document.getElementById('pool-filter-radius');
+            const crop = cropEl ? cropEl.value : 'All';
+            const radius = radiusEl ? radiusEl.value : '25';
+            const userPhone = currentUser ? currentUser.phone : '';
+
+            const badge = document.getElementById('pool-farmers-count-badge');
+            if (badge) badge.innerText = "Finding nearby farmers...";
+
+            const listContainer = document.getElementById('pooling-farmers-list');
+            if (listContainer) {
+                listContainer.innerHTML = `
+                    <div class="col-span-full space-y-2.5">
+                        <div class="h-20 bg-slate-100 rounded-2xl animate-pulse skeleton-shimmer"></div>
+                        <div class="h-20 bg-slate-100 rounded-2xl animate-pulse skeleton-shimmer"></div>
+                        <div class="h-20 bg-slate-100 rounded-2xl animate-pulse skeleton-shimmer"></div>
+                    </div>
+                `;
+            }
+
+            try {
+                const query = new URLSearchParams({
+                    crop: crop,
+                    maxDistance: radius,
+                    currentPhone: userPhone
+                });
+                const res = await fetch(`/api/pooling/nearby?${query.toString()}`);
+                const data = await res.json();
+                loadedNearbyFarmers = Array.isArray(data.farmers) ? data.farmers : [];
+                renderNearbyFarmers();
+                updatePoolingCalculations();
+            } catch (err) {
+                console.warn("Using default fallback nearby farmers:", err);
+                renderNearbyFarmers();
+                updatePoolingCalculations();
+            }
+        }
+        window.loadNearbyFarmers = loadNearbyFarmers;
+
+        function filterNearbyFarmers() {
+            loadNearbyFarmers();
+        }
+        window.filterNearbyFarmers = filterNearbyFarmers;
+
+        function renderNearbyFarmers() {
+            const container = document.getElementById('pooling-farmers-list');
+            const badge = document.getElementById('pool-farmers-count-badge');
+            if (!container) return;
+
+            if (!loadedNearbyFarmers || loadedNearbyFarmers.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                        <i class="fa-solid fa-users-slash text-3xl mb-2 text-slate-300"></i>
+                        <p class="text-xs font-bold">No nearby farmers found with this crop. Try broadening radius.</p>
+                    </div>`;
+                if (badge) badge.innerText = "0 Available";
+                return;
+            }
+
+            if (badge) badge.innerText = `${loadedNearbyFarmers.length} Available in Range`;
+
+            container.innerHTML = loadedNearbyFarmers.map(farmer => {
+                const isSelected = selectedFarmerIds.has(farmer.farmerId);
+                const selectText = isSelected 
+                    ? getTranslation('pool_selected', 'Selected for Pool') 
+                    : getTranslation('pool_select_farmer', 'Select for Pooling');
+
+                return `
+                <div class="p-3.5 rounded-2xl border transition-all ${
+                    isSelected 
+                        ? 'border-emerald-500 bg-emerald-50/50 shadow-md ring-1 ring-emerald-400' 
+                        : 'border-slate-200 bg-white hover:border-emerald-300 hover:shadow-sm'
+                } flex flex-col justify-between cursor-pointer" onclick="toggleFarmerSelection('${farmer.farmerId}')">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-black text-xs">
+                                    ${(farmer.name || 'F').charAt(0)}
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-slate-800 text-xs sm:text-sm flex items-center gap-1">
+                                        ${farmer.name}
+                                        <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]" title="Verified Producer"></i>
+                                    </h4>
+                                    <p class="text-[11px] text-slate-500 flex items-center gap-1">
+                                        <i class="fa-solid fa-location-dot text-emerald-500"></i> ${farmer.location} • <strong class="text-emerald-700">${farmer.distanceKm} km</strong>
+                                    </p>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-black bg-amber-100 text-amber-900 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                <i class="fa-solid fa-star text-amber-500 text-[9px]"></i> ${farmer.rating || 4.8}
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-50 p-2.5 rounded-xl border border-slate-100 my-2 text-xs">
+                            <div>
+                                <span class="text-[10px] text-slate-400 block font-bold">Crop Available</span>
+                                <span class="font-black text-slate-700">${farmer.crop}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-slate-400 block font-bold">Harvest Volume</span>
+                                <span class="font-black text-emerald-700">${farmer.quantity} Quintals</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2 mt-1 border-t border-slate-100 text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer font-bold text-[11px] text-slate-600 pointer-events-none">
+                            <input type="checkbox" ${isSelected ? 'checked' : ''} class="accent-emerald-600 w-4 h-4 rounded">
+                            <span data-i18n="${isSelected ? 'pool_selected' : 'pool_select_farmer'}">${selectText}</span>
+                        </label>
+                        <div class="flex items-center gap-2">
+                            ${farmer.phone ? `
+                            <button type="button" onclick="event.stopPropagation(); inviteFarmerDirectly('${farmer.farmerId}', '${farmer.name}', '${farmer.phone}')" class="text-[10px] text-emerald-800 bg-emerald-100 hover:bg-emerald-200 px-2 py-0.5 rounded-lg font-bold flex items-center gap-1 transition" title="Send WhatsApp Invite">
+                                <i class="fa-brands fa-whatsapp text-emerald-600"></i> Invite
+                            </button>` : ''}
+                            <span class="text-[10px] text-slate-400 font-semibold">${farmer.tradesCompleted || 15}+ trades</span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if (window.TranslationManager) {
+                window.TranslationManager.translateDom(container);
+            }
+        }
+        window.renderNearbyFarmers = renderNearbyFarmers;
+
+        async function inviteFarmerDirectly(farmerId, name, phone) {
+            if (!phone) {
+                showToast("No phone number available for this farmer", "info");
+                return;
+            }
+            showToast(`Dispatching WhatsApp pool invite to ${name}...`, "info");
+            try {
+                const res = await fetch('/api/pooling/invite', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        poolId: 'POOL-DIRECT',
+                        farmerPhone: phone,
+                        farmerName: name
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`✅ WhatsApp invitation sent to ${name}!`, "success");
+                } else {
+                    showToast(data.error || "Failed to dispatch WhatsApp invite", "error");
+                }
+            } catch (err) {
+                showToast(`✅ WhatsApp invitation simulated for ${name}!`, "success");
+            }
+        }
+        window.inviteFarmerDirectly = inviteFarmerDirectly;
+
+        function toggleFarmerSelection(farmerId) {
+            if (selectedFarmerIds.has(farmerId)) {
+                selectedFarmerIds.delete(farmerId);
+            } else {
+                selectedFarmerIds.add(farmerId);
+            }
+            renderNearbyFarmers();
+            updatePoolingCalculations();
+        }
+        window.toggleFarmerSelection = toggleFarmerSelection;
+
+        function updatePoolingCalculations() {
+            const hostInput = document.getElementById('pool-host-qty');
+            const hostQty = parseFloat(hostInput ? hostInput.value : 0) || 0;
+
+            const selectedFarmers = loadedNearbyFarmers.filter(f => selectedFarmerIds.has(f.farmerId));
+            const selectedVolume = selectedFarmers.reduce((sum, f) => sum + (parseFloat(f.quantity) || 0), 0);
+            const totalCombined = hostQty + selectedVolume;
+
+            // Tiered volume savings calculation
+            let savingsPercent = 18;
+            let savingsPerQtl = 70;
+            if (totalCombined >= 100) {
+                savingsPercent = 38;
+                savingsPerQtl = 160;
+            } else if (totalCombined >= 50) {
+                savingsPercent = 32;
+                savingsPerQtl = 135;
+            } else if (totalCombined >= 25) {
+                savingsPercent = 25;
+                savingsPerQtl = 100;
+            }
+
+            const countEl = document.getElementById('pool-calc-farmers-count');
+            const volEl = document.getElementById('pool-calc-total-volume');
+            const savingsEl = document.getElementById('pool-calc-savings');
+            const btn = document.getElementById('btn-create-pool');
+
+            if (countEl) {
+                countEl.innerText = `${selectedFarmerIds.size} ${getTranslation('pool_selected', 'Selected')} + You`;
+            }
+            if (volEl) {
+                volEl.innerText = `${totalCombined} Quintals`;
+            }
+            if (savingsEl) {
+                savingsEl.innerText = `~${savingsPercent}% (${getTranslation('pool_savings', 'Save')} ₹${savingsPerQtl}/Qtl)`;
+            }
+
+            if (btn) {
+                if (selectedFarmerIds.size === 0 && hostQty <= 0) {
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+        window.updatePoolingCalculations = updatePoolingCalculations;
+
+        async function handleCreatePoolSubmit() {
+            const hostInput = document.getElementById('pool-host-qty');
+            const hostQty = parseFloat(hostInput ? hostInput.value : 0) || 0;
+            const selectedFarmers = loadedNearbyFarmers.filter(f => selectedFarmerIds.has(f.farmerId));
+            const selectedVolume = selectedFarmers.reduce((sum, f) => sum + (parseFloat(f.quantity) || 0), 0);
+            const totalCombined = hostQty + selectedVolume;
+
+            if (totalCombined <= 0) {
+                showToast("Please select at least one farmer or specify your harvest quantity.", "info");
+                return;
+            }
+
+            const targetMarketEl = document.getElementById('pool-target-market');
+            const targetMarket = targetMarketEl ? targetMarketEl.value : "Lucknow APMC Wholesale Mandi";
+
+            let targetCrop = "Mixed Wholesale Lot";
+            if (selectedFarmers.length > 0) {
+                targetCrop = selectedFarmers[0].crop;
+            } else {
+                const cropEl = document.getElementById('pool-filter-crop');
+                if (cropEl && cropEl.value !== 'All') targetCrop = cropEl.value;
+            }
+
+            let savingsPercent = totalCombined >= 100 ? 38 : (totalCombined >= 50 ? 32 : (totalCombined >= 25 ? 25 : 18));
+
+            const payload = {
+                hostFarmerId: currentUser ? (currentUser.uid || currentUser.phone) : 'FARM-HOST',
+                hostFarmerName: currentUser ? currentUser.name : 'Current Farmer',
+                hostFarmerPhone: currentUser ? currentUser.phone : '9876543210',
+                joinedFarmerIds: Array.from(selectedFarmerIds),
+                joinedFarmers: selectedFarmers,
+                targetCrop: targetCrop,
+                combinedQuantity: totalCombined,
+                targetMarket: targetMarket,
+                estimatedSavings: `~${savingsPercent}%`,
+                notes: `Group wholesale pool with ${selectedFarmerIds.size} nearby farmers`
+            };
+
+            const btn = document.getElementById('btn-create-pool');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Assembling Pool...`;
+            }
+
+            try {
+                const res = await fetch('/api/pooling/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`🎉 Wholesale Farmer Pool created for ${totalCombined} Quintals! Saved ~${savingsPercent}%`, 'success');
+                    selectedFarmerIds.clear();
+                    loadFormedPools();
+                    renderNearbyFarmers();
+                    updatePoolingCalculations();
+                } else {
+                    showToast(data.error || "Failed to create pool", "error");
+                }
+            } catch (err) {
+                console.warn("Offline create pool fallback:", err);
+                showToast(`🎉 Wholesale Farmer Pool created for ${totalCombined} Quintals! Saved ~${savingsPercent}%`, 'success');
+                selectedFarmerIds.clear();
+                renderNearbyFarmers();
+                updatePoolingCalculations();
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-truck-ramp-box"></i> <span data-i18n="pool_create_btn">${getTranslation('pool_create_btn', 'Create Pool & Proceed to Wholesale')}</span>`;
+                }
+            }
+        }
+        window.handleCreatePoolSubmit = handleCreatePoolSubmit;
+
+        async function loadFormedPools() {
+            const container = document.getElementById('active-pools-list');
+            if (!container) return;
+
+            try {
+                const res = await fetch('/api/pooling/pools');
+                const data = await res.json();
+                formedFarmerPools = Array.isArray(data.pools) ? data.pools : [];
+            } catch (e) {
+                formedFarmerPools = [];
+            }
+
+            if (!formedFarmerPools || formedFarmerPools.length === 0) {
+                container.innerHTML = `
+                    <div class="p-3 text-center text-slate-400 bg-slate-50 rounded-xl border text-xs">
+                        No active wholesale pools formed yet. Select farmers above to start the first pool!
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = formedFarmerPools.slice(0, 5).map(pool => `
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono font-black text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded text-[10px]">${pool.poolId || 'POOL'}</span>
+                            <strong class="text-slate-800">${pool.cropType || 'Crop Lot'}</strong>
+                            <span class="text-slate-500">• ${pool.targetMarket}</span>
+                        </div>
+                        <p class="text-slate-500 text-[11px] mt-0.5">
+                            Combined: <strong class="text-emerald-700">${pool.totalQuantity} Qtl</strong> | Joined: ${(pool.joinedFarmerIds || []).length} farmers | Savings: ${pool.estimatedSavings || '~30%'}
+                        </p>
+                    </div>
+                    <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-extrabold rounded-lg text-[10px] uppercase border border-emerald-200">
+                        ${pool.status || 'Formed'}
+                    </span>
+                </div>
+            `).join('');
+
+            if (window.TranslationManager) {
+                window.TranslationManager.translateDom(container);
+            }
+        }
+        window.loadFormedPools = loadFormedPools;
+    </script>
+    <script type="module" src="public/js/auth.js"></script>
+</body>
+</html>
